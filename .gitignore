@@ -1,5 +1,21 @@
+# Common files
 *.class
 *.log
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# IDEA files
+/video-tool/.bsp/
+/video-tool/.idea/
+/video-tool/out/
+
+# Eclipse files
+.project
+.classpath
+.metadata
+.cache
+bin/
+
+# Compiled outputs
+/video-tool/target/
+/video-tool/project/target/
+/video-tool/project/build.properties
+/video-tool/project/project/
