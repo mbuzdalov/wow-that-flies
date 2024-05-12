@@ -92,16 +92,30 @@ object Main:
     val sticks = new Sticks(reader, logTimeOffset, stickSize,
       hWidth - stickSize - stickGap, hWidth + stickGap, stickGap)
 
+    val rollFlapMin = reader.getParameter("SERVO3_MIN")
+    val rollFlapMax = reader.getParameter("SERVO3_MAX")
+    val pitchFlapMin = reader.getParameter("SERVO4_MIN")
+    val pitchFlapMax = reader.getParameter("SERVO4_MAX")
+
     val rpWidth = width / 4
     val rpHeight = height / 4
     val rpGap = 11 * width / 1280
     val fontSize = 13f * width / 1280
+    val rpBackground = new Color(255, 255, 255, 150)
     val rollPlot = new Plot(reader, logTimeOffset, rpGap, rpGap,
-      rpWidth, rpHeight, fontSize, 2, -15, +15, "ATT",
-      IndexedSeq("Roll" -> Color.RED, "DesRoll" -> Color.BLUE))
+      rpWidth, rpHeight, fontSize, rpBackground, 2,
+      IndexedSeq(
+        Plot.Source[Numbers.UInt16]("RCOU", "C3", "Roll Flap", v => v.toDouble, rollFlapMin, rollFlapMax, Color.BLACK),
+        Plot.Source[Float]("ATT", "DesRoll", "Desired Roll", v => v, -15, +15, Color.BLUE),
+        Plot.Source[Float]("ATT", "Roll", "Actual Roll", v => v, -15, +15, Color.RED),
+      ))
     val pitchPlot = new Plot(reader, logTimeOffset, width - rpWidth - rpGap, rpGap,
-      rpWidth, rpHeight, fontSize, 2, -15, +15, "ATT",
-      IndexedSeq("Pitch" -> Color.RED, "DesPitch" -> Color.BLUE))
+      rpWidth, rpHeight, fontSize, rpBackground, 2,
+      IndexedSeq(
+        Plot.Source[Numbers.UInt16]("RCOU", "C4", "Pitch Flap", v => v.toDouble, pitchFlapMin, pitchFlapMax, Color.BLACK),
+        Plot.Source[Float]("ATT", "DesPitch", "Desired Pitch", v => v, -15, +15, Color.BLUE),
+        Plot.Source[Float]("ATT", "Pitch", "Actual Pitch", v => v, -15, +15, Color.RED),
+      ))
 
     val last = output match
       case "player" => new Player
