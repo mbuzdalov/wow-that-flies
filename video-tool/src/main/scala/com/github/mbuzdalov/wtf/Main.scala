@@ -62,28 +62,45 @@ object Main:
     val autoArmedEventIndex = (0 until eventValues.size).find(i => eventValues.get(i).toInt == 15).get
     eventTimes.get(autoArmedEventIndex).toDouble * 1e-6
 
-  def main(args: Array[String]): Unit =
+  private def video_2024_03_28(args: Array[String]): Unit =
     val map = args.grouped(2).map(a => a(0) -> a(1)).toMap
     val pipe = map.getOrPrint("--input")
     val width = map.getOrPrint("--width").toInt
     val height = map.getOrPrint("--height").toInt
     val fps = map.getOrPrint("--frame-rate").toDouble
     val armTime = map.getOrPrint("--arm-time").toDouble
+    val output = map.getOrPrint("--output")
 
     val log = map.getOrPrint("--log")
     val reader = Using.resource(new FileInputStream(log))(is => new LogReader(new ByteStorage(is)))
 
     val autoArmedEventTime = getAutoArmedTime(reader)
-    val logTimeOffset = autoArmedEventTime - armTime + 0.15
+    val logTimeOffset = autoArmedEventTime - armTime
 
     println(s"Auto-armed event found at time $autoArmedEventTime, offset = $logTimeOffset")
 
-    val sticks = new Sticks(reader, logTimeOffset, 101, (1280 - 960) / 2, (1280 - 960) / 2 + 110, 610)
-    val player = new Player
-    val rollPlot = new Plot(reader, logTimeOffset, (1280 - 960) / 2 + 10, 10, 400, 200, 2, -15, +15, "ATT",
+    val hWidth = width / 2
+    val stickSize = 101 * width / 1280
+    val stickGap = 11 * width / 1280
+    val sticks = new Sticks(reader, logTimeOffset, stickSize,
+      hWidth - stickSize - stickGap, hWidth + stickGap, stickGap)
+
+    val rpWidth = width / 4
+    val rpHeight = height / 4
+    val rpGap = 11 * width / 1280
+    val rollPlot = new Plot(reader, logTimeOffset, rpGap, rpGap, rpWidth, rpHeight, 2, -15, +15, "ATT",
       IndexedSeq("Roll" -> Color.RED, "DesRoll" -> Color.BLUE))
-    val pitchPlot = new Plot(reader, logTimeOffset, (1280 - 960) / 2 + 420, 10, 400, 200, 2, -15, +15, "ATT",
+    val pitchPlot = new Plot(reader, logTimeOffset, width - rpWidth - rpGap, rpGap, rpWidth, rpHeight, 2, -15, +15, "ATT",
       IndexedSeq("Pitch" -> Color.RED, "DesPitch" -> Color.BLUE))
-    flush(pipe, width, height, fps, FrameConsumer.compose(sticks, rollPlot, pitchPlot, player))
+
+    val last = output match
+      case "player" => new Player
+      case _ => new VideoWriter(output)
+    flush(pipe, width, height, fps, FrameConsumer.compose(sticks, rollPlot, pitchPlot, last))
+  end video_2024_03_28
+
+  def main(args: Array[String]): Unit =
+    args(0) match
+      case "2024-03-28" => video_2024_03_28(args.tail)
   end main
 end Main
