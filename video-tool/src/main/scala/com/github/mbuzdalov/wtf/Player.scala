@@ -14,7 +14,7 @@ class Player extends FrameConsumer:
 
   private class ImageDrawingPanel extends JPanel(true):
     override def paint(g: Graphics): Unit =
-      if img != null then g.drawImage(img, 0, 0, getWidth, getHeight, this)
+      if img != null then synchronized(g.drawImage(img, 0, 0, getWidth, getHeight, this))
 
   private def setupPlayer(): Unit =
     val frame = new JFrame("WTF Player")
@@ -33,6 +33,8 @@ class Player extends FrameConsumer:
     else if currTime < lastTime + time then
       Thread.sleep(((lastTime + time - currTime) * 1e3).toInt)
       lastTime = System.nanoTime() * 1e-9
-    this.img = img
+    if this.img == null then
+      this.img = new BufferedImage(img.getWidth, img.getHeight, img.getType)
+    synchronized(img.copyData(this.img.getRaster))
     this.panel.repaint()
 end Player

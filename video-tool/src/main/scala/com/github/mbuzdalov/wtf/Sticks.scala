@@ -1,10 +1,11 @@
 package com.github.mbuzdalov.wtf
 
 import java.awt.image.BufferedImage
-import java.awt.{BasicStroke, Color, RenderingHints}
+import java.awt.{BasicStroke, Color}
 
 class Sticks(logReader: LogReader, timeOffset: Double,
              size: Int, xLeft: Int, xRight: Int, y: Int) extends FrameConsumer:
+  private val timing = logReader.timingConnect("RCIN")
   private val rcIn = (1 to 4).map(i => logReader.connect[Numbers.UInt16]("RCIN", s"C$i"))
   private val borderColor = Color.RED
   private val fillColor = new Color(0, 0, 0, 150)
@@ -14,8 +15,7 @@ class Sticks(logReader: LogReader, timeOffset: Double,
 
   override def consume(img: BufferedImage, time: Double, frameNo: Long): Unit =
     val g = img.createGraphics()
-    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
-    g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY)
+    GraphicsUtils.setHints(g)
     g.setColor(fillColor)
     g.fillRect(xLeft, y, size, size)
     g.fillRect(xRight, y, size, size)
@@ -29,9 +29,9 @@ class Sticks(logReader: LogReader, timeOffset: Double,
     g.drawRect(xLeft, y, size, size)
     g.drawRect(xRight, y, size, size)
 
-    val tLog = time + timeOffset
-    if rcIn.head.getAtTime(tLog).isDefined then
-      val Seq(roll, pitch, throttle, yaw) = rcIn.map(_.getAtTime(tLog).get)
+    val index = timing.indexForTime(time + timeOffset)
+    if index >= 0 then
+      val Seq(roll, pitch, throttle, yaw) = rcIn.map(_.get(index))
       val x1 = xLeft + size * (yaw - 1000) / 1000
       val y1 = y + size * (2000 - throttle) / 1000
       val x2 = xRight + size * (roll - 1000) / 1000

@@ -1,5 +1,6 @@
 package com.github.mbuzdalov.wtf
 
+import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.FileInputStream
 
@@ -22,10 +23,10 @@ object Main:
     private def getOrPrint(key: String): String = map.getOrElse(key, usage(s"No $key specified"))
 
   private def flush(pipe: String, width: Int, height: Int, fps: Double, target: FrameConsumer): Unit =
-    val buf = new Array[Byte](math.min(width * height * 3, 32768))
+    val buf = new Array[Byte](32768)
     val img = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR)
 
-    Using.resource(new FileInputStream(pipe)): ins =>
+    Using.resource(if pipe == "-" then System.in else new FileInputStream(pipe)): ins =>
       var frameNo = -1L
       var x, y, pixI = 0
       var bufSize = 0
@@ -77,8 +78,12 @@ object Main:
 
     println(s"Auto-armed event found at time $autoArmedEventTime, offset = $logTimeOffset")
 
-    val sticks = new Sticks(reader, logTimeOffset, 301, 340, 680, 210)
+    val sticks = new Sticks(reader, logTimeOffset, 101, (1280 - 960) / 2, (1280 - 960) / 2 + 110, 610)
     val player = new Player
-    flush(pipe, width, height, fps, FrameConsumer.compose(sticks, player))
+    val rollPlot = new Plot(reader, logTimeOffset, (1280 - 960) / 2 + 10, 10, 400, 200, 2, -15, +15, "ATT",
+      IndexedSeq("Roll" -> Color.RED, "DesRoll" -> Color.BLUE))
+    val pitchPlot = new Plot(reader, logTimeOffset, (1280 - 960) / 2 + 420, 10, 400, 200, 2, -15, +15, "ATT",
+      IndexedSeq("Pitch" -> Color.RED, "DesPitch" -> Color.BLUE))
+    flush(pipe, width, height, fps, FrameConsumer.compose(sticks, rollPlot, pitchPlot, player))
   end main
 end Main

@@ -2,7 +2,7 @@ package com.github.mbuzdalov.wtf
 
 import scala.collection.mutable.ArrayBuffer
 
-import Numbers.given
+import com.github.mbuzdalov.wtf.Numbers.given
 
 class LogReader(storage: ByteStorage):
   import LogReader.*
@@ -50,32 +50,37 @@ class LogReader(storage: ByteStorage):
   addFormat(Format(0x80, 0x59, "FMT", "BBnNZ", "Type,Length,Name,Format,Columns"))
   scanStorage()
 
+  def timingConnect(formatName: String): TimingConnector =
+    val id = recordIdByName(formatName)
+    if id < 0 then throw new IllegalArgumentException(s"No format named $formatName found")
+    val myRecords = records(id)
+    val (offsetT, charT) = formats(id).getFieldInfo("TimeUS")
+    assert(charT == 'Q')
+    new TimingConnector:
+      override def size: Int = myRecords.size
+      override def get(index: Int): Double = readByCharCT(storage, 'Q', myRecords(index) + offsetT).toDouble * 1e-6
+      override def indexForTime(time: Double): Int =
+        if myRecords.isEmpty || get(0) > time then -1 else
+          var left = 0
+          var right = size
+          while right - left > 1 do
+            val mid = (left + right) >>> 1
+            if get(mid) > time then
+              right = mid
+            else 
+              left = mid
+          left    
+
+
   def connect[T](formatName: String, fieldName: String): Connector[T] =
     val id = recordIdByName(formatName)
     if id < 0 then throw new IllegalArgumentException(s"No format named $formatName found")
     val myRecords = records(id)
     val (offset, foundChar) = formats(id).getFieldInfo(fieldName)
-    val (offsetT, charT) = formats(id).getFieldInfo("TimeUS")
-    assert(charT == 'Q')
 
     new Connector[T]:
       def size: Int = myRecords.size
       def get(index: Int): T = readByChar(storage, foundChar, myRecords(index) + offset).asInstanceOf[T]
-
-      private def readTime(index: Int) = readByCharCT(storage, 'Q', myRecords(index) + offsetT)
-
-      override def getAtTime(time: Double): Option[T] =
-        val timeUS = (time * 1e6).toLong
-        if myRecords.isEmpty || readTime(0) > timeUS then None else
-          var left = 0
-          var right = size
-          while right - left > 1 do
-            val mid = (left + right) >>> 1
-            if readTime(mid) > timeUS then
-              right = mid
-            else
-              left = mid
-          Some(readByChar(storage, foundChar, myRecords(left) + offset).asInstanceOf[T])
 
 end LogReader
 
@@ -91,8 +96,12 @@ object LogReader:
   trait Connector[+T]:
     def size: Int
     def get(index: Int): T
-    def getAtTime(time: Double): Option[T]
 
+  trait TimingConnector:
+    def size: Int
+    def get(index: Int): Double
+    def indexForTime(time: Double): Int
+  
   private def sizeByChar(ch: Char): Int = ch match
     case 'a' | 'Z' => 64
     case 'b' | 'B' | 'M' => 1
