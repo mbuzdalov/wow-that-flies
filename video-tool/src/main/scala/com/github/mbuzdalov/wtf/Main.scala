@@ -117,10 +117,13 @@ object Main:
         Plot.Source[Float]("ATT", "Pitch", "Actual Pitch", v => v, -15, +15, Color.RED),
       ))
 
+    val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot)
+
     val last = output match
       case "player" => new Player
       case _ => new VideoWriter(output)
-    flush(pipe, width, height, fps, FrameConsumer.compose(sticks, rollPlot, pitchPlot, last))
+
+    flush(pipe, width, height, fps, FrameConsumer.compose(FrameConsumer(allGraphics), last))
   end video_2024_03_28
 
   def main(args: Array[String]): Unit =

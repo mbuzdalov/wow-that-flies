@@ -1,12 +1,10 @@
 package com.github.mbuzdalov.wtf
-import java.awt.{BasicStroke, Color, Font}
 import java.awt.image.BufferedImage
-
-import scala.compiletime.uninitialized
+import java.awt.{BasicStroke, Color, Font, Graphics2D}
 
 class Plot(logReader: LogReader, timeOffset: Double,
            x: Int, y: Int, width: Int, height: Int, fontSize: Float, background: Color, timeWidth: Double,
-           sources: Seq[Plot.Source[?]]) extends FrameConsumer:
+           sources: Seq[Plot.Source[?]]) extends GraphicsConsumer:
   private val timingConnections = sources.map(_.connectTiming(logReader))
   private val plotConnections = sources.map(_.connectValue(logReader))
   private val thinStroke = new BasicStroke(fontSize / 13f)
@@ -32,11 +30,9 @@ class Plot(logReader: LogReader, timeOffset: Double,
       1 - (1 - sumGreen.toFloat / area) * 0.6f,
       1 - (1 - sumBlue.toFloat / area) * 0.6f)
 
-  override def consume(img: BufferedImage, time: Double, frameNo: Long): Unit =
+  override def consume(img: BufferedImage, g: Graphics2D, time: Double, frameNo: Long): Unit =
     if backgroundColor == null then initBackgroundFromBackground(img)
 
-    val g = img.createGraphics()
-    GraphicsUtils.setHints(g)
     g.setColor(backgroundColor)
     g.fillRect(x, y, width, height)
     val t = time + timeOffset
@@ -79,8 +75,7 @@ class Plot(logReader: LogReader, timeOffset: Double,
     for plot <- sources.indices do
       g.setColor(sources(plot).color)
       g.drawString(sources(plot).displayName, x + 0.5f * fontSize, y + 1.5f * fontSize * (1 + plot))
-
-  override def close(): Unit = ()
+end Plot
 
 object Plot:
   class Source[+T](val recordName: String, val fieldName: String, val displayName: String, 

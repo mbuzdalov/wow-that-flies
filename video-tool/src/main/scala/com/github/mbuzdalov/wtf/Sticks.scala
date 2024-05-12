@@ -1,10 +1,10 @@
 package com.github.mbuzdalov.wtf
 
 import java.awt.image.BufferedImage
-import java.awt.{BasicStroke, Color}
+import java.awt.{BasicStroke, Color, Graphics2D}
 
 class Sticks(logReader: LogReader, timeOffset: Double,
-             size: Int, xLeft: Int, xRight: Int, y: Int) extends FrameConsumer:
+             size: Int, xLeft: Int, xRight: Int, y: Int) extends GraphicsConsumer:
   private val timing = logReader.timingConnect("RCIN")
   private val rcIn = (1 to 4).map(i => logReader.connect[Numbers.UInt16]("RCIN", s"C$i"))
   private val borderColor = Color.RED
@@ -13,9 +13,7 @@ class Sticks(logReader: LogReader, timeOffset: Double,
   private val borderStroke = new BasicStroke(size * 3e-2f)
   private val stickColor = Color.YELLOW
 
-  override def consume(img: BufferedImage, time: Double, frameNo: Long): Unit =
-    val g = img.createGraphics()
-    GraphicsUtils.setHints(g)
+  override def consume(img: BufferedImage, g: Graphics2D, time: Double, frameNo: Long): Unit =
     g.setColor(fillColor)
     g.fillRect(xLeft, y, size, size)
     g.fillRect(xRight, y, size, size)
@@ -41,5 +39,3 @@ class Sticks(logReader: LogReader, timeOffset: Double,
       val stickD = stickR * 2 + 1
       g.fillOval(x1 - stickR, y1 - stickR, stickD, stickD)
       g.fillOval(x2 - stickR, y2 - stickR, stickD, stickD)
-
-  override def close(): Unit = ()
