@@ -10,6 +10,9 @@ class LogReader(storage: ByteStorage):
   private val formats = new Array[Format](256)
   private val records = IArray.fill(256)(ArrayBuffer[Long]())
 
+  private lazy val paramName = connect[String]("PARM", "Name")
+  private lazy val paramValue = connect[Float]("PARM", "Value")
+
   private def addFormat(format: Format): Unit =
     if formats(format.id) == null then
       formats(format.id) = format
@@ -81,6 +84,11 @@ class LogReader(storage: ByteStorage):
     new Connector[T]:
       def size: Int = myRecords.size
       def get(index: Int): T = readByChar(storage, foundChar, myRecords(index) + offset).asInstanceOf[T]
+
+  def getParameter(name: String): Float =
+    val index = (0 until paramName.size).indexWhere(i => paramName.get(i) == name)
+    if index == -1 then throw new IllegalArgumentException(s"Parameter $name not found")
+    paramValue.get(index)
 
 end LogReader
 
