@@ -9,8 +9,8 @@ class Sticks(logReader: LogReader, timeOffset: Double,
   private val rcIn = (1 to 4).map(i => logReader.connect[Numbers.UInt16]("RCIN", s"C$i"))
   private val borderColor = Color.RED
   private val fillColor = new Color(0, 0, 0, 150)
-  private val thinStroke = new BasicStroke(1)
-  private val borderStroke = new BasicStroke(3)
+  private val thinStroke = new BasicStroke(size * 1e-2f)
+  private val borderStroke = new BasicStroke(size * 3e-2f)
   private val stickColor = Color.YELLOW
 
   override def consume(img: BufferedImage, time: Double, frameNo: Long): Unit =
@@ -37,7 +37,9 @@ class Sticks(logReader: LogReader, timeOffset: Double,
       val x2 = xRight + size * (roll - 1000) / 1000
       val y2 = y + size * (2000 - pitch) / 1000
       g.setColor(stickColor)
-      g.fillOval(x1 - 5, y1 - 5, 11, 11)
-      g.fillOval(x2 - 5, y2 - 5, 11, 11)
+      val stickR = math.max(1, size / 20)
+      val stickD = stickR * 2 + 1
+      g.fillOval(x1 - stickR, y1 - stickR, stickD, stickD)
+      g.fillOval(x2 - stickR, y2 - stickR, stickD, stickD)
 
   override def close(): Unit = ()

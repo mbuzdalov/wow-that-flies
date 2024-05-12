@@ -89,9 +89,12 @@ object Main:
     val rpWidth = width / 4
     val rpHeight = height / 4
     val rpGap = 11 * width / 1280
-    val rollPlot = new Plot(reader, logTimeOffset, rpGap, rpGap, rpWidth, rpHeight, 2, -15, +15, "ATT",
+    val fontSize = 13f * width / 1280
+    val rollPlot = new Plot(reader, logTimeOffset, rpGap, rpGap, 
+      rpWidth, rpHeight, fontSize, 2, -15, +15, "ATT",
       IndexedSeq("Roll" -> Color.RED, "DesRoll" -> Color.BLUE))
-    val pitchPlot = new Plot(reader, logTimeOffset, width - rpWidth - rpGap, rpGap, rpWidth, rpHeight, 2, -15, +15, "ATT",
+    val pitchPlot = new Plot(reader, logTimeOffset, width - rpWidth - rpGap, rpGap, 
+      rpWidth, rpHeight, fontSize, 2, -15, +15, "ATT",
       IndexedSeq("Pitch" -> Color.RED, "DesPitch" -> Color.BLUE))
 
     val last = output match
