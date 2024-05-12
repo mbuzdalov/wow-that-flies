@@ -9,10 +9,16 @@ import scala.util.Using
 object Main:
   private val usageStr =
     """Usage:
-      |  Main --input <pipe>
+      |  Main <video-id>
+      |       --input <filename>
       |       --width <video width>
       |       --height <video height>
       |       --frame-rate <video frame rate>
+      |       --arm-time <arm time in video>
+      |       --log <ArduPilot binary log>
+      |       --output <filename | player>
+      |  <video-id> is the internal video id to choose the particular script to run
+      |  <filename> can be - for standard input or output
       |""".stripMargin
 
   private def usage(extraMsg: String): Nothing =
@@ -90,10 +96,10 @@ object Main:
     val rpHeight = height / 4
     val rpGap = 11 * width / 1280
     val fontSize = 13f * width / 1280
-    val rollPlot = new Plot(reader, logTimeOffset, rpGap, rpGap, 
+    val rollPlot = new Plot(reader, logTimeOffset, rpGap, rpGap,
       rpWidth, rpHeight, fontSize, 2, -15, +15, "ATT",
       IndexedSeq("Roll" -> Color.RED, "DesRoll" -> Color.BLUE))
-    val pitchPlot = new Plot(reader, logTimeOffset, width - rpWidth - rpGap, rpGap, 
+    val pitchPlot = new Plot(reader, logTimeOffset, width - rpWidth - rpGap, rpGap,
       rpWidth, rpHeight, fontSize, 2, -15, +15, "ATT",
       IndexedSeq("Pitch" -> Color.RED, "DesPitch" -> Color.BLUE))
 
