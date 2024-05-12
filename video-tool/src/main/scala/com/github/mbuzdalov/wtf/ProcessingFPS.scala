@@ -15,3 +15,5 @@ object ProcessingFPS extends FrameConsumer:
       g.setFont(myFont)
       g.drawString(f"FPS: $fps%.1f", 600, 30)
     prevFrameTime = currFrameTime
+
+  override def close(): Unit = ()

@@ -53,6 +53,7 @@ object Main:
                 frameNo += 1
                 target.consume(img, frameNo / fps, frameNo)
       end while
+      target.close()
   end flush
 
   private def getAutoArmedTime(reader: LogReader): Double =
@@ -77,7 +78,7 @@ object Main:
     val autoArmedEventTime = getAutoArmedTime(reader)
     val logTimeOffset = autoArmedEventTime - armTime
 
-    println(s"Auto-armed event found at time $autoArmedEventTime, offset = $logTimeOffset")
+    System.err.println(s"Auto-armed event found at time $autoArmedEventTime, offset = $logTimeOffset")
 
     val hWidth = width / 2
     val stickSize = 101 * width / 1280

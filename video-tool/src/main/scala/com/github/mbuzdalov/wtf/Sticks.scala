@@ -39,3 +39,5 @@ class Sticks(logReader: LogReader, timeOffset: Double,
       g.setColor(stickColor)
       g.fillOval(x1 - 5, y1 - 5, 11, 11)
       g.fillOval(x2 - 5, y2 - 5, 11, 11)
+
+  override def close(): Unit = ()

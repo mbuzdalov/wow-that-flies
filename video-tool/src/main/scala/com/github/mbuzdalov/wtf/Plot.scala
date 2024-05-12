@@ -56,3 +56,6 @@ class Plot(logReader: LogReader, timeOffset: Double,
     for plot <- plots.indices do
       g.setColor(plots(plot)._2)
       g.drawString(plots(plot)._1, x + 10, y + 20 + 20 * plot)
+
+  override def close(): Unit = ()
+  

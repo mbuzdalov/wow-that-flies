@@ -37,4 +37,6 @@ class Player extends FrameConsumer:
       this.img = new BufferedImage(img.getWidth, img.getHeight, img.getType)
     synchronized(img.copyData(this.img.getRaster))
     this.panel.repaint()
+
+  override def close(): Unit = ()
 end Player
