@@ -45,7 +45,6 @@ class Plot(logReader: LogReader, timeOffset: Double,
     val minViewTime = t - timeWidth / 2
     val maxViewTime = t + timeWidth / 2
 
-
     g.setClip(x, y, width, height)
 
     g.setStroke(plotStroke)
@@ -75,10 +74,12 @@ class Plot(logReader: LogReader, timeOffset: Double,
     for plot <- sources.indices do
       g.setColor(sources(plot).color)
       g.drawString(sources(plot).displayName, x + 0.5f * fontSize, y + 1.5f * fontSize * (1 + plot))
+
+    g.setClip(0, 0, img.getWidth, img.getHeight)
 end Plot
 
 object Plot:
-  class Source[+T](val recordName: String, val fieldName: String, val displayName: String, 
+  class Source[+T](val recordName: String, val fieldName: String, val displayName: String,
                    extractor: T => Double, val minValue: Double, val maxValue: Double, val color: Color):
     private[Plot] def connectTiming(reader: LogReader): LogReader.TimingConnector = reader.timingConnect(recordName)
     private[Plot] def connectValue(reader: LogReader): LogReader.Connector[Double] =
