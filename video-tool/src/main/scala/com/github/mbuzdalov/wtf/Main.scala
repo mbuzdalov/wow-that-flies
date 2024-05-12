@@ -117,7 +117,40 @@ object Main:
         Plot.Source[Float]("ATT", "Pitch", "Actual Pitch", v => v, -15, +15, Color.RED),
       ))
 
-    val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot)
+    val msgFontSize = 36f * width / 1280
+    val msgStep = msgFontSize * 1.5f
+    val msgColor = new Color(10, 10, 50)
+    val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
+      TextMessage("March 28, 2024",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f,
+        TextMessage.HorizontalAlignment.Center, TextMessage.VerticalAlignment.Center, 1, 10),
+      TextMessage("To aid investigations, detailed logging was enabled:",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 1f,
+        TextMessage.HorizontalAlignment.Center, TextMessage.VerticalAlignment.Center, 3, 10),
+      TextMessage("INS_RAW_LOG_OPT = 9",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 2.2f,
+        TextMessage.HorizontalAlignment.Center, TextMessage.VerticalAlignment.Center, 3, 10),
+      TextMessage("LOG_BITMASK = 180223",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 3f,
+        TextMessage.HorizontalAlignment.Center, TextMessage.VerticalAlignment.Center, 3, 10),
+      TextMessage("This is a test run.",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 4.5f,
+        TextMessage.HorizontalAlignment.Center, TextMessage.VerticalAlignment.Center, 3, 10),
+
+      TextMessage("Well, CX7 did not crash this time,",
+        msgFontSize, msgColor, width * 0.5f, height * 0.33f,
+        TextMessage.HorizontalAlignment.Center, TextMessage.VerticalAlignment.Center, 101, 110),
+      TextMessage("but the discrepancy between desired and actual roll and pitch,",
+        msgFontSize, msgColor, width * 0.5f, height * 0.33f + msgStep * 1f,
+        TextMessage.HorizontalAlignment.Center, TextMessage.VerticalAlignment.Center, 101, 110),
+      TextMessage("is quite large even in a gentle flight.",
+        msgFontSize, msgColor, width * 0.5f, height * 0.33f + msgStep * 2f,
+        TextMessage.HorizontalAlignment.Center, TextMessage.VerticalAlignment.Center, 101, 110),
+
+      TextMessage("Stay tuned! (Pun intended)",
+        msgFontSize, msgColor, width * 0.5f, height * 0.33f + msgStep * 3.5f,
+        TextMessage.HorizontalAlignment.Center, TextMessage.VerticalAlignment.Center, 107, 110),
+    )
 
     val last = output match
       case "player" => new Player
