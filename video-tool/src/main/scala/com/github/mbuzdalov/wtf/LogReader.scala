@@ -21,9 +21,9 @@ class LogReader(storage: ByteStorage):
   private def processFormatRecord(offset: Long): Unit =
     val id = storage.uint8(offset + 1).toInt
     val length = storage.uint8(offset + 2).toInt
-    val name = storage.string(offset + 3, 4).trim
-    val format = storage.string(offset + 7, 16).trim
-    val labels = storage.string(offset + 23, 64).trim
+    val name = storage.string(offset + 3, 4)
+    val format = storage.string(offset + 7, 16)
+    val labels = storage.string(offset + 23, 64)
     addFormat(Format(id, length, name, format, labels))
 
   private def earlyProcessRecord(id: Int, offset: Long): Unit =

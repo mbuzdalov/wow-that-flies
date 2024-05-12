@@ -30,5 +30,5 @@ class ByteStorage(stream: InputStream):
   
   def float32(index: Long): Float = java.lang.Float.intBitsToFloat(int32(index))
   def float64(index: Long): Double = java.lang.Double.longBitsToDouble(int64(index))
-  def string(index: Long, length: Int): String = new String(Array.tabulate(length)(i => int8(index + i)))
+  def string(index: Long, length: Int): String = new String(Array.tabulate(length)(i => int8(index + i))).trim
 end ByteStorage
