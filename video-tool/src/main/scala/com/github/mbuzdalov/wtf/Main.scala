@@ -6,6 +6,8 @@ import java.io.FileInputStream
 
 import scala.util.Using
 
+import com.github.mbuzdalov.wtf.TextMessage.*
+
 object Main:
   private val usageStr =
     """Usage:
@@ -159,8 +161,138 @@ object Main:
     flush(pipe, width, height, fps, FrameConsumer.compose(FrameConsumer(allGraphics), last))
   end video_2024_03_28
 
+  private def video_2024_03_29_p1(args: Array[String]): Unit =
+    val map = args.grouped(2).map(a => a(0) -> a(1)).toMap
+    val pipe = map.getOrPrint("--input")
+    val width = map.getOrPrint("--width").toInt
+    val height = map.getOrPrint("--height").toInt
+    val fps = map.getOrPrint("--frame-rate").toDouble
+    val armTime = map.getOrPrint("--arm-time").toDouble
+    val output = map.getOrPrint("--output")
+
+    val log = map.getOrPrint("--log")
+    val reader = Using.resource(new FileInputStream(log))(is => new LogReader(new ByteStorage(is)))
+
+    val autoArmedEventTime = getAutoArmedTime(reader)
+    val logTimeOffset = autoArmedEventTime - armTime
+
+    val hWidth = width / 2
+    val stickSize = 71 * width / 1280
+    val stickGap = 7 * width / 1280
+    val sticks = new Sticks(reader, logTimeOffset, stickSize,
+      width - 2 * stickSize - 2 * stickGap, width - stickSize - stickGap, height - stickSize - stickGap)
+
+    val rollFlapMin = reader.getParameter("SERVO3_MIN")
+    val rollFlapMax = reader.getParameter("SERVO3_MAX")
+    val pitchFlapMin = reader.getParameter("SERVO4_MIN")
+    val pitchFlapMax = reader.getParameter("SERVO4_MAX")
+
+    val rpWidth = width / 4
+    val rpHeight = height / 4
+    val rpGap = 11 * width / 1280
+    val fontSize = 13f * width / 1280
+    val rpBackground = new Color(255, 255, 255, 150)
+    val rollPlot = new Plot(reader, logTimeOffset, rpGap, rpGap,
+      rpWidth, rpHeight, fontSize, rpBackground, 2,
+      IndexedSeq(
+        Plot.Source[Numbers.UInt16]("RCOU", "C3", "Roll Flap", v => v.toDouble, rollFlapMin, rollFlapMax, Color.BLACK),
+        Plot.Source[Float]("ATT", "DesRoll", "Desired Roll", v => v, -20, +20, Color.BLUE),
+        Plot.Source[Float]("ATT", "Roll", "Actual Roll", v => v, -20, +20, Color.RED),
+      ))
+    val pitchPlot = new Plot(reader, logTimeOffset, width - rpWidth - rpGap, rpGap,
+      rpWidth, rpHeight, fontSize, rpBackground, 2,
+      IndexedSeq(
+        Plot.Source[Numbers.UInt16]("RCOU", "C4", "Pitch Flap", v => v.toDouble, pitchFlapMin, pitchFlapMax, Color.BLACK),
+        Plot.Source[Float]("ATT", "DesPitch", "Desired Pitch", v => v, -20, +20, Color.BLUE),
+        Plot.Source[Float]("ATT", "Pitch", "Actual Pitch", v => v, -20, +20, Color.RED),
+      ))
+
+    val msgFontSize = 36f * width / 1280
+    val msgStep = msgFontSize * 1.5f
+    val msgColor = new Color(10, 10, 50)
+    val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
+      TextMessage("March 29, 2024, test 1 (actually 3)",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 1, 10),
+      TextMessage("I am still hunting overshoots via tuning adjustment.",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 1.5f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 3, 10),
+      TextMessage("Since last test I have configured harmonic notch",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 2.5f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 3, 10),
+      TextMessage("with ESC telemetry as a source, and did two tests behind the scene.",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 3.5f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 3, 10),
+      TextMessage("For this test, I increased pitch and roll D-terms from 0.002 to 0.01",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 5f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 5, 10),
+      TextMessage("in the hope that CX7 will react quicker and avoid overshoots.",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 6f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 5, 10),
+      TextMessage("I am performing increasingly hard twitches on pitch and roll",
+        msgFontSize, msgColor, width * 0.5f, height * 0.5f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 14, 18),
+      TextMessage("and observing the behavior of the copter",
+        msgFontSize, msgColor, width * 0.5f, height * 0.5f + msgStep * 1f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 14, 18),
+      TextMessage("Watch for an example of overshoot on the pitch axis...",
+        msgFontSize, msgColor, width * 0.5f, height * 0.5f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 22, 27),
+      TextMessage("NOW!",
+        msgFontSize, msgColor, width * 0.5f, height * 0.5f + msgStep * 1f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 25.3 withSpeed 100, 27),
+      TextMessage("A strong one will happen",
+        msgFontSize, msgColor, width * 0.5f, height * 0.5f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 35, 41),
+      TextMessage("in 3",
+        msgFontSize, msgColor, width * 0.5f - msgFontSize * 2.5f, height * 0.5f + msgStep * 1f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 36 withSpeed 100, 41),
+      TextMessage("2",
+        msgFontSize, msgColor, width * 0.5f - msgFontSize * 1f, height * 0.5f + msgStep * 1f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 37 withSpeed 100, 41),
+      TextMessage("1",
+        msgFontSize, msgColor, width * 0.5f - msgFontSize * 0f, height * 0.5f + msgStep * 1f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 38 withSpeed 100, 41),
+      TextMessage("NOW!",
+        msgFontSize, msgColor, width * 0.5f + msgFontSize * 2f, height * 0.5f + msgStep * 1f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 39 withSpeed 100, 41),
+      TextMessage("Yet another big one",
+        msgFontSize, msgColor, width * 0.5f, height * 0.2f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 56, 63),
+      TextMessage("in 3",
+        msgFontSize, msgColor, width * 0.5f - msgFontSize * 2.5f, height * 0.2f + msgStep * 1f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 57 withSpeed 100, 63),
+      TextMessage("2",
+        msgFontSize, msgColor, width * 0.5f - msgFontSize * 1f, height * 0.2f + msgStep * 1f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 58 withSpeed 100, 63),
+      TextMessage("1",
+        msgFontSize, msgColor, width * 0.5f - msgFontSize * 0f, height * 0.2f + msgStep * 1f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 59 withSpeed 100, 63),
+      TextMessage("NOW!",
+        msgFontSize, msgColor, width * 0.5f + msgFontSize * 2f, height * 0.2f + msgStep * 1f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 60 withSpeed 100, 63),
+      TextMessage("Increasing D-term cannot make it alone.",
+        msgFontSize, msgColor, width * 0.5f, height * 0.5f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 67, 74),
+      TextMessage("When returning to level, required angle rates change too quickly.",
+        msgFontSize, msgColor, width * 0.5f, height * 0.5f + msgStep * 1.5f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 68.5, 74),
+      TextMessage("Maybe the maximum angular accelerations need to be reduced?",
+        msgFontSize, msgColor, width * 0.5f, height * 0.5f + msgStep * 2.5f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 68.5, 74),
+      new Fade(74.3, 74.8),
+    )
+
+    val last = output match
+      case "player" => new Player
+      case _ => new VideoWriter(output)
+
+    flush(pipe, width, height, fps, FrameConsumer.compose(FrameConsumer(allGraphics), last))
+  end video_2024_03_29_p1
+
   def main(args: Array[String]): Unit =
     args(0) match
       case "2024-03-28" => video_2024_03_28(args.tail)
+      case "2024-03-29-p1" => video_2024_03_29_p1(args.tail)
   end main
 end Main
