@@ -1,12 +1,12 @@
 package com.github.mbuzdalov.wtf
 
 import java.awt.Color
-import java.awt.image.BufferedImage
 import java.io.FileInputStream
 
 import scala.util.Using
 
 import com.github.mbuzdalov.wtf.TextMessage.*
+import com.github.mbuzdalov.wtf.widgets.RollPitchPlots
 
 object Main:
   private val usageStr =
@@ -30,40 +30,6 @@ object Main:
   extension (map: Map[String, String])
     private def getOrPrint(key: String): String = map.getOrElse(key, usage(s"No $key specified"))
 
-  private def flush(pipe: String, width: Int, height: Int, fps: Double, target: FrameConsumer): Unit =
-    val buf = new Array[Byte](32768)
-    val img = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR)
-
-    Using.resource(if pipe == "-" then System.in else new FileInputStream(pipe)): ins =>
-      var frameNo = -1L
-      var x, y, pixI = 0
-      var bufSize = 0
-      var pixel = 0
-      while
-        bufSize = ins.read(buf)
-        bufSize > 0
-      do
-        var i = 0
-        while i < bufSize do
-          pixel |= (buf(i) & 0xff) << (8 * pixI)
-          i += 1
-          pixI += 1
-          if pixI == 3 then
-            pixI = 0
-            img.setRGB(x, y, pixel)
-            pixel = 0
-            x += 1
-            if x == width then
-              x = 0
-              y += 1
-              if y == height then
-                y = 0
-                frameNo += 1
-                target.consume(img, frameNo / fps, frameNo)
-      end while
-      target.close()
-  end flush
-
   private def getAutoArmedTime(reader: LogReader): Double =
     val eventValues = reader.connect[Numbers.UInt8]("EV", "Id")
     val eventTimes = reader.connect[Numbers.UInt64]("EV", "TimeUS")
@@ -73,7 +39,7 @@ object Main:
 
   private def video_2024_03_28(args: Array[String]): Unit =
     val map = args.grouped(2).map(a => a(0) -> a(1)).toMap
-    val pipe = map.getOrPrint("--input")
+    val input = map.getOrPrint("--input")
     val width = map.getOrPrint("--width").toInt
     val height = map.getOrPrint("--height").toInt
     val fps = map.getOrPrint("--frame-rate").toDouble
@@ -86,38 +52,21 @@ object Main:
     val autoArmedEventTime = getAutoArmedTime(reader)
     val logTimeOffset = autoArmedEventTime - armTime
 
-    System.err.println(s"Auto-armed event found at time $autoArmedEventTime, offset = $logTimeOffset")
-
     val hWidth = width / 2
     val stickSize = 101 * width / 1280
     val stickGap = 11 * width / 1280
     val sticks = new Sticks(reader, logTimeOffset, stickSize,
       hWidth - stickSize - stickGap, hWidth + stickGap, stickGap)
 
-    val rollFlapMin = reader.getParameter("SERVO3_MIN")
-    val rollFlapMax = reader.getParameter("SERVO3_MAX")
-    val pitchFlapMin = reader.getParameter("SERVO4_MIN")
-    val pitchFlapMax = reader.getParameter("SERVO4_MAX")
-
     val rpWidth = width / 4
     val rpHeight = height / 4
     val rpGap = 11 * width / 1280
     val fontSize = 13f * width / 1280
     val rpBackground = new Color(255, 255, 255, 150)
-    val rollPlot = new Plot(reader, logTimeOffset, rpGap, rpGap,
-      rpWidth, rpHeight, fontSize, rpBackground, 2,
-      IndexedSeq(
-        Plot.Source[Numbers.UInt16]("RCOU", "C3", "Roll Flap", v => v.toDouble, rollFlapMin, rollFlapMax, Color.BLACK),
-        Plot.Source[Float]("ATT", "DesRoll", "Desired Roll", v => v, -15, +15, Color.BLUE),
-        Plot.Source[Float]("ATT", "Roll", "Actual Roll", v => v, -15, +15, Color.RED),
-      ))
-    val pitchPlot = new Plot(reader, logTimeOffset, width - rpWidth - rpGap, rpGap,
-      rpWidth, rpHeight, fontSize, rpBackground, 2,
-      IndexedSeq(
-        Plot.Source[Numbers.UInt16]("RCOU", "C4", "Pitch Flap", v => v.toDouble, pitchFlapMin, pitchFlapMax, Color.BLACK),
-        Plot.Source[Float]("ATT", "DesPitch", "Desired Pitch", v => v, -15, +15, Color.BLUE),
-        Plot.Source[Float]("ATT", "Pitch", "Actual Pitch", v => v, -15, +15, Color.RED),
-      ))
+    val rollPlot = RollPitchPlots.create(reader, logTimeOffset, "Roll", 3, 15,
+      rpGap, rpGap, rpWidth, rpHeight, fontSize, rpBackground, 2)
+    val pitchPlot = RollPitchPlots.create(reader, logTimeOffset, "Pitch", 4, 15,
+      width - rpWidth - rpGap, rpGap, rpWidth, rpHeight, fontSize, rpBackground, 2)
 
     val msgFontSize = 36f * width / 1280
     val msgStep = msgFontSize * 1.5f
@@ -158,12 +107,12 @@ object Main:
       case "player" => new Player
       case _ => new VideoWriter(output)
 
-    flush(pipe, width, height, fps, FrameConsumer.compose(FrameConsumer(allGraphics), last))
+    IOUtils.feedFileToConsumer(input, width, height, fps, FrameConsumer.compose(FrameConsumer(allGraphics), last))
   end video_2024_03_28
 
   private def video_2024_03_29_p1(args: Array[String]): Unit =
     val map = args.grouped(2).map(a => a(0) -> a(1)).toMap
-    val pipe = map.getOrPrint("--input")
+    val input = map.getOrPrint("--input")
     val width = map.getOrPrint("--width").toInt
     val height = map.getOrPrint("--height").toInt
     val fps = map.getOrPrint("--frame-rate").toDouble
@@ -182,30 +131,15 @@ object Main:
     val sticks = new Sticks(reader, logTimeOffset, stickSize,
       width - 2 * stickSize - 2 * stickGap, width - stickSize - stickGap, height - stickSize - stickGap)
 
-    val rollFlapMin = reader.getParameter("SERVO3_MIN")
-    val rollFlapMax = reader.getParameter("SERVO3_MAX")
-    val pitchFlapMin = reader.getParameter("SERVO4_MIN")
-    val pitchFlapMax = reader.getParameter("SERVO4_MAX")
-
     val rpWidth = width / 4
     val rpHeight = height / 4
     val rpGap = 11 * width / 1280
     val fontSize = 13f * width / 1280
     val rpBackground = new Color(255, 255, 255, 150)
-    val rollPlot = new Plot(reader, logTimeOffset, rpGap, rpGap,
-      rpWidth, rpHeight, fontSize, rpBackground, 2,
-      IndexedSeq(
-        Plot.Source[Numbers.UInt16]("RCOU", "C3", "Roll Flap", v => v.toDouble, rollFlapMin, rollFlapMax, Color.BLACK),
-        Plot.Source[Float]("ATT", "DesRoll", "Desired Roll", v => v, -20, +20, Color.BLUE),
-        Plot.Source[Float]("ATT", "Roll", "Actual Roll", v => v, -20, +20, Color.RED),
-      ))
-    val pitchPlot = new Plot(reader, logTimeOffset, width - rpWidth - rpGap, rpGap,
-      rpWidth, rpHeight, fontSize, rpBackground, 2,
-      IndexedSeq(
-        Plot.Source[Numbers.UInt16]("RCOU", "C4", "Pitch Flap", v => v.toDouble, pitchFlapMin, pitchFlapMax, Color.BLACK),
-        Plot.Source[Float]("ATT", "DesPitch", "Desired Pitch", v => v, -20, +20, Color.BLUE),
-        Plot.Source[Float]("ATT", "Pitch", "Actual Pitch", v => v, -20, +20, Color.RED),
-      ))
+    val rollPlot = RollPitchPlots.create(reader, logTimeOffset, "Roll", 3, 20,
+      rpGap, rpGap, rpWidth, rpHeight, fontSize, rpBackground, 2)
+    val pitchPlot = RollPitchPlots.create(reader, logTimeOffset, "Pitch", 4, 20,
+      width - rpWidth - rpGap, rpGap, rpWidth, rpHeight, fontSize, rpBackground, 2)
 
     val msgFontSize = 36f * width / 1280
     val msgStep = msgFontSize * 1.5f
@@ -280,14 +214,14 @@ object Main:
       TextMessage("Maybe the maximum angular accelerations need to be reduced?",
         msgFontSize, msgColor, width * 0.5f, height * 0.5f + msgStep * 2.5f,
         HorizontalAlignment.Center, VerticalAlignment.Center, 68.5, 74),
-      new Fade(74.3, 74.8),
+      new Fade(timeOn = 74.3, timeOff = 74.8),
     )
 
     val last = output match
       case "player" => new Player
       case _ => new VideoWriter(output)
 
-    flush(pipe, width, height, fps, FrameConsumer.compose(FrameConsumer(allGraphics), last))
+    IOUtils.feedFileToConsumer(input, width, height, fps, FrameConsumer.compose(FrameConsumer(allGraphics), last))
   end video_2024_03_29_p1
 
   def main(args: Array[String]): Unit =
