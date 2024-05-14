@@ -43,7 +43,7 @@ object Numbers:
     def bitVal(index: Int): Long = value & (1L << index)
     def bitSet(index: Int): Boolean = if bitVal(index) == 0 then false else true
     def toString: String = java.lang.Long.toUnsignedString(value)
-    def toDouble: Double = if value >= 0 then value else value + math.pow(2, 63)
+    def toDouble: Double = if value >= 0 then value.toDouble else value + math.pow(2, 63)
 
     @targetName("less")
     def <(that: Long): Boolean =

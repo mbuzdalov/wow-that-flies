@@ -3,6 +3,8 @@ package com.github.mbuzdalov.wtf
 import java.awt.image.BufferedImage
 import java.awt.{BasicStroke, Color, Graphics2D}
 
+import scala.language.implicitConversions
+
 class Sticks(logReader: LogReader, timeOffset: Double,
              size: Int, xLeft: Int, xRight: Int, y: Int) extends GraphicsConsumer:
   private val timing = logReader.timingConnect("RCIN")

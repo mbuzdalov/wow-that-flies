@@ -3,6 +3,7 @@ package com.github.mbuzdalov.wtf
 import java.awt.Color
 import java.io.FileInputStream
 
+import scala.language.implicitConversions
 import scala.util.Using
 
 import com.github.mbuzdalov.wtf.TextMessage.*
@@ -224,9 +225,153 @@ object Main:
     IOUtils.feedFileToConsumer(input, width, height, fps, FrameConsumer.compose(FrameConsumer(allGraphics), last))
   end video_2024_03_29_p1
 
+  private def video_2024_03_29_p2(args: Array[String]): Unit =
+    val map = args.grouped(2).map(a => a(0) -> a(1)).toMap
+    val input = map.getOrPrint("--input")
+    val width = map.getOrPrint("--width").toInt
+    val height = map.getOrPrint("--height").toInt
+    val fps = map.getOrPrint("--frame-rate").toDouble
+    val armTime = map.getOrPrint("--arm-time").toDouble
+    val output = map.getOrPrint("--output")
+
+    val log = map.getOrPrint("--log")
+    val reader = Using.resource(new FileInputStream(log))(is => new LogReader(new ByteStorage(is)))
+
+    val autoArmedEventTime = getAutoArmedTime(reader)
+    val logTimeOffset = autoArmedEventTime - armTime
+
+    val hWidth = width / 2
+    val stickSize = 71 * width / 1280
+    val stickGap = 7 * width / 1280
+    val sticks = new Sticks(reader, logTimeOffset, stickSize,
+      width - 2 * stickSize - 2 * stickGap, width - stickSize - stickGap, height - stickSize - stickGap)
+
+    val rpWidth = width / 4
+    val rpHeight = height / 4
+    val rpGap = 11 * width / 1280
+    val fontSize = 13f * width / 1280
+    val rpBackground = new Color(255, 255, 255, 150)
+    val rollPlot = RollPitchPlots.create(reader, logTimeOffset, "Roll", 3, 20,
+      rpGap, rpGap, rpWidth, rpHeight, fontSize, rpBackground, 2)
+    val pitchPlot = RollPitchPlots.create(reader, logTimeOffset, "Pitch", 4, 20,
+      width - rpWidth - rpGap, rpGap, rpWidth, rpHeight, fontSize, rpBackground, 2)
+
+    val msgFontSize = 36f * width / 1280
+    val msgStep = msgFontSize * 1.5f
+    val msgColor = new Color(10, 10, 50)
+    val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
+      TextMessage("March 29, 2024, test 2 (actually 4)",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 1, 10),
+      TextMessage("To reduce maximum angle accelerations, I changed",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 1.5f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 3, 10),
+      TextMessage("ATC_ACCEL_{R,P}_MAX from 220000 to 40000.",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 2.5f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 3, 10),
+      TextMessage("The previous values were recommended defaults for a 5-inch quadcopter.",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 4.0f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 5, 10),
+      TextMessage("40000 = 400 degrees / s^2 were chosen by meditating on the logs.",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 5.0f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 5, 10),
+      TextMessage("Still, noticeable overshoots happen in pitch and roll",
+        msgFontSize, msgColor, width * 0.5f, height * 0.6f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 15, 30),
+      TextMessage("with flaps forced to move to their maximum angles...",
+        msgFontSize, msgColor, width * 0.5f, height * 0.6f + msgStep * 1.0f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 15, 30),
+      new Fade(timeOn = 0.5, timeOff = 0),
+      new Fade(timeOn = 61.7, timeOff = 62.2),
+    )
+
+    val last = output match
+      case "player" => new Player
+      case _ => new VideoWriter(output)
+
+    IOUtils.feedFileToConsumer(input, width, height, fps, FrameConsumer.compose(FrameConsumer(allGraphics), last))
+  end video_2024_03_29_p2
+
+  private def video_2024_03_29_p3(args: Array[String]): Unit =
+    val map = args.grouped(2).map(a => a(0) -> a(1)).toMap
+    val input = map.getOrPrint("--input")
+    val width = map.getOrPrint("--width").toInt
+    val height = map.getOrPrint("--height").toInt
+    val fps = map.getOrPrint("--frame-rate").toDouble
+    val armTime = map.getOrPrint("--arm-time").toDouble
+    val output = map.getOrPrint("--output")
+
+    val log = map.getOrPrint("--log")
+    val reader = Using.resource(new FileInputStream(log))(is => new LogReader(new ByteStorage(is)))
+
+    val autoArmedEventTime = getAutoArmedTime(reader)
+    val logTimeOffset = autoArmedEventTime - armTime
+
+    val hWidth = width / 2
+    val stickSize = 71 * width / 1280
+    val stickGap = 7 * width / 1280
+    val sticks = new Sticks(reader, logTimeOffset, stickSize,
+      width - 2 * stickSize - 2 * stickGap, width - stickSize - stickGap, height - stickSize - stickGap)
+
+    val rpWidth = width / 4
+    val rpHeight = height / 4
+    val rpGap = 11 * width / 1280
+    val fontSize = 13f * width / 1280
+    val rpBackground = new Color(255, 255, 255, 150)
+    val rollPlot = RollPitchPlots.create(reader, logTimeOffset, "Roll", 3, 20,
+      rpGap, rpGap, rpWidth, rpHeight, fontSize, rpBackground, 2)
+    val pitchPlot = RollPitchPlots.create(reader, logTimeOffset, "Pitch", 4, 20,
+      width - rpWidth - rpGap, rpGap, rpWidth, rpHeight, fontSize, rpBackground, 2)
+
+    val msgFontSize = 36f * width / 1280
+    val msgStep = msgFontSize * 1.5f
+    val msgColor = new Color(10, 10, 50)
+    val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
+      TextMessage("March 29, 2024, test 3 (actually 5)",
+        msgFontSize, msgColor, width * 0.5f, height * 0.11f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 1, 10),
+      TextMessage("Maybe the reduction was not enough?",
+        msgFontSize, msgColor, width * 0.5f, height * 0.11f + msgStep * 1.5f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 3, 10),
+      TextMessage("Now ATC_ACCEL_{R,P}_MAX changed from 40000 further down to 30000.",
+        msgFontSize, msgColor, width * 0.5f, height * 0.11f + msgStep * 2.5f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 3, 10),
+      TextMessage("Also, plots of D-terms showed some high-freq vibrations.",
+        msgFontSize, msgColor, width * 0.5f, height * 0.11f + msgStep * 4.0f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 5, 10),
+      TextMessage("To counteract that, D-terms changed to be more aggressive:",
+        msgFontSize, msgColor, width * 0.5f, height * 0.11f + msgStep * 5.0f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 5, 10),
+      TextMessage("ATC_RAT_{PIT,RLL}_FLTD from 40 to 20.",
+        msgFontSize, msgColor, width * 0.5f, height * 0.11f + msgStep * 6.0f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 5, 10),
+      TextMessage("Sorry, but the shooting angle is really bad...",
+        msgFontSize, msgColor, width * 0.5f, height * 0.5f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 19, 24),
+      TextMessage("Well, overshoots are still there.",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 81, 87),
+      TextMessage("But they appear to be less severe now, and don't turn to oscillations.",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 1.0f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 83, 87),
+      TextMessage("Probably CX7 is now able to survive an autotune session.",
+        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 2.0f,
+        HorizontalAlignment.Center, VerticalAlignment.Center, 83, 87),
+      new Fade(timeOn = 0.5, timeOff = 0),
+    )
+
+    val last = output match
+      case "player" => new Player
+      case _ => new VideoWriter(output)
+
+    IOUtils.feedFileToConsumer(input, width, height, fps, FrameConsumer.compose(FrameConsumer(allGraphics), last))
+  end video_2024_03_29_p3
+
   def main(args: Array[String]): Unit =
     args(0) match
       case "2024-03-28" => video_2024_03_28(args.tail)
       case "2024-03-29-p1" => video_2024_03_29_p1(args.tail)
+      case "2024-03-29-p2" => video_2024_03_29_p2(args.tail)
+      case "2024-03-29-p3" => video_2024_03_29_p3(args.tail)
   end main
 end Main

@@ -2,6 +2,8 @@ package com.github.mbuzdalov.wtf
 
 import java.io.InputStream
 
+import scala.language.implicitConversions
+
 class ByteStorage(stream: InputStream):
   private val bufSize = 1 << 16
   private val array = locally:

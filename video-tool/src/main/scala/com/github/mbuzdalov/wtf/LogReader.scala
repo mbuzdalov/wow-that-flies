@@ -1,5 +1,7 @@
 package com.github.mbuzdalov.wtf
 
+import scala.language.implicitConversions
+
 import scala.collection.mutable.ArrayBuffer
 
 import com.github.mbuzdalov.wtf.Numbers.given

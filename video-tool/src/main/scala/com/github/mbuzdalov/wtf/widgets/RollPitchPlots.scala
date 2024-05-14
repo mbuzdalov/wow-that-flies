@@ -2,6 +2,8 @@ package com.github.mbuzdalov.wtf.widgets
 
 import java.awt.Color
 
+import scala.language.implicitConversions
+
 import com.github.mbuzdalov.wtf.{LogReader, Numbers, Plot}
 
 object RollPitchPlots:
