@@ -2,13 +2,16 @@ package com.github.mbuzdalov.wtf
 
 import java.io.ByteArrayInputStream
 
-import Numbers.*
+import scala.language.implicitConversions
+
+import com.github.mbuzdalov.wtf.Numbers.*
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 class LogReaderTests extends AnyFlatSpec, Matchers:
   private val storage0 = new ByteStorage(new ByteArrayInputStream(new Array[Byte](239)))
+  private val storage1 = new ByteStorage(new ByteArrayInputStream(Array.fill(239)('1'.toByte)))
 
   "Single-character reading" should "read zero byte (b)" in:
     val value: Byte = LogReader.readByCharCT(storage0, 'b', 0)
@@ -46,21 +49,32 @@ class LogReaderTests extends AnyFlatSpec, Matchers:
     val value: UInt32 = LogReader.readByCharCT(storage0, 'I', 0)
     (value: Long) shouldBe 0
 
-  it should "read zero string (n)" in:
-    val value: String = LogReader.readByCharCT(storage0, 'n', 0)
-    value shouldEqual ("\u0000" * 4)
-
-  it should "read zero string (N)" in:
-    val value: String = LogReader.readByCharCT(storage0, 'N', 0)
-    value shouldEqual ("\u0000" * 16)
-
-  it should "read zero string (Z)" in:
-    val value: String = LogReader.readByCharCT(storage0, 'Z', 0)
-    value shouldEqual ("\u0000" * 64)
-
   it should "read zero short array (a)" in:
     val value: Array[Short] = LogReader.readByCharCT(storage0, 'a', 0)
     value.length shouldBe 32
     value.foreach(_ shouldBe 0)
 
+  it should "read all-'1' string (n)" in:
+    val value: String = LogReader.readByCharCT(storage1, 'n', 0)
+    value shouldEqual ("1" * 4)
+
+  it should "read all-'1' string (N)" in:
+    val value: String = LogReader.readByCharCT(storage1, 'N', 0)
+    value shouldEqual ("1" * 16)
+
+  it should "read all-'1' string (Z)" in:
+    val value: String = LogReader.readByCharCT(storage1, 'Z', 0)
+    value shouldEqual ("1" * 64)
+
+  it should "trim all-zero string (n)" in:
+    val value: String = LogReader.readByCharCT(storage0, 'n', 0)
+    value shouldEqual ""
+
+  it should "trim all-zero string (N)" in:
+    val value: String = LogReader.readByCharCT(storage0, 'N', 0)
+    value shouldEqual ""
+
+  it should "trim all-zero  string (Z)" in:
+    val value: String = LogReader.readByCharCT(storage0, 'Z', 0)
+    value shouldEqual ""
 end LogReaderTests
