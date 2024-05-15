@@ -4,7 +4,7 @@ import java.awt.Color
 
 import scala.language.implicitConversions
 
-import com.github.mbuzdalov.wtf.{LogReader, Numbers, Plot}
+import com.github.mbuzdalov.wtf.{LogReader, Numbers}
 
 object RollPitchPlots:
   def create(logReader: LogReader, timeOffset: Double, name: "Roll" | "Pitch", channel: Int, maxAngle: Double,

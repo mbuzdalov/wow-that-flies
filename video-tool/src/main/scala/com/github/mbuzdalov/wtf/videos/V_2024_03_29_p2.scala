@@ -4,9 +4,9 @@ import java.awt.Color
 
 import scala.language.implicitConversions
 
-import com.github.mbuzdalov.wtf.TextMessage.{HorizontalAlignment, VerticalAlignment, withSpeed}
-import com.github.mbuzdalov.wtf.widgets.RollPitchPlots
 import com.github.mbuzdalov.wtf.*
+import com.github.mbuzdalov.wtf.widgets.{Fade, RollPitchPlots, Sticks, TextMessage}
+import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment, VerticalAlignment}
 
 object V_2024_03_29_p2:
   def apply(props: BasicProperties): Unit =

@@ -1,6 +1,9 @@
-package com.github.mbuzdalov.wtf
+package com.github.mbuzdalov.wtf.widgets
+
 import java.awt.image.BufferedImage
 import java.awt.{BasicStroke, Color, Font, Graphics2D}
+
+import com.github.mbuzdalov.wtf.{GraphicsConsumer, LogReader}
 
 class Plot(logReader: LogReader, timeOffset: Double,
            x: Int, y: Int, width: Int, height: Int, fontSize: Float, background: Color, timeWidth: Double,

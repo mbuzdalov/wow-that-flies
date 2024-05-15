@@ -1,6 +1,9 @@
-package com.github.mbuzdalov.wtf
-import java.awt.{Color, Font, Graphics2D}
+package com.github.mbuzdalov.wtf.widgets
+
 import java.awt.image.BufferedImage
+import java.awt.{Color, Font, Graphics2D}
+
+import com.github.mbuzdalov.wtf.GraphicsConsumer
 
 object ProcessingFPS extends GraphicsConsumer:
   private val myFont = new Font(Font.SANS_SERIF, Font.PLAIN, 18)

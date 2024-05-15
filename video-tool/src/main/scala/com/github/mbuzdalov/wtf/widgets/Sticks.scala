@@ -1,9 +1,11 @@
-package com.github.mbuzdalov.wtf
+package com.github.mbuzdalov.wtf.widgets
 
 import java.awt.image.BufferedImage
 import java.awt.{BasicStroke, Color, Graphics2D}
 
 import scala.language.implicitConversions
+
+import com.github.mbuzdalov.wtf.{GraphicsConsumer, LogReader, Numbers}
 
 class Sticks(logReader: LogReader, timeOffset: Double,
              size: Int, xLeft: Int, xRight: Int, y: Int) extends GraphicsConsumer:

@@ -1,6 +1,9 @@
-package com.github.mbuzdalov.wtf
-import java.awt.{Color, Graphics2D}
+package com.github.mbuzdalov.wtf.widgets
+
 import java.awt.image.BufferedImage
+import java.awt.{Color, Graphics2D}
+
+import com.github.mbuzdalov.wtf.GraphicsConsumer
 
 class Fade(timeOn: Double, timeOff: Double) extends GraphicsConsumer:
   override def consume(img: BufferedImage, g: Graphics2D, time: Double, frameNo: Long): Unit =

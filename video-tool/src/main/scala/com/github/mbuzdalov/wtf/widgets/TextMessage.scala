@@ -1,8 +1,11 @@
-package com.github.mbuzdalov.wtf
+package com.github.mbuzdalov.wtf.widgets
+
 import java.awt.{Color, Font, Graphics2D}
 import java.awt.image.BufferedImage
 
 import scala.compiletime.uninitialized
+
+import com.github.mbuzdalov.wtf.GraphicsConsumer
 
 class TextMessage(text: String, fontSize: Float, fontColor: Color, x: Float, y: Float,
                   hAlignment: TextMessage.HorizontalAlignment,

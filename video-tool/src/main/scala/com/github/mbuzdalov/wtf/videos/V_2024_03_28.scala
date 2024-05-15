@@ -4,8 +4,8 @@ import java.awt.Color
 
 import scala.language.implicitConversions
 
-import com.github.mbuzdalov.wtf.widgets.RollPitchPlots
-import com.github.mbuzdalov.wtf.{BasicProperties, GraphicsConsumer, Sticks, TextMessage}
+import com.github.mbuzdalov.wtf.{BasicProperties, GraphicsConsumer}
+import com.github.mbuzdalov.wtf.widgets.{RollPitchPlots, Sticks, TextMessage}
 
 object V_2024_03_28:
   def apply(props: BasicProperties): Unit =

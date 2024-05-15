@@ -3,11 +3,10 @@ package com.github.mbuzdalov.wtf.videos
 import java.awt.Color
 
 import scala.language.implicitConversions
-import com.github.mbuzdalov.wtf.TextMessage.withSpeed
 
-import com.github.mbuzdalov.wtf.{BasicProperties, Fade, GraphicsConsumer, Sticks, TextMessage}
-import com.github.mbuzdalov.wtf.TextMessage.{HorizontalAlignment, VerticalAlignment}
-import com.github.mbuzdalov.wtf.widgets.RollPitchPlots
+import com.github.mbuzdalov.wtf.{BasicProperties, GraphicsConsumer}
+import com.github.mbuzdalov.wtf.widgets.{Fade, RollPitchPlots, Sticks, TextMessage}
+import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment, VerticalAlignment, withSpeed}
 
 object V_2024_03_29_p1:
   def apply(props: BasicProperties): Unit =
