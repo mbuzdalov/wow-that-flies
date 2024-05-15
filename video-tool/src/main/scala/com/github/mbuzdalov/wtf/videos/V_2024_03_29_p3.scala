@@ -6,7 +6,7 @@ import scala.language.implicitConversions
 
 import com.github.mbuzdalov.wtf.*
 import com.github.mbuzdalov.wtf.widgets.{Fade, RollPitchPlots, Sticks, TextMessage}
-import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment, VerticalAlignment}
+import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment => HA, VerticalAlignment => VA}
 
 object V_2024_03_29_p3:
   def apply(props: BasicProperties): Unit =
@@ -40,34 +40,34 @@ object V_2024_03_29_p3:
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("March 29, 2024, test 3 (actually 5)",
         msgFontSize, msgColor, width * 0.5f, height * 0.11f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 1, 10),
+        HA.Center, VA.Center, 1, 10),
       TextMessage("Maybe the reduction was not enough?",
         msgFontSize, msgColor, width * 0.5f, height * 0.11f + msgStep * 1.5f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 3, 10),
+        HA.Center, VA.Center, 3, 10),
       TextMessage("Now ATC_ACCEL_{R,P}_MAX changed from 40000 further down to 30000.",
         msgFontSize, msgColor, width * 0.5f, height * 0.11f + msgStep * 2.5f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 3, 10),
+        HA.Center, VA.Center, 3, 10),
       TextMessage("Also, plots of D-terms showed some high-freq vibrations.",
         msgFontSize, msgColor, width * 0.5f, height * 0.11f + msgStep * 4.0f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 5, 10),
+        HA.Center, VA.Center, 5, 10),
       TextMessage("To counteract that, D-terms changed to be more aggressive:",
         msgFontSize, msgColor, width * 0.5f, height * 0.11f + msgStep * 5.0f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 5, 10),
+        HA.Center, VA.Center, 5, 10),
       TextMessage("ATC_RAT_{PIT,RLL}_FLTD from 40 to 20.",
         msgFontSize, msgColor, width * 0.5f, height * 0.11f + msgStep * 6.0f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 5, 10),
+        HA.Center, VA.Center, 5, 10),
       TextMessage("Sorry, but the shooting angle is really bad...",
         msgFontSize, msgColor, width * 0.5f, height * 0.5f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 19, 24),
+        HA.Center, VA.Center, 19, 24),
       TextMessage("Well, overshoots are still there.",
         msgFontSize, msgColor, width * 0.5f, height * 0.25f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 81, 87),
+        HA.Center, VA.Center, 81, 87),
       TextMessage("But they appear to be less severe now, and don't turn to oscillations.",
         msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 1.0f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 83, 87),
+        HA.Center, VA.Center, 83, 87),
       TextMessage("Probably CX7 is now able to survive an autotune session.",
         msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 2.0f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 83, 87),
+        HA.Center, VA.Center, 83, 87),
       new Fade(timeOn = 0.5, timeOff = 0),
     )
 

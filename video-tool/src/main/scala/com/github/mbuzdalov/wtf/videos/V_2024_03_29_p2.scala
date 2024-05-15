@@ -6,7 +6,7 @@ import scala.language.implicitConversions
 
 import com.github.mbuzdalov.wtf.*
 import com.github.mbuzdalov.wtf.widgets.{Fade, RollPitchPlots, Sticks, TextMessage}
-import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment, VerticalAlignment}
+import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment => HA, VerticalAlignment => VA}
 
 object V_2024_03_29_p2:
   def apply(props: BasicProperties): Unit =
@@ -40,25 +40,25 @@ object V_2024_03_29_p2:
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("March 29, 2024, test 2 (actually 4)",
         msgFontSize, msgColor, width * 0.5f, height * 0.25f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 1, 10),
+        HA.Center, VA.Center, 1, 10),
       TextMessage("To reduce maximum angle accelerations, I changed",
         msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 1.5f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 3, 10),
+        HA.Center, VA.Center, 3, 10),
       TextMessage("ATC_ACCEL_{R,P}_MAX from 220000 to 40000.",
         msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 2.5f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 3, 10),
+        HA.Center, VA.Center, 3, 10),
       TextMessage("The previous values were recommended defaults for a 5-inch quadcopter.",
         msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 4.0f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 5, 10),
+        HA.Center, VA.Center, 5, 10),
       TextMessage("40000 = 400 degrees / s^2 were chosen by meditating on the logs.",
         msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 5.0f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 5, 10),
+        HA.Center, VA.Center, 5, 10),
       TextMessage("Still, noticeable overshoots happen in pitch and roll",
         msgFontSize, msgColor, width * 0.5f, height * 0.6f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 15, 30),
+        HA.Center, VA.Center, 15, 30),
       TextMessage("with flaps forced to move to their maximum angles...",
         msgFontSize, msgColor, width * 0.5f, height * 0.6f + msgStep * 1.0f,
-        HorizontalAlignment.Center, VerticalAlignment.Center, 15, 30),
+        HA.Center, VA.Center, 15, 30),
       new Fade(timeOn = 0.5, timeOff = 0),
       new Fade(timeOn = 61.7, timeOff = 62.2),
     )
