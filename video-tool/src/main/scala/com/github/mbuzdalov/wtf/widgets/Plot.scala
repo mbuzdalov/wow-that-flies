@@ -3,7 +3,9 @@ package com.github.mbuzdalov.wtf.widgets
 import java.awt.image.BufferedImage
 import java.awt.{BasicStroke, Color, Font, Graphics2D}
 
-import com.github.mbuzdalov.wtf.{GraphicsConsumer, LogReader}
+import scala.language.implicitConversions
+
+import com.github.mbuzdalov.wtf.{GraphicsConsumer, LogReader, Numbers}
 
 class Plot(logReader: LogReader, timeOffset: Double,
            x: Int, y: Int, width: Int, height: Int, fontSize: Float, background: Color, timeWidth: Double,
@@ -90,3 +92,17 @@ object Plot:
       new LogReader.Connector[Double]:
         override def size: Int = original.size
         override def get(index: Int): Double = extractor(original.get(index))
+
+  def createRollPitchPlot(logReader: LogReader, timeOffset: Double, name: "Roll" | "Pitch", channel: Int, maxAngle: Double,
+             x: Int, y: Int, width: Int, height: Int, fontSize: Float, background: Color, timeWidth: Double): Plot =
+    val flapMin = logReader.getParameter(s"SERVO${channel}_MIN")
+    val flapMax = logReader.getParameter(s"SERVO${channel}_MAX")
+    new Plot(
+      logReader, timeOffset, x, y,
+      width, height, fontSize, background, 2,
+      IndexedSeq(
+        Source[Numbers.UInt16]("RCOU", s"C$channel", s"$name Flap", v => v.toDouble, flapMin, flapMax, Color.BLACK),
+        Source[Float]("ATT", s"Des$name", s"Desired $name", v => v, -maxAngle, +maxAngle, Color.BLUE),
+        Source[Float]("ATT", name, s"Actual $name", v => v, -maxAngle, +maxAngle, Color.RED),
+      )
+    )

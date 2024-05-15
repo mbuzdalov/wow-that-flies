@@ -5,8 +5,8 @@ import java.awt.Color
 import scala.language.implicitConversions
 
 import com.github.mbuzdalov.wtf.*
-import com.github.mbuzdalov.wtf.widgets.{Fade, RollPitchPlots, Sticks, TextMessage}
-import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment => HA, VerticalAlignment => VA}
+import com.github.mbuzdalov.wtf.widgets.{Fade, Plot, Sticks, TextMessage}
+import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment as HA, VerticalAlignment as VA}
 
 object V_2024_03_29_p3:
   def apply(props: BasicProperties): Unit =
@@ -29,9 +29,9 @@ object V_2024_03_29_p3:
     val rpGap = 11 * width / 1280
     val fontSize = 13f * width / 1280
     val rpBackground = new Color(255, 255, 255, 150)
-    val rollPlot = RollPitchPlots.create(reader, logTimeOffset, "Roll", 3, 20,
+    val rollPlot = Plot.createRollPitchPlot(reader, logTimeOffset, "Roll", 3, 20,
       rpGap, rpGap, rpWidth, rpHeight, fontSize, rpBackground, 2)
-    val pitchPlot = RollPitchPlots.create(reader, logTimeOffset, "Pitch", 4, 20,
+    val pitchPlot = Plot.createRollPitchPlot(reader, logTimeOffset, "Pitch", 4, 20,
       width - rpWidth - rpGap, rpGap, rpWidth, rpHeight, fontSize, rpBackground, 2)
 
     val msgFontSize = 36f * width / 1280
