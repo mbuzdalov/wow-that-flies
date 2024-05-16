@@ -37,35 +37,37 @@ object V_2024_03_28:
     val msgFontSize = 36f * width / 1280
     val msgStep = msgFontSize * 1.5f
     val msgColor = new Color(10, 10, 50)
+    val msgCF = TextMessage.ColorFont(msgFontSize, msgColor)
+
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("March 28, 2024",
-        msgFontSize, msgColor, width * 0.5f, height * 0.25f,
+        msgCF, width * 0.5f, height * 0.25f,
         HA.Center, VA.Center, 1, 10),
       TextMessage("To aid investigations, detailed logging was enabled:",
-        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 1f,
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f,
         HA.Center, VA.Center, 3, 10),
       TextMessage("INS_RAW_LOG_OPT = 9",
-        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 2.2f,
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 2.2f,
         HA.Center, VA.Center, 3, 10),
       TextMessage("LOG_BITMASK = 180223",
-        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 3f,
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 3f,
         HA.Center, VA.Center, 3, 10),
       TextMessage("This is a test run.",
-        msgFontSize, msgColor, width * 0.5f, height * 0.25f + msgStep * 4.5f,
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 4.5f,
         HA.Center, VA.Center, 3, 10),
 
       TextMessage("Well, CX7 did not crash this time,",
-        msgFontSize, msgColor, width * 0.5f, height * 0.33f,
+        msgCF, width * 0.5f, height * 0.33f,
         HA.Center, VA.Center, 101, 110),
       TextMessage("but the discrepancy between desired and actual roll and pitch,",
-        msgFontSize, msgColor, width * 0.5f, height * 0.33f + msgStep * 1f,
+        msgCF, width * 0.5f, height * 0.33f + msgStep * 1f,
         HA.Center, VA.Center, 101, 110),
       TextMessage("is quite large even in a gentle flight.",
-        msgFontSize, msgColor, width * 0.5f, height * 0.33f + msgStep * 2f,
+        msgCF, width * 0.5f, height * 0.33f + msgStep * 2f,
         HA.Center, VA.Center, 101, 110),
 
       TextMessage("Stay tuned! (Pun intended)",
-        msgFontSize, msgColor, width * 0.5f, height * 0.33f + msgStep * 3.5f,
+        msgCF, width * 0.5f, height * 0.33f + msgStep * 3.5f,
         HA.Center, VA.Center, 107, 110),
     )
 
