@@ -5,7 +5,7 @@ import java.io.FileInputStream
 import scala.util.Using
 
 class BasicProperties(args: Array[String]):
-  private val map = args.tail.grouped(2).map(a => a(0) -> a(1)).toMap
+  private val map = args.grouped(2).map(a => a(0) -> a(1)).toMap
   private lazy val input: String = map("--input")
   private lazy val output: String = map("--output")
   private lazy val log: String = map("--log")
