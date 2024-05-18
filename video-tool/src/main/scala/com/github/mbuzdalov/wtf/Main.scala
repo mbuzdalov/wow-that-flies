@@ -17,5 +17,7 @@ object Main:
       case "2024-04-08-p2" => V_2024_04_08_p2(props)
       case "2024-04-08-p3" => V_2024_04_08_p3(props)
       case "2024-04-08-p4" => V_2024_04_08_p4(props)
+      case "2024-04-09-p1" => V_2024_04_09_p1(props)
+      case "2024-04-09-p2" => V_2024_04_09_p2(props)
   end main
 end Main
