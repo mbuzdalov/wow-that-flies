@@ -57,6 +57,6 @@ object V_2024_04_09_p2:
       Fade(timeOn = 55.0, timeOff = 55.5),
     )
 
-    props.run(allGraphics)
+    props.runVideo(allGraphics)
   end apply
   

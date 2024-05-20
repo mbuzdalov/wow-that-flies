@@ -71,6 +71,6 @@ object V_2024_03_28:
         HA.Center, VA.Center, 107, 110),
     )
 
-    props.run(allGraphics)
+    props.runVideo(allGraphics)
   end apply
   
