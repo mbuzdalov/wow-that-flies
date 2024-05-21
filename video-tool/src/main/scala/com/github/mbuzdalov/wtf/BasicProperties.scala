@@ -25,11 +25,13 @@ class BasicProperties(args: Array[String]):
   private def runWithBaseImage(baseImage: BufferedImage, time: Double, consumers: GraphicsConsumer*): Unit =
     val destination = if output == "player" then new Player else new VideoWriter(output)
     val target = FrameConsumer.compose(FrameConsumer(GraphicsConsumer.compose(consumers *)), destination)
-    val currImage = new BufferedImage(baseImage.getWidth, baseImage.getHeight, BufferedImage.TYPE_3BYTE_BGR)
-    val maxFrameNo = (time / fps).toInt
+    val currImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR)
+    val maxFrameNo = (time * fps).toInt
     for frameNo <- 0 until maxFrameNo do
-      baseImage.copyData(currImage.getRaster)
-      target.consume(baseImage, frameNo / fps, frameNo)
+      val g = currImage.createGraphics()
+      g.drawImage(baseImage, 0, 0, width, height, null)
+      target.consume(currImage, frameNo / fps, frameNo)
+    target.close()
 
   def runImage(time: Double, consumers: GraphicsConsumer*): Unit =
     runWithBaseImage(ImageIO.read(new File(input)), time, consumers*)
