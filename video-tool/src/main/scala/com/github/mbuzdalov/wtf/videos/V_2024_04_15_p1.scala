@@ -89,7 +89,7 @@ object V_2024_04_15_p1:
     private val legColor = new Color(20, 20, 150)
     private val ductColor = new Color(20, 20, 150, 100)
     private val flapColor = new Color(240, 220, 200)
-    private val forceColor = new Color(150, 20, 10)
+    private val forceColor = new Color(80, 10, 5)
     private val armColor = new Color(100, 20, 90)
     private val motorColor = new Color(150, 170, 40)
     private val propColor = new Color(150, 150, 150)
