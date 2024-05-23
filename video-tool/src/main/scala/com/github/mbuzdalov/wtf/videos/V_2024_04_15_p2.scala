@@ -15,7 +15,7 @@ object V_2024_04_15_p2:
 
     val msgFontSize = 36f * width / 1280
     val msgStep = msgFontSize * 1.5f
-    val msgCF = TextMessage.ColorFont(msgFontSize, new Color(10, 10, 50))
+    val msgCF = TextMessage.ColorFont(msgFontSize, new Color(10, 10, 50), new Color(255, 255, 255, 50))
 
     val allGraphics = GraphicsConsumer.compose(
       ScaleRotateCropBack(t => 1.0 + t / 100, t => 0.0),
