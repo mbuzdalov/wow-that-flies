@@ -7,7 +7,7 @@ import scala.compiletime.uninitialized
 
 import com.github.mbuzdalov.wtf.GraphicsConsumer
 
-class TextMessage(text: String, colorFont: TextMessage.ColorFont, x: Float, y: Float,
+class TextMessage(val text: String, colorFont: TextMessage.ColorFont, x: Float, y: Float,
                   hAlignment: TextMessage.HorizontalAlignment,
                   vAlignment: TextMessage.VerticalAlignment,
                   timeOn: TextMessage.Alpha, timeOff: TextMessage.Alpha) extends GraphicsConsumer:
