@@ -16,7 +16,7 @@ object V_2024_04_15_p3:
 
     val autoArmedTimes = reader.autoArmedTimes
     require(autoArmedTimes.size == 1)
-    val logTimeOffset = autoArmedTimes.head - props.armTime
+    val logTimeOffset = autoArmedTimes(0) - props.armTime
 
     val hWidth = width / 2
     val stickSize = 101 * width / 1280

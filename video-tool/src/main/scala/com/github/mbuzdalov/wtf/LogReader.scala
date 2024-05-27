@@ -92,7 +92,7 @@ class LogReader(storage: ByteStorage):
     if index == -1 then throw new IllegalArgumentException(s"Parameter $name not found")
     paramValue.get(index)
 
-  lazy val autoArmedTimes: Seq[Double] =
+  lazy val autoArmedTimes: IndexedSeq[Double] =
     val eventValues = connect[Numbers.UInt8]("EV", "Id")
     val eventTimes = connect[Numbers.UInt64]("EV", "TimeUS")
     (0 until eventValues.size).filter(i => eventValues.get(i).toInt == 15).map(i => eventTimes.get(i).toDouble * 1e-6)
