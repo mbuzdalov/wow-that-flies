@@ -106,3 +106,16 @@ object Plot:
         Source[Float]("ATT", name, s"Actual $name", v => v, -maxAngle, +maxAngle, Color.RED),
       )
     )
+
+  def createYawPlot(logReader: LogReader, timeOffset: Double, ccwChannel: Int, cwChannel: Int,
+                    x: Int, y: Int, width: Int, height: Int, fontSize: Float, background: Color, timeWidth: Double): Plot =
+    new Plot(
+      logReader, timeOffset, x, y,
+      width, height, fontSize, background, 2,
+      IndexedSeq(
+        Source[Numbers.UInt16]("RCOU", s"C$ccwChannel", s"CCW Motor", v => v.toDouble, 1000, 2000, Color.BLACK),
+        Source[Numbers.UInt16]("RCOU", s"C$cwChannel",  s"CW Motor",  v => v.toDouble, 1000, 2000, Color.MAGENTA.darker()),
+        Source[Float]("ATT", s"DesYaw", s"Desired Yaw", v => (v + 180) % 360, 0, 360, Color.BLUE),
+        Source[Float]("ATT", "Yaw", s"Actual Yaw", v => (v + 180) % 360, 0, 360, Color.RED),
+      )
+    )
