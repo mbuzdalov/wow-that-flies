@@ -32,5 +32,10 @@ object Main:
       case "2024-04-21-p1" => V_2024_04_21_p1(props)
       case "2024-04-21-p2" => V_2024_04_21_p2(props)
       case "2024-04-24" => V_2024_04_24(props)
+      case "2024-05-09-p1" => V_2024_05_09_p1(props)
+      case "2024-05-09-p2" => V_2024_05_09_p2(props)
+      case "2024-05-09-p3" => V_2024_05_09_p3(props)
+      case "2024-05-09-p4" => V_2024_05_09_p4(props)
+      case "2024-05-09-p5" => V_2024_05_09_p5(props)
   end main
 end Main
