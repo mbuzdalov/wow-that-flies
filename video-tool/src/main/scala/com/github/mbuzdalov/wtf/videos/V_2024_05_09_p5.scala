@@ -8,11 +8,11 @@ import scala.language.implicitConversions
 
 import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment as HA, VerticalAlignment as VA}
 import com.github.mbuzdalov.wtf.widgets.{Fade, ScaleRotateCropBack, TextMessage}
-import com.github.mbuzdalov.wtf.{BasicProperties, GraphicsConsumer}
+import com.github.mbuzdalov.wtf.{Alpha, BasicProperties, GraphicsConsumer}
 
 object V_2024_05_09_p5:
   private class Arrow(baseX: Double, baseY: Double, length: Double, halfWidth: Double,
-                      timeOn: TextMessage.Alpha, timeOff: TextMessage.Alpha) extends GraphicsConsumer:
+                      timeOn: Alpha, timeOff: Alpha) extends GraphicsConsumer:
     private val shape = new Path2D.Double()
     shape.moveTo(baseX - halfWidth, baseY - halfWidth)
     shape.lineTo(baseX + length, baseY - halfWidth)

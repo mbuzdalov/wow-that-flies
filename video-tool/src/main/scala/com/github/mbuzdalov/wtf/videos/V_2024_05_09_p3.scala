@@ -4,7 +4,8 @@ import java.awt.Color
 
 import scala.language.implicitConversions
 
-import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment as HA, VerticalAlignment as VA, withSpeed}
+import com.github.mbuzdalov.wtf.Alpha.withSpeed
+import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment as HA, VerticalAlignment as VA}
 import com.github.mbuzdalov.wtf.widgets.{Fade, Plot, Sticks, TextMessage}
 import com.github.mbuzdalov.wtf.{BasicProperties, GraphicsConsumer}
 

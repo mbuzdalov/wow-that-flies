@@ -5,11 +5,11 @@ import java.awt.image.BufferedImage
 
 import scala.compiletime.uninitialized
 
-import com.github.mbuzdalov.wtf.{GraphicsConsumer, LogReader}
+import com.github.mbuzdalov.wtf.{Alpha, GraphicsConsumer, LogReader}
 
 class LastLogMessage(logReader: LogReader, logTimeOffset: Double,
                      colorFont: TextMessage.ColorFont, x: Float, y: Float,
-                     timeOn: TextMessage.Alpha, timeOff: TextMessage.Alpha) extends GraphicsConsumer:
+                     timeOn: Alpha, timeOff: Alpha) extends GraphicsConsumer:
   private val msgConnectT = logReader.timingConnect("MSG")
   private val msgConnectM = logReader.connect[String]("MSG", "Message")
   private var message: TextMessage = uninitialized

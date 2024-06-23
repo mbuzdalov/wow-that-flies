@@ -6,7 +6,8 @@ import scala.language.implicitConversions
 
 import com.github.mbuzdalov.wtf.{BasicProperties, GraphicsConsumer}
 import com.github.mbuzdalov.wtf.widgets.{Fade, Plot, Sticks, TextMessage}
-import com.github.mbuzdalov.wtf.widgets.TextMessage.{withSpeed, HorizontalAlignment as HA, VerticalAlignment as VA}
+import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment as HA, VerticalAlignment as VA}
+import com.github.mbuzdalov.wtf.Alpha.withSpeed
 
 object V_2024_03_29_p1:
   def apply(props: BasicProperties): Unit =

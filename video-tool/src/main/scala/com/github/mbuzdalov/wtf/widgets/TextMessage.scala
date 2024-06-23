@@ -5,12 +5,12 @@ import java.awt.{Color, Font, Graphics2D}
 
 import scala.compiletime.uninitialized
 
-import com.github.mbuzdalov.wtf.GraphicsConsumer
+import com.github.mbuzdalov.wtf.{Alpha, GraphicsConsumer}
 
 class TextMessage(val text: String, colorFont: TextMessage.ColorFont, x: Float, y: Float,
                   hAlignment: TextMessage.HorizontalAlignment,
                   vAlignment: TextMessage.VerticalAlignment,
-                  timeOn: TextMessage.Alpha, timeOff: TextMessage.Alpha) extends GraphicsConsumer:
+                  timeOn: Alpha, timeOff: Alpha) extends GraphicsConsumer:
   private val font = new Font(Font.SANS_SERIF, Font.PLAIN, (colorFont.fontSize + 0.5).toInt)
   private var rectOffset: (Int, Int, Int) = uninitialized
   private var textOffset: (Float, Float) = uninitialized
@@ -73,19 +73,3 @@ object TextMessage:
 
   enum HorizontalAlignment:
     case Left, Center, Right
-
-  case class Alpha(time: Double, speed: Double):
-    def asOn(t: Double): Double = math.max(0, math.min(1, (t - time) * speed))
-    def asOff(t: Double): Double = math.max(0, math.min(1, (time - t) * speed))
-
-  given Conversion[Int, Alpha] with
-    override def apply(time: Int): Alpha = Alpha(time, 2.0)
-    
-  given Conversion[Double, Alpha] with
-    override def apply(time: Double): Alpha = Alpha(time, 2.0)
-  
-  extension (time: Double)
-    infix def withSpeed(speed: Double): Alpha = Alpha(time, speed)
-
-  extension (time: Int)
-    infix def withSpeed(speed: Double): Alpha = Alpha(time, speed)
