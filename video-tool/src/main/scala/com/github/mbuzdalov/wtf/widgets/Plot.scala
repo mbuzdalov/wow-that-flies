@@ -95,15 +95,28 @@ object Plot:
 
   def createRollPitchPlot(logReader: LogReader, timeOffset: Double, name: "Roll" | "Pitch", channel: Int, maxAngle: Double,
              x: Int, y: Int, width: Int, height: Int, fontSize: Float, background: Color, timeWidth: Double): Plot =
-    val flapMin = logReader.getParameter(s"SERVO${channel}_MIN")
-    val flapMax = logReader.getParameter(s"SERVO${channel}_MAX")
+    val builder = IndexedSeq.newBuilder[Source[Any]]
+    if channel > 0 then
+      val flapMin = logReader.getParameter(s"SERVO${channel}_MIN")
+      val flapMax = logReader.getParameter(s"SERVO${channel}_MAX")
+      builder += Source[Numbers.UInt16]("RCOU", s"C$channel", s"$name Flap", v => v.toDouble, flapMin, flapMax, Color.BLACK)
+    end if
+    builder += Source[Float]("ATT", s"Des$name", s"Desired $name", v => v, -maxAngle, +maxAngle, Color.BLUE)
+    builder += Source[Float]("ATT", name, s"Actual $name", v => v, -maxAngle, +maxAngle, Color.RED)
+    new Plot(
+      logReader, timeOffset, x, y,
+      width, height, fontSize, background, 2,
+      builder.result()
+    )
+
+  def createXFlapPlot(logReader: LogReader, timeOffset: Double,
+                      x: Int, y: Int, width: Int, height: Int, fontSize: Float, background: Color, timeWidth: Double): Plot =
     new Plot(
       logReader, timeOffset, x, y,
       width, height, fontSize, background, 2,
       IndexedSeq(
-        Source[Numbers.UInt16]("RCOU", s"C$channel", s"$name Flap", v => v.toDouble, flapMin, flapMax, Color.BLACK),
-        Source[Float]("ATT", s"Des$name", s"Desired $name", v => v, -maxAngle, +maxAngle, Color.BLUE),
-        Source[Float]("ATT", name, s"Actual $name", v => v, -maxAngle, +maxAngle, Color.RED),
+        Source[Numbers.UInt16]("RCOU", "C5", "Flap ╱", v => v.toDouble, logReader.getParameter("SERVO5_MIN"), logReader.getParameter("SERVO5_MAX"), Color.BLACK),
+        Source[Numbers.UInt16]("RCOU", "C6", "Flap ╲", v => v.toDouble, logReader.getParameter("SERVO6_MIN"), logReader.getParameter("SERVO6_MAX"), Color.MAGENTA.darker()),
       )
     )
 
