@@ -39,20 +39,20 @@ object V_2024_04_09_p2:
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(10, 10, 50), new Color(255, 255, 255, 50))
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("April 09, 2024, test #2.",
-        msgCF, width * 0.5f, height * 0.25f,
-        HA.Center, VA.Center, 1, 8),
+        msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
+        .enabledBetween(1, 8),
       TextMessage("There was some constant noise in the frequency plots at around 106 Hz,",
-        msgCF, width * 0.5f, height * 0.25f + 1.0f * msgStep,
-        HA.Center, VA.Center, 2, 8),
+        msgCF, width * 0.5f, height * 0.25f + 1.0f * msgStep, HA.Center, VA.Center)
+        .enabledBetween(2, 8),
       TextMessage("for which I added a notch. This will subsequently allow to increase the D-terms.",
-        msgCF, width * 0.5f, height * 0.25f + 2.0f * msgStep,
-        HA.Center, VA.Center, 2, 8),
+        msgCF, width * 0.5f, height * 0.25f + 2.0f * msgStep, HA.Center, VA.Center)
+        .enabledBetween(2, 8),
       TextMessage("The sound change is due to yaw input (visible on the sticks).",
-        msgCF, width * 0.5f, height * 0.35f,
-        HA.Center, VA.Center, 31, 36),
+        msgCF, width * 0.5f, height * 0.35f, HA.Center, VA.Center)
+        .enabledBetween(31, 36),
       TextMessage("Okay, at least I can keep my hands off the I-terms for now.",
-        msgCF, width * 0.5f, height * 0.35f,
-        HA.Center, VA.Center, 50, 55),
+        msgCF, width * 0.5f, height * 0.35f, HA.Center, VA.Center)
+        .enabledBetween(50, 55),
       Fade(timeOn = 0.5, timeOff = 0.0),
       Fade(timeOn = 55.0, timeOff = 55.5),
     )

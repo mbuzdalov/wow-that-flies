@@ -46,104 +46,104 @@ object V_2024_04_24:
 
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("April 24, 2024.",
-        msgCF, width * 0.5f, height * 0.25f,
-        HA.Center, VA.Center, 1, 6),
+        msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
+        .enabledBetween(1, 6),
       TextMessage("I attached a GPS+Compass module to the top",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f,
-        HA.Center, VA.Center, 2, 6),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(2, 6),
       TextMessage("to make the center of gravity higher",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 2f,
-        HA.Center, VA.Center, 2, 6),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(2, 6),
       TextMessage("and to test whether the compass can work there.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 3f,
-        HA.Center, VA.Center, 2, 6),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 3f, HA.Center, VA.Center)
+        .enabledBetween(2, 6),
       TextMessage("Then I ran AutoTune again, and here is the result...",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 4f,
-        HA.Center, VA.Center, 4, 6),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 4f, HA.Center, VA.Center)
+        .enabledBetween(4, 6),
       TextMessage("Well, CX7 is not completely locked-in yet,",
-        msgCF, width * 0.5f, height * 0.4f,
-        HA.Center, VA.Center, 53, 57),
+        msgCF, width * 0.5f, height * 0.4f, HA.Center, VA.Center)
+        .enabledBetween(53, 57),
       TextMessage("but it is really quick now!",
-        msgCF, width * 0.5f, height * 0.4f + msgStep * 1f,
-        HA.Center, VA.Center, 54, 57),
+        msgCF, width * 0.5f, height * 0.4f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(54, 57),
       TextMessage("(P.S.: the compass did not work)",
-        msgCF, width * 0.5f, height * 0.4f + msgStep * 3f,
-        HA.Center, VA.Center, 56, 57),
+        msgCF, width * 0.5f, height * 0.4f + msgStep * 3f, HA.Center, VA.Center)
+        .enabledBetween(56, 57),
 
       Fade(timeOn = 57.5, timeOff = 58),
 
       TextMessage("The changes before this video (also with aggressiveness 0.1) were:",
-        tailCF, width * 0.5f, height * 0.07f,
-        HA.Center, VA.Center, 58, 70),
+        tailCF, width * 0.5f, height * 0.07f, HA.Center, VA.Center)
+        .enabledBetween(58, 70),
 
       TextMessage("ATC_RAT_RLL_{P,I}: 0.129 ➞ 0.162",
-        tailCF, width * 0.1f, height * 0.07f + tailStep * 1.5f,
-        HA.Left, VA.Center, 58, 70),
+        tailCF, width * 0.1f, height * 0.07f + tailStep * 1.5f, HA.Left, VA.Center)
+        .enabledBetween(58, 70),
       TextMessage("ATC_RAT_RLL_D: 0.001 ➞ 0.001",
-        tailCF, width * 0.1f, height * 0.07f + tailStep * 2.5f,
-        HA.Left, VA.Center, 58, 70),
+        tailCF, width * 0.1f, height * 0.07f + tailStep * 2.5f, HA.Left, VA.Center)
+        .enabledBetween(58, 70),
       TextMessage("Still the minimum D-term value set!",
-        badCF, width * 0.5f, height * 0.07f + tailStep * 2.5f,
-        HA.Left, VA.Center, 62, 70),
+        badCF, width * 0.5f, height * 0.07f + tailStep * 2.5f, HA.Left, VA.Center)
+        .enabledBetween(62, 70),
       TextMessage("ATC_ANG_RLL_P: 6.338 ➞ 6",
-        tailCF, width * 0.1f, height * 0.07f + tailStep * 3.5f,
-        HA.Left, VA.Center, 58, 70),
+        tailCF, width * 0.1f, height * 0.07f + tailStep * 3.5f, HA.Left, VA.Center)
+        .enabledBetween(58, 70),
       TextMessage("Rounded, don't remember why",
-        tailCF, width * 0.5f, height * 0.07f + tailStep * 3.5f,
-        HA.Left, VA.Center, 62, 70),
+        tailCF, width * 0.5f, height * 0.07f + tailStep * 3.5f, HA.Left, VA.Center)
+        .enabledBetween(62, 70),
       TextMessage("ATC_ACCEL_R_MAX: 65803 ➞ 70866",
-        tailCF, width * 0.1f, height * 0.07f + tailStep * 4.5f,
-        HA.Left, VA.Center, 58, 70),
+        tailCF, width * 0.1f, height * 0.07f + tailStep * 4.5f, HA.Left, VA.Center)
+        .enabledBetween(58, 70),
       TextMessage("Moderate roll improvement",
-        tailCF, width * 0.5f, height * 0.07f + tailStep * 4.5f,
-        HA.Left, VA.Center, 62, 70),
+        tailCF, width * 0.5f, height * 0.07f + tailStep * 4.5f, HA.Left, VA.Center)
+        .enabledBetween(62, 70),
 
       TextMessage("ATC_RAT_PIT_{P,I}: 0.114 ➞ 0.246",
-        tailCF, width * 0.1f, height * 0.07f + tailStep * 6f,
-        HA.Left, VA.Center, 58, 70),
+        tailCF, width * 0.1f, height * 0.07f + tailStep * 6f, HA.Left, VA.Center)
+        .enabledBetween(58, 70),
       TextMessage("Increased twice, interesting",
-        tailCF, width * 0.5f, height * 0.07f + tailStep * 6f,
-        HA.Left, VA.Center, 62, 70),
+        tailCF, width * 0.5f, height * 0.07f + tailStep * 6f, HA.Left, VA.Center)
+        .enabledBetween(62, 70),
       TextMessage("ATC_RAT_PIT_D: 0.00515 ➞ 0.00519",
-        tailCF, width * 0.1f, height * 0.07f + tailStep * 7f,
-        HA.Left, VA.Center, 58, 70),
+        tailCF, width * 0.1f, height * 0.07f + tailStep * 7f, HA.Left, VA.Center)
+        .enabledBetween(58, 70),
       TextMessage("ATC_ANG_PIT_P: 6.274 ➞ 8",
-        tailCF, width * 0.1f, height * 0.07f + tailStep * 8f,
-        HA.Left, VA.Center, 58, 70),
+        tailCF, width * 0.1f, height * 0.07f + tailStep * 8f, HA.Left, VA.Center)
+        .enabledBetween(58, 70),
       TextMessage("Increased (then rounded)",
-        goodCF, width * 0.5f, height * 0.07f + tailStep * 8f,
-        HA.Left, VA.Center, 62, 70),
+        goodCF, width * 0.5f, height * 0.07f + tailStep * 8f, HA.Left, VA.Center)
+        .enabledBetween(62, 70),
       TextMessage("ATC_ACCEL_P_MAX: 32300 ➞ 52592",
-        tailCF, width * 0.1f, height * 0.07f + tailStep * 9f,
-        HA.Left, VA.Center, 58, 70),
+        tailCF, width * 0.1f, height * 0.07f + tailStep * 9f, HA.Left, VA.Center)
+        .enabledBetween(58, 70),
       TextMessage("A good improvement for pitch",
-        goodCF, width * 0.5f, height * 0.07f + tailStep * 9f,
-        HA.Left, VA.Center, 62, 70),
+        goodCF, width * 0.5f, height * 0.07f + tailStep * 9f, HA.Left, VA.Center)
+        .enabledBetween(62, 70),
 
       TextMessage("ATC_RAT_YAW_P: 0.473 ➞ 0.76",
-        tailCF, width * 0.1f, height * 0.07f + tailStep * 10.5f,
-        HA.Left, VA.Center, 58, 70),
+        tailCF, width * 0.1f, height * 0.07f + tailStep * 10.5f, HA.Left, VA.Center)
+        .enabledBetween(58, 70),
       TextMessage("Yaw tightened even more!",
-        goodCF, width * 0.5f, height * 0.07f + tailStep * 10.5f,
-        HA.Left, VA.Center, 62, 70),
+        goodCF, width * 0.5f, height * 0.07f + tailStep * 10.5f, HA.Left, VA.Center)
+        .enabledBetween(62, 70),
       TextMessage("ATC_RAT_YAW_I: 0.0473 ➞ 0.076",
-        tailCF, width * 0.1f, height * 0.07f + tailStep * 11.5f,
-        HA.Left, VA.Center, 58, 70),
+        tailCF, width * 0.1f, height * 0.07f + tailStep * 11.5f, HA.Left, VA.Center)
+        .enabledBetween(58, 70),
       TextMessage("ATC_RAT_YAW_D: 0.119 ➞ 0.119",
-        tailCF, width * 0.1f, height * 0.07f + tailStep * 12.5f,
-        HA.Left, VA.Center, 58, 70),
+        tailCF, width * 0.1f, height * 0.07f + tailStep * 12.5f, HA.Left, VA.Center)
+        .enabledBetween(58, 70),
       TextMessage("ATC_RAT_YAW_FLTE: 1.28 ➞ 1.96",
-        tailCF, width * 0.1f, height * 0.07f + tailStep * 13.5f,
-        HA.Left, VA.Center, 58, 70),
+        tailCF, width * 0.1f, height * 0.07f + tailStep * 13.5f, HA.Left, VA.Center)
+        .enabledBetween(58, 70),
       TextMessage("ATC_ANG_YAW_P: 14.67 ➞ 15.8",
-        tailCF, width * 0.1f, height * 0.07f + tailStep * 14.5f,
-        HA.Left, VA.Center, 58, 70),
+        tailCF, width * 0.1f, height * 0.07f + tailStep * 14.5f, HA.Left, VA.Center)
+        .enabledBetween(58, 70),
       TextMessage("ATC_ACCEL_Y_MAX: 96140 ➞ 135117",
-        tailCF, width * 0.1f, height * 0.07f + tailStep * 15.5f,
-        HA.Left, VA.Center, 58, 70),
+        tailCF, width * 0.1f, height * 0.07f + tailStep * 15.5f, HA.Left, VA.Center)
+        .enabledBetween(58, 70),
       TextMessage("Wow, just wow!",
-        goodCF, width * 0.5f, height * 0.07f + tailStep * 15.5f,
-        HA.Left, VA.Center, 62, 70),
+        goodCF, width * 0.5f, height * 0.07f + tailStep * 15.5f, HA.Left, VA.Center)
+        .enabledBetween(62, 70),
     )
 
     props.runVideo(allGraphics)

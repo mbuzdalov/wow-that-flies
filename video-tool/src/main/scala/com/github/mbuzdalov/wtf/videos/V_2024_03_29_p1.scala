@@ -42,74 +42,74 @@ object V_2024_03_29_p1:
 
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("March 29, 2024, test 1 (actually 3)",
-        msgCF, width * 0.5f, height * 0.25f,
-        HA.Center, VA.Center, 1, 10),
+        msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
+        .enabledBetween(1, 10),
       TextMessage("I am still hunting overshoots via tuning adjustment.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 1.5f,
-        HA.Center, VA.Center, 3, 10),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 1.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 10),
       TextMessage("Since last test I have configured harmonic notch",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 2.5f,
-        HA.Center, VA.Center, 3, 10),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 2.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 10),
       TextMessage("with ESC telemetry as a source, and did two tests behind the scene.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 3.5f,
-        HA.Center, VA.Center, 3, 10),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 3.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 10),
       TextMessage("For this test, I increased pitch and roll D-terms from 0.002 to 0.01",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 5f,
-        HA.Center, VA.Center, 5, 10),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 5f, HA.Center, VA.Center)
+        .enabledBetween(5, 10),
       TextMessage("in the hope that CX7 will react quicker and avoid overshoots.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 6f,
-        HA.Center, VA.Center, 5, 10),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 6f, HA.Center, VA.Center)
+        .enabledBetween(5, 10),
       TextMessage("I am performing increasingly hard twitches on pitch and roll",
-        msgCF, width * 0.5f, height * 0.5f,
-        HA.Center, VA.Center, 14, 18),
+        msgCF, width * 0.5f, height * 0.5f, HA.Center, VA.Center)
+        .enabledBetween(14, 18),
       TextMessage("and observing the behavior of the copter",
-        msgCF, width * 0.5f, height * 0.5f + msgStep * 1f,
-        HA.Center, VA.Center, 14, 18),
+        msgCF, width * 0.5f, height * 0.5f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(14, 18),
       TextMessage("Watch for an example of overshoot on the pitch axis...",
-        msgCF, width * 0.5f, height * 0.5f,
-        HA.Center, VA.Center, 22, 27),
+        msgCF, width * 0.5f, height * 0.5f, HA.Center, VA.Center)
+        .enabledBetween(22, 27),
       TextMessage("NOW!",
-        msgCF, width * 0.5f, height * 0.5f + msgStep * 1f,
-        HA.Center, VA.Center, 25.3 withSpeed 100, 27),
+        msgCF, width * 0.5f, height * 0.5f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(25.3 withSpeed 100, 27),
       TextMessage("A strong one will happen",
-        msgCF, width * 0.5f, height * 0.5f,
-        HA.Center, VA.Center, 35, 41),
+        msgCF, width * 0.5f, height * 0.5f, HA.Center, VA.Center)
+        .enabledBetween(35, 41),
       TextMessage("in 3",
-        msgCF, width * 0.5f - msgFontSize * 2.5f, height * 0.5f + msgStep * 1f,
-        HA.Center, VA.Center, 36 withSpeed 100, 41),
+        msgCF, width * 0.5f - msgFontSize * 2.5f, height * 0.5f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(36 withSpeed 100, 41),
       TextMessage("2",
-        msgCF, width * 0.5f - msgFontSize * 1f, height * 0.5f + msgStep * 1f,
-        HA.Center, VA.Center, 37 withSpeed 100, 41),
+        msgCF, width * 0.5f - msgFontSize * 1f, height * 0.5f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(37 withSpeed 100, 41),
       TextMessage("1",
-        msgCF, width * 0.5f - msgFontSize * 0f, height * 0.5f + msgStep * 1f,
-        HA.Center, VA.Center, 38 withSpeed 100, 41),
+        msgCF, width * 0.5f - msgFontSize * 0f, height * 0.5f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(38 withSpeed 100, 41),
       TextMessage("NOW!",
-        msgCF, width * 0.5f + msgFontSize * 2f, height * 0.5f + msgStep * 1f,
-        HA.Center, VA.Center, 39 withSpeed 100, 41),
+        msgCF, width * 0.5f + msgFontSize * 2f, height * 0.5f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(39 withSpeed 100, 41),
       TextMessage("Yet another big one",
-        msgCF, width * 0.5f, height * 0.2f,
-        HA.Center, VA.Center, 56, 63),
+        msgCF, width * 0.5f, height * 0.2f, HA.Center, VA.Center)
+        .enabledBetween(56, 63),
       TextMessage("in 3",
-        msgCF, width * 0.5f - msgFontSize * 2.5f, height * 0.2f + msgStep * 1f,
-        HA.Center, VA.Center, 57 withSpeed 100, 63),
+        msgCF, width * 0.5f - msgFontSize * 2.5f, height * 0.2f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(57 withSpeed 100, 63),
       TextMessage("2",
-        msgCF, width * 0.5f - msgFontSize * 1f, height * 0.2f + msgStep * 1f,
-        HA.Center, VA.Center, 58 withSpeed 100, 63),
+        msgCF, width * 0.5f - msgFontSize * 1f, height * 0.2f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(58 withSpeed 100, 63),
       TextMessage("1",
-        msgCF, width * 0.5f - msgFontSize * 0f, height * 0.2f + msgStep * 1f,
-        HA.Center, VA.Center, 59 withSpeed 100, 63),
+        msgCF, width * 0.5f - msgFontSize * 0f, height * 0.2f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(59 withSpeed 100, 63),
       TextMessage("NOW!",
-        msgCF, width * 0.5f + msgFontSize * 2f, height * 0.2f + msgStep * 1f,
-        HA.Center, VA.Center, 60 withSpeed 100, 63),
+        msgCF, width * 0.5f + msgFontSize * 2f, height * 0.2f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(60 withSpeed 100, 63),
       TextMessage("Increasing D-term cannot make it alone.",
-        msgCF, width * 0.5f, height * 0.5f,
-        HA.Center, VA.Center, 67, 74),
+        msgCF, width * 0.5f, height * 0.5f, HA.Center, VA.Center)
+        .enabledBetween(67, 74),
       TextMessage("When returning to level, required angle rates change too quickly.",
-        msgCF, width * 0.5f, height * 0.5f + msgStep * 1.5f,
-        HA.Center, VA.Center, 68.5, 74),
+        msgCF, width * 0.5f, height * 0.5f + msgStep * 1.5f, HA.Center, VA.Center)
+        .enabledBetween(68.5, 74),
       TextMessage("Maybe the maximum angular accelerations need to be reduced?",
-        msgCF, width * 0.5f, height * 0.5f + msgStep * 2.5f,
-        HA.Center, VA.Center, 68.5, 74),
+        msgCF, width * 0.5f, height * 0.5f + msgStep * 2.5f, HA.Center, VA.Center)
+        .enabledBetween(68.5, 74),
       new Fade(timeOn = 74.3, timeOff = 74.8),
     )
 

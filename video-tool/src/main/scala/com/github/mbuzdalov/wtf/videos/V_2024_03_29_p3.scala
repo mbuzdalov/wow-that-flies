@@ -41,35 +41,35 @@ object V_2024_03_29_p3:
 
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("March 29, 2024, test 3 (actually 5)",
-        msgCF, width * 0.5f, height * 0.11f,
-        HA.Center, VA.Center, 1, 10),
+        msgCF, width * 0.5f, height * 0.11f, HA.Center, VA.Center)
+        .enabledBetween(1, 10),
       TextMessage("Maybe the reduction was not enough?",
-        msgCF, width * 0.5f, height * 0.11f + msgStep * 1.5f,
-        HA.Center, VA.Center, 3, 10),
+        msgCF, width * 0.5f, height * 0.11f + msgStep * 1.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 10),
       TextMessage("Now ATC_ACCEL_{R,P}_MAX changed from 40000 further down to 30000.",
-        msgCF, width * 0.5f, height * 0.11f + msgStep * 2.5f,
-        HA.Center, VA.Center, 3, 10),
+        msgCF, width * 0.5f, height * 0.11f + msgStep * 2.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 10),
       TextMessage("Also, plots of D-terms showed some high-freq vibrations.",
-        msgCF, width * 0.5f, height * 0.11f + msgStep * 4.0f,
-        HA.Center, VA.Center, 5, 10),
+        msgCF, width * 0.5f, height * 0.11f + msgStep * 4.0f, HA.Center, VA.Center)
+        .enabledBetween(5, 10),
       TextMessage("To counteract that, D-terms changed to be more aggressive:",
-        msgCF, width * 0.5f, height * 0.11f + msgStep * 5.0f,
-        HA.Center, VA.Center, 5, 10),
+        msgCF, width * 0.5f, height * 0.11f + msgStep * 5.0f, HA.Center, VA.Center)
+        .enabledBetween(5, 10),
       TextMessage("ATC_RAT_{PIT,RLL}_FLTD from 40 to 20.",
-        msgCF, width * 0.5f, height * 0.11f + msgStep * 6.0f,
-        HA.Center, VA.Center, 5, 10),
+        msgCF, width * 0.5f, height * 0.11f + msgStep * 6.0f, HA.Center, VA.Center)
+        .enabledBetween(5, 10),
       TextMessage("Sorry, but the shooting angle is really bad...",
-        msgCF, width * 0.5f, height * 0.5f,
-        HA.Center, VA.Center, 19, 24),
+        msgCF, width * 0.5f, height * 0.5f, HA.Center, VA.Center)
+        .enabledBetween(19, 24),
       TextMessage("Well, overshoots are still there.",
-        msgCF, width * 0.5f, height * 0.25f,
-        HA.Center, VA.Center, 81, 87),
+        msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
+        .enabledBetween(81, 87),
       TextMessage("But they appear to be less severe now, and don't turn to oscillations.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 1.0f,
-        HA.Center, VA.Center, 83, 87),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 1.0f, HA.Center, VA.Center)
+        .enabledBetween(83, 87),
       TextMessage("Probably CX7 is now able to survive an autotune session.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 2.0f,
-        HA.Center, VA.Center, 83, 87),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 2.0f, HA.Center, VA.Center)
+        .enabledBetween(83, 87),
       new Fade(timeOn = 0.5, timeOff = 0),
     )
 

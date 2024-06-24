@@ -46,22 +46,20 @@ object V_2024_06_09_p1:
 
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot, servoPlot, yawPlot,
       TextMessage("June 09, 2024.",
-        msgCF, width * 0.5f, height * 0.25f,
-        HA.Center, VA.Center, 1, 8),
+        msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
+        .enabledBetween(1, 8),
       TextMessage("Remember the April 12th video?",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f,
-        HA.Center, VA.Center, 2, 8),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(2, 8),
       TextMessage("SN1 is now alife.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 2.5f,
-        HA.Center, VA.Center, 4, 8),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 2.5f, HA.Center, VA.Center)
+        .enabledBetween(4, 8),
       TextMessage("This is its first test session.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 3.5f,
-        HA.Center, VA.Center, 5, 8),
-
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 3.5f, HA.Center, VA.Center)
+        .enabledBetween(5, 8),
 
       Fade(timeOn = 18, timeOff = 18.5),
     )
 
     props.runVideo(allGraphics)
   end apply
-

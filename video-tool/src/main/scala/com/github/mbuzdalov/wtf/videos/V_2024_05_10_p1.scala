@@ -42,20 +42,20 @@ object V_2024_05_10_p1:
 
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot, yawPlot,
       TextMessage("May 10, 2024. Pre-checks for flying FPV.",
-        msgCF, width * 0.5f, height * 0.15f,
-        HA.Center, VA.Center, 1, 4),
+        msgCF, width * 0.5f, height * 0.15f, HA.Center, VA.Center)
+        .enabledBetween(1, 4),
       TextMessage("No changes to the vehicle were made since the last test.",
-        msgCF, width * 0.5f, height * 0.15f,
-        HA.Center, VA.Center, 15, 21),
+        msgCF, width * 0.5f, height * 0.15f, HA.Center, VA.Center)
+        .enabledBetween(15, 21),
       TextMessage("Not even battery charging.",
-        msgCF, width * 0.5f, height * 0.15f + msgStep * 1f,
-        HA.Center, VA.Center, 18, 21),
+        msgCF, width * 0.5f, height * 0.15f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(18, 21),
       TextMessage("Well, it flies nicely enough",
-        msgCF, width * 0.5f, height * 0.15f,
-        HA.Center, VA.Center, 46, 49),
+        msgCF, width * 0.5f, height * 0.15f, HA.Center, VA.Center)
+        .enabledBetween(46, 49),
       TextMessage("in current conditions.",
-        msgCF, width * 0.5f, height * 0.15f + msgStep * 1f,
-        HA.Center, VA.Center, 46, 49),
+        msgCF, width * 0.5f, height * 0.15f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(46, 49),
 
       Fade(timeOn = 49, timeOff = 49.5),
     )

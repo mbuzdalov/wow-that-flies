@@ -26,35 +26,35 @@ object V_2024_04_15_p1:
     val allGraphics = GraphicsConsumer.compose(
       coaxPainter(width, height),
       TextMessage("Let's see how flaps work.",
-        msgCF, w0, h0,
-        HA.Left, VA.Center, 1, 20),
+        msgCF, w0, h0, HA.Left, VA.Center)
+        .enabledBetween(1, 20),
       TextMessage("The roll torque (same for pitch) is equal",
-        msgCF, w0, h0 + msgStep * 1.5f,
-        HA.Left, VA.Center, 4, 20),
+        msgCF, w0, h0 + msgStep * 1.5f, HA.Left, VA.Center)
+        .enabledBetween(4, 20),
       TextMessage("to the product of the projection of",
-        msgCF, w0, h0 + msgStep * 2.5f,
-        HA.Left, VA.Center, 4, 20),
+        msgCF, w0, h0 + msgStep * 2.5f, HA.Left, VA.Center)
+        .enabledBetween(4, 20),
       TextMessage("the force on the flap and the moment arm.",
-        msgCF, w0, h0 + msgStep * 3.5f,
-        HA.Left, VA.Center, 4, 20),
+        msgCF, w0, h0 + msgStep * 3.5f, HA.Left, VA.Center)
+        .enabledBetween(4, 20),
       TextMessage("The bigger the angle, the bigger the force.",
-        msgCF, w0, h0 + msgStep * 5f,
-        HA.Left, VA.Center, 8, 20),
+        msgCF, w0, h0 + msgStep * 5f, HA.Left, VA.Center)
+        .enabledBetween(8, 20),
       TextMessage("But the angle has the limit, so there is",
-        msgCF, w0, h0 + msgStep * 6f,
-        HA.Left, VA.Center, 8, 20),
+        msgCF, w0, h0 + msgStep * 6f, HA.Left, VA.Center)
+        .enabledBetween(8, 20),
       TextMessage("the maximum force one can get from a flap.",
-        msgCF, w0, h0 + msgStep * 7f,
-        HA.Left, VA.Center, 8, 20),
+        msgCF, w0, h0 + msgStep * 7f, HA.Left, VA.Center)
+        .enabledBetween(8, 20),
       TextMessage("If the force is not enough, we can increase the flap!",
-        msgCF, w0, h0 + msgStep * 8.5f,
-        HA.Left, VA.Center, 12, 20),
+        msgCF, w0, h0 + msgStep * 8.5f, HA.Left, VA.Center)
+        .enabledBetween(12, 20),
       TextMessage("The bigger the flap, the bigger the force at the same angle,",
-        msgCF, w0, h0 + msgStep * 9.5f,
-        HA.Left, VA.Center, 12, 20),
+        msgCF, w0, h0 + msgStep * 9.5f, HA.Left, VA.Center)
+        .enabledBetween(12, 20),
       TextMessage("and the arm also increases. So the attitude control can be better!",
-        msgCF, w0, h0 + msgStep * 10.5f,
-        HA.Left, VA.Center, 12, 20),
+        msgCF, w0, h0 + msgStep * 10.5f, HA.Left, VA.Center)
+        .enabledBetween(12, 20),
 
       Fade(timeOff = 20.0, timeOn = 19.5),
     )

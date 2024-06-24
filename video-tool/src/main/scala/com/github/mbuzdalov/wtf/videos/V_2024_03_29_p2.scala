@@ -41,26 +41,26 @@ object V_2024_03_29_p2:
 
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("March 29, 2024, test 2 (actually 4)",
-        msgCF, width * 0.5f, height * 0.25f,
-        HA.Center, VA.Center, 1, 10),
+        msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
+        .enabledBetween(1, 10),
       TextMessage("To reduce maximum angle accelerations, I changed",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 1.5f,
-        HA.Center, VA.Center, 3, 10),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 1.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 10),
       TextMessage("ATC_ACCEL_{R,P}_MAX from 220000 to 40000.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 2.5f,
-        HA.Center, VA.Center, 3, 10),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 2.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 10),
       TextMessage("The previous values were recommended defaults for a 5-inch quadcopter.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 4.0f,
-        HA.Center, VA.Center, 5, 10),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 4.0f, HA.Center, VA.Center)
+        .enabledBetween(5, 10),
       TextMessage("40000 = 400 degrees / s^2 were chosen by meditating on the logs.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 5.0f,
-        HA.Center, VA.Center, 5, 10),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 5.0f, HA.Center, VA.Center)
+        .enabledBetween(5, 10),
       TextMessage("Still, noticeable overshoots happen in pitch and roll",
-        msgCF, width * 0.5f, height * 0.6f,
-        HA.Center, VA.Center, 15, 30),
+        msgCF, width * 0.5f, height * 0.6f, HA.Center, VA.Center)
+        .enabledBetween(15, 30),
       TextMessage("with flaps forced to move to their maximum angles...",
-        msgCF, width * 0.5f, height * 0.6f + msgStep * 1.0f,
-        HA.Center, VA.Center, 15, 30),
+        msgCF, width * 0.5f, height * 0.6f + msgStep * 1.0f, HA.Center, VA.Center)
+        .enabledBetween(15, 30),
       new Fade(timeOn = 0.5, timeOff = 0),
       new Fade(timeOn = 61.7, timeOff = 62.2),
     )

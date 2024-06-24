@@ -39,38 +39,38 @@ object V_2024_04_14_p1:
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(10, 10, 50), new Color(255, 255, 255, 50))
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("April 14, 2024, test #1.",
-        msgCF, width * 0.5f, height * 0.25f,
-        HA.Center, VA.Center, 1, 8),
+        msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
+        .enabledBetween(1, 8),
       TextMessage("While overshooting, CX7 builds the difference",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 1.0f,
-        HA.Center, VA.Center, 2, 8),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 1.0f, HA.Center, VA.Center)
+        .enabledBetween(2, 8),
       TextMessage(" between actual and desired angles mostly gradually.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 2.0f,
-        HA.Center, VA.Center, 2, 8),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 2.0f, HA.Center, VA.Center)
+        .enabledBetween(2, 8),
       TextMessage("One of the ways to make it react quicker is to increase",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 3.0f,
-        HA.Center, VA.Center, 2, 8),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 3.0f, HA.Center, VA.Center)
+        .enabledBetween(2, 8),
       TextMessage("the angle P term. Here, ATC_ANG_{PIT,RLL}_P: 4.5 ➞ 9.0.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 4.0f,
-        HA.Center, VA.Center, 2, 8),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 4.0f, HA.Center, VA.Center)
+        .enabledBetween(2, 8),
       TextMessage("For roll, the control definitely feels better!",
-        msgCF, width * 0.5f, height * 0.8f,
-        HA.Center, VA.Center, 13, 17),
+        msgCF, width * 0.5f, height * 0.8f, HA.Center, VA.Center)
+        .enabledBetween(13, 17),
       TextMessage("For pitch, not so much.",
-        msgCF, width * 0.5f, height * 0.8f,
-        HA.Center, VA.Center, 20, 23),
+        msgCF, width * 0.5f, height * 0.8f, HA.Center, VA.Center)
+        .enabledBetween(20, 23),
       TextMessage("Quick changes in pitch are sloppy, long changes seem somewhat better.",
-        msgCF, width * 0.5f, height * 0.8f,
-        HA.Center, VA.Center, 30, 40),
+        msgCF, width * 0.5f, height * 0.8f, HA.Center, VA.Center)
+        .enabledBetween(30, 40),
       TextMessage("I liked this change!",
-        msgCF, width * 0.5f, height * 0.4f,
-        HA.Center, VA.Center, 63, 69),
+        msgCF, width * 0.5f, height * 0.4f, HA.Center, VA.Center)
+        .enabledBetween(63, 69),
       TextMessage("Generally, ATC_ANG_*_P values are increased by AutoTune,",
-        msgCF, width * 0.5f, height * 0.4f + msgStep * 1.0f,
-        HA.Center, VA.Center, 64, 69),
+        msgCF, width * 0.5f, height * 0.4f + msgStep * 1.0f, HA.Center, VA.Center)
+        .enabledBetween(64, 69),
       TextMessage("up to 36 in the best cases. Let's try a bigger change...",
-        msgCF, width * 0.5f, height * 0.4f + msgStep * 2.0f,
-        HA.Center, VA.Center, 64, 69),
+        msgCF, width * 0.5f, height * 0.4f + msgStep * 2.0f, HA.Center, VA.Center)
+        .enabledBetween(64, 69),
       Fade(timeOn = 68.9, timeOff = 69.4),
     )
 

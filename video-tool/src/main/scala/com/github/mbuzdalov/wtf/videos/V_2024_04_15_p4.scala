@@ -39,26 +39,26 @@ object V_2024_04_15_p4:
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(10, 10, 50), new Color(255, 255, 255, 50))
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("April 15, 2024, test #2.",
-        msgCF, width * 0.5f, height * 0.25f,
-        HA.Center, VA.Center, 1, 8),
+        msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
+        .enabledBetween(1, 8),
       TextMessage("Pitch rate PIDs are decreased to match the roll's:",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f,
-        HA.Center, VA.Center, 2, 8),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(2, 8),
       TextMessage("ATC_RAT_PIT_{P,I}: 0.03 ➞ 0.022",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 2f,
-        HA.Center, VA.Center, 4, 8),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(4, 8),
       TextMessage("ATC_RAT_PIT_D: 0.007 ➞ 0.005",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 3f,
-        HA.Center, VA.Center, 4, 8),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 3f, HA.Center, VA.Center)
+        .enabledBetween(4, 8),
       TextMessage("Much. Much. Better.",
-        msgCF, width * 0.5f, height * 0.4f,
-        HA.Center, VA.Center, 54, 61),
+        msgCF, width * 0.5f, height * 0.4f, HA.Center, VA.Center)
+        .enabledBetween(54, 61),
       TextMessage("Some pitch oscillations remain, but",
-        msgCF, width * 0.5f, height * 0.4f + msgStep * 1f,
-        HA.Center, VA.Center, 54, 61),
+        msgCF, width * 0.5f, height * 0.4f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(54, 61),
       TextMessage("maybe it can survive outdoor conditions now?",
-        msgCF, width * 0.5f, height * 0.4f + msgStep * 2f,
-        HA.Center, VA.Center, 56, 61),
+        msgCF, width * 0.5f, height * 0.4f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(56, 61),
       Fade(timeOn = 0.5, timeOff = 0.0),
       Fade(timeOn = 61.3, timeOff = 61.8),
     )

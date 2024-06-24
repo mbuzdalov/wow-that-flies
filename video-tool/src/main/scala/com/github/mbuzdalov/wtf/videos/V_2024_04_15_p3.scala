@@ -39,29 +39,29 @@ object V_2024_04_15_p3:
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(10, 10, 50), new Color(255, 255, 255, 50))
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("April 15, 2024, test #1.",
-        msgCF, width * 0.5f, height * 0.25f,
-        HA.Center, VA.Center, 1, 7),
+        msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
+        .enabledBetween(1, 7),
       TextMessage("Flying new flaps.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f,
-        HA.Center, VA.Center, 2, 7),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(2, 7),
       TextMessage("Apart from servo trimming, no parameters were changed.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 2f,
-        HA.Center, VA.Center, 4, 7),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(4, 7),
       TextMessage("You can clearly see small oscillations in pitch.",
-        msgCF, width * 0.5f, height * 0.7f,
-        HA.Center, VA.Center, 12, 18),
+        msgCF, width * 0.5f, height * 0.7f, HA.Center, VA.Center)
+        .enabledBetween(12, 18),
       TextMessage("With new flaps, the old PIDs are too big.",
-        msgCF, width * 0.5f, height * 0.7f + msgStep * 1f,
-        HA.Center, VA.Center, 12, 18),
+        msgCF, width * 0.5f, height * 0.7f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(12, 18),
       TextMessage("Overshoots are nearly gone in both pitch and roll.",
-        msgCF, width * 0.5f, height * 0.7f,
-        HA.Center, VA.Center, 33, 38),
+        msgCF, width * 0.5f, height * 0.7f, HA.Center, VA.Center)
+        .enabledBetween(33, 38),
       TextMessage("I like the new flaps!",
-        msgCF, width * 0.5f, height * 0.6f,
-        HA.Center, VA.Center, 78, 83),
+        msgCF, width * 0.5f, height * 0.6f, HA.Center, VA.Center)
+        .enabledBetween(78, 83),
       TextMessage("Let's just back off the pitch PIDs a little...",
-        msgCF, width * 0.5f, height * 0.6f + msgStep * 1f,
-        HA.Center, VA.Center, 78, 83),
+        msgCF, width * 0.5f, height * 0.6f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(78, 83),
       Fade(timeOn = 0.5, timeOff = 0.0),
       Fade(timeOn = 84.1, timeOff = 84.5),
     )

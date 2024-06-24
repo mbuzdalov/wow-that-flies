@@ -40,35 +40,35 @@ object V_2024_04_14_p2:
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(10, 10, 50), new Color(255, 255, 255, 50))
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("April 14, 2024, test #2.",
-        msgCF, width * 0.5f, height * 0.25f,
-        HA.Center, VA.Center, 1, 7),
+        msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
+        .enabledBetween(1, 7),
       TextMessage("This time, ATC_ANG_{PIT,RLL}_P are increased to 16.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 1.0f,
-        HA.Center, VA.Center, 3, 7),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 1.0f, HA.Center, VA.Center)
+        .enabledBetween(3, 7),
       TextMessage("Pitch is still not very good, as you can see",
-        msgCF, width * 0.5f, height * 0.7f,
-        HA.Center, VA.Center, 11, 19),
+        msgCF, width * 0.5f, height * 0.7f, HA.Center, VA.Center)
+        .enabledBetween(11, 19),
       TextMessage("in 3",
-        msgCF, width * 0.5f - msgFontSize * 2.5f, height * 0.7f + msgStep * 1f,
-        HA.Center, VA.Center, 13.5 withSpeed 100, 19),
+        msgCF, width * 0.5f - msgFontSize * 2.5f, height * 0.7f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(13.5 withSpeed 100, 19),
       TextMessage("2",
-        msgCF, width * 0.5f - msgFontSize * 1f, height * 0.7f + msgStep * 1f,
-        HA.Center, VA.Center, 14.5 withSpeed 100, 19),
+        msgCF, width * 0.5f - msgFontSize * 1f, height * 0.7f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(14.5 withSpeed 100, 19),
       TextMessage("1",
-        msgCF, width * 0.5f - msgFontSize * 0f, height * 0.7f + msgStep * 1f,
-        HA.Center, VA.Center, 15.5 withSpeed 100, 19),
+        msgCF, width * 0.5f - msgFontSize * 0f, height * 0.7f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(15.5 withSpeed 100, 19),
       TextMessage("NOW!",
-        msgCF, width * 0.5f + msgFontSize * 2f, height * 0.7f + msgStep * 1f,
-        HA.Center, VA.Center, 16.5 withSpeed 100, 19),
+        msgCF, width * 0.5f + msgFontSize * 2f, height * 0.7f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(16.5 withSpeed 100, 19),
       TextMessage("But roll is really nice now...",
-        msgCF, width * 0.5f, height * 0.7f,
-        HA.Center, VA.Center, 27, 32),
+        msgCF, width * 0.5f, height * 0.7f, HA.Center, VA.Center)
+        .enabledBetween(27, 32),
       TextMessage("Let's keep these angle P-terms at 16 for now.",
-        msgCF, width * 0.5f, height * 0.4f,
-        HA.Center, VA.Center, 71, 76),
+        msgCF, width * 0.5f, height * 0.4f, HA.Center, VA.Center)
+        .enabledBetween(71, 76),
       TextMessage("They give some hope.",
-        msgCF, width * 0.5f, height * 0.4f + msgStep * 1f,
-        HA.Center, VA.Center, 72, 76),
+        msgCF, width * 0.5f, height * 0.4f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(72, 76),
       Fade(timeOn = 0.5, timeOff = 0.0),
       Fade(timeOn = 76.8, timeOff = 77.3),
     )

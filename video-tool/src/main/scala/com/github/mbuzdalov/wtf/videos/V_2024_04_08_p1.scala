@@ -40,45 +40,45 @@ object V_2024_04_08_p1:
     val msgCF = TextMessage.ColorFont(msgFontSize, msgColor, new Color(0, 0, 0, 120))
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("April 08, 2024",
-        msgCF, width * 0.5f, height * 0.2f,
-        HA.Center, VA.Center, 2, 15),
+        msgCF, width * 0.5f, height * 0.2f, HA.Center, VA.Center)
+        .enabledBetween(2, 15),
       TextMessage("Normally I would perform AutoTune outdoors,",
-        msgCF, width * 0.5f, height * 0.2f + msgStep * 1.5f,
-        HA.Center, VA.Center, 3, 15),
+        msgCF, width * 0.5f, height * 0.2f + msgStep * 1.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 15),
       TextMessage("in no wind and no rain, especially for larger vehicles.",
-        msgCF, width * 0.5f, height * 0.2f + msgStep * 2.5f,
-        HA.Center, VA.Center, 3, 15),
+        msgCF, width * 0.5f, height * 0.2f + msgStep * 2.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 15),
       TextMessage("This is the first filmed attempt for CX7.",
-        msgCF, width * 0.5f, height * 0.2f + msgStep * 3.5f,
-        HA.Center, VA.Center, 3, 15),
+        msgCF, width * 0.5f, height * 0.2f + msgStep * 3.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 15),
       TextMessage("In ArduPilot, AutoTune is a flight mode that runs atop AltHold,",
-        msgCF, width * 0.5f, height * 0.2f + msgStep * 5f,
-        HA.Center, VA.Center, 6, 15),
+        msgCF, width * 0.5f, height * 0.2f + msgStep * 5f, HA.Center, VA.Center)
+        .enabledBetween(6, 15),
       TextMessage("another mode where the altitude is kept stable, and pilot does pitch and roll.",
-        msgCF, width * 0.5f, height * 0.2f + msgStep * 6f,
-        HA.Center, VA.Center, 6, 15),
+        msgCF, width * 0.5f, height * 0.2f + msgStep * 6f, HA.Center, VA.Center)
+        .enabledBetween(6, 15),
       TextMessage("On no pilot input, AutoTune performs twitches with different parameters",
-        msgCF, width * 0.5f, height * 0.2f + msgStep * 7f,
-        HA.Center, VA.Center, 6, 15),
+        msgCF, width * 0.5f, height * 0.2f + msgStep * 7f, HA.Center, VA.Center)
+        .enabledBetween(6, 15),
       TextMessage("and measures the response. The pilot only keeps the craft away from obstacles.",
-        msgCF, width * 0.5f, height * 0.2f + msgStep * 8f,
-        HA.Center, VA.Center, 6, 15),
+        msgCF, width * 0.5f, height * 0.2f + msgStep * 8f, HA.Center, VA.Center)
+        .enabledBetween(6, 15),
 
       Fade(timeOn = 23, timeOff = 23.5),
 
       TextMessage("Generalized Iceberg Theorem:",
         msgCF, width * 0.5f, height * 0.3f,
-        HA.Center, VA.Center, 18, 27),
+        HA.Center, VA.Center).enabledBetween(18, 27),
       TextMessage("Seven eighths of everything can't be seen.",
         msgCF, width * 0.5f, height * 0.3f + msgStep * 1f,
-        HA.Center, VA.Center, 18, 27),
+        HA.Center, VA.Center).enabledBetween(18, 27),
 
       TextMessage("Bernstein's Second Law:",
         msgCF, width * 0.5f, height * 0.5f,
-        HA.Center, VA.Center, 22, 27),
+        HA.Center, VA.Center).enabledBetween(22, 27),
       TextMessage("A falling body always rolls to the most inaccessible spot.",
         msgCF, width * 0.5f, height * 0.5f + msgStep * 1f,
-        HA.Center, VA.Center, 22, 27),
+        HA.Center, VA.Center).enabledBetween(22, 27),
     )
 
     props.runVideo(allGraphics)

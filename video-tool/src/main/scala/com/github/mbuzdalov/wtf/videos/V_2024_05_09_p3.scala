@@ -43,32 +43,32 @@ object V_2024_05_09_p3:
 
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot, yawPlot,
       TextMessage("May 09, 2024, test #2.",
-        msgCF, width * 0.5f, height * 0.15f,
-        HA.Center, VA.Center, 1, 6),
+        msgCF, width * 0.5f, height * 0.15f, HA.Center, VA.Center)
+        .enabledBetween(1, 6),
       TextMessage("I wanted to get higher and move around more,",
-        msgCF, width * 0.5f, height * 0.15f + msgStep * 1f,
-        HA.Center, VA.Center, 2, 6),
+        msgCF, width * 0.5f, height * 0.15f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(2, 6),
       TextMessage("but the wind decided otherwise.",
-        msgCF, width * 0.5f, height * 0.15f + msgStep * 2f,
-        HA.Center, VA.Center, 2, 6),
+        msgCF, width * 0.5f, height * 0.15f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(2, 6),
       TextMessage("Watch for the yaw incident",
-        msgCF, width * 0.5f, height * 0.15f,
-        HA.Center, VA.Center, 17, 23.5),
+        msgCF, width * 0.5f, height * 0.15f, HA.Center, VA.Center)
+        .enabledBetween(17, 23.5),
       TextMessage("in 3",
-        msgCF, width * 0.5f - msgFontSize * 2.5f, height * 0.15f + msgStep * 1f,
-        HA.Center, VA.Center, 18.5 withSpeed 100, 23.5),
+        msgCF, width * 0.5f - msgFontSize * 2.5f, height * 0.15f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(18.5 withSpeed 100, 23.5),
       TextMessage("2",
-        msgCF, width * 0.5f - msgFontSize * 1f, height * 0.15f + msgStep * 1f,
-        HA.Center, VA.Center, 19.5 withSpeed 100, 23.5),
+        msgCF, width * 0.5f - msgFontSize * 1f, height * 0.15f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(19.5 withSpeed 100, 23.5),
       TextMessage("1",
-        msgCF, width * 0.5f - msgFontSize * 0f, height * 0.15f + msgStep * 1f,
-        HA.Center, VA.Center, 20.5 withSpeed 100, 23.5),
+        msgCF, width * 0.5f - msgFontSize * 0f, height * 0.15f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(20.5 withSpeed 100, 23.5),
       TextMessage("NOW!",
-        msgCF, width * 0.5f + msgFontSize * 2f, height * 0.15f + msgStep * 1f,
-        HA.Center, VA.Center, 21.5 withSpeed 100, 23.5),
+        msgCF, width * 0.5f + msgFontSize * 2f, height * 0.15f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(21.5 withSpeed 100, 23.5),
       TextMessage("Things are about to go nuts...",
-        msgCF, width * 0.5f, height * 0.45f,
-        HA.Center, VA.Center, 26, 28.6),
+        msgCF, width * 0.5f, height * 0.45f, HA.Center, VA.Center)
+        .enabledBetween(26, 28.6),
 
       Fade(timeOn = 0.5, timeOff = 0),
       Fade(timeOn = 33.5, timeOff = 34),

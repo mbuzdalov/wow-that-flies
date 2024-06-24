@@ -40,31 +40,31 @@ object V_2024_04_08_p3:
     val msgCF2 = TextMessage.ColorFont(msgFontSize, new Color(240, 240, 0))
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("April 08, 2024",
-        msgCF1, width * 0.5f, height * 0.2f,
-        HA.Center, VA.Center, 1, 8),
+        msgCF1, width * 0.5f, height * 0.2f, HA.Center, VA.Center)
+        .enabledBetween(1, 8),
       TextMessage("After re-printing the broken leg and re-assembling CX7,",
-        msgCF1, width * 0.5f, height * 0.7f,
-        HA.Center, VA.Center, 3, 8),
+        msgCF1, width * 0.5f, height * 0.7f, HA.Center, VA.Center)
+        .enabledBetween(3, 8),
       TextMessage("I also found out that SERVO_RATE is set to just 50.",
-        msgCF1, width * 0.5f, height * 0.7f + msgStep * 1f,
-        HA.Center, VA.Center, 3, 8),
+        msgCF1, width * 0.5f, height * 0.7f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(3, 8),
       TextMessage("For digital servos, it's safe to set it to 400, which I did.",
-        msgCF1, width * 0.5f, height * 0.7f + msgStep * 2f,
-        HA.Center, VA.Center, 3, 8),
+        msgCF1, width * 0.5f, height * 0.7f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(3, 8),
 
       TextMessage("Well, it can tolerate inputs for more than 20 degrees in pitch.",
-        msgCF1, width * 0.5f, height * 0.7f,
-        HA.Center, VA.Center, 31, 37),
+        msgCF1, width * 0.5f, height * 0.7f, HA.Center, VA.Center)
+        .enabledBetween(31, 37),
       TextMessage("Maybe the 400Hz change was useful. Pitch still suffers though.",
-        msgCF1, width * 0.5f, height * 0.7f + msgStep * 1f,
-        HA.Center, VA.Center, 31, 37),
+        msgCF1, width * 0.5f, height * 0.7f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(31, 37),
 
       TextMessage("The landing of CX7 was also not successful due to the pilot's error.",
-        msgCF2, width * 0.5f, height * 0.5f,
-        HA.Center, VA.Center, 40, 47),
+        msgCF2, width * 0.5f, height * 0.5f, HA.Center, VA.Center)
+        .enabledBetween(40, 47),
       TextMessage("Someday I will have to invest in a proper tripod. Someday.",
-        msgCF2, width * 0.5f, height * 0.5f + msgStep * 1f,
-        HA.Center, VA.Center, 40, 47),
+        msgCF2, width * 0.5f, height * 0.5f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(40, 47),
     )
 
     props.runVideo(allGraphics)

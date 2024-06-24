@@ -39,37 +39,37 @@ object V_2024_04_09_p1:
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(10, 10, 50), new Color(255, 255, 255, 50))
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("April 09, 2024, test #1.",
-        msgCF, width * 0.5f, height * 0.25f,
-        HA.Center, VA.Center, 1, 6),
+        msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
+        .enabledBetween(1, 6),
       TextMessage("Yet again trying to decrease the rate I-terms,",
-        msgCF, width * 0.5f, height * 0.25f + 1.0f * msgStep,
-        HA.Center, VA.Center, 1, 6),
+        msgCF, width * 0.5f, height * 0.25f + 1.0f * msgStep, HA.Center, VA.Center)
+        .enabledBetween(1, 6),
       TextMessage("as they may wind up in the beginning of the twitch and hit at the end.",
-        msgCF, width * 0.5f, height * 0.25f + 2.0f * msgStep,
-        HA.Center, VA.Center, 1, 6),
+        msgCF, width * 0.5f, height * 0.25f + 2.0f * msgStep, HA.Center, VA.Center)
+        .enabledBetween(1, 6),
       TextMessage("ATC_RAT_{PIT,RLL}_I: 0.2 ➞ 0.02",
-        msgCF, width * 0.5f, height * 0.25f + 3.0f * msgStep,
-        HA.Center, VA.Center, 1, 6),
+        msgCF, width * 0.5f, height * 0.25f + 3.0f * msgStep, HA.Center, VA.Center)
+        .enabledBetween(1, 6),
 
       TextMessage("Well, looking at both pitch and roll, we see that decreasing the I-terms",
-        msgCF, width * 0.5f, height * 0.8f,
-        HA.Center, VA.Center, 12, 25),
+        msgCF, width * 0.5f, height * 0.8f, HA.Center, VA.Center)
+        .enabledBetween(12, 25),
       TextMessage("is rather bad, as actual values are constantly higher than desired ones.",
-        msgCF, width * 0.5f, height * 0.8f + 1.0f * msgStep,
-        HA.Center, VA.Center, 12, 25),
+        msgCF, width * 0.5f, height * 0.8f + 1.0f * msgStep, HA.Center, VA.Center)
+        .enabledBetween(12, 25),
       TextMessage("Especially right now, and look at the pitch...",
-        msgCF, width * 0.5f, height * 0.8f + 2.0f * msgStep,
-        HA.Center, VA.Center, 14, 25),
+        msgCF, width * 0.5f, height * 0.8f + 2.0f * msgStep, HA.Center, VA.Center)
+        .enabledBetween(14, 25),
 
       TextMessage("The control was sloppy, to say the least.",
-        msgCF, width * 0.5f, height * 0.3f,
-        HA.Center, VA.Center, 60, 67),
+        msgCF, width * 0.5f, height * 0.3f, HA.Center, VA.Center)
+        .enabledBetween(60, 67),
       TextMessage("For the next test, the I-terms were restored back to 0.2.",
-        msgCF, width * 0.5f, height * 0.3f + 1.0f * msgStep,
-        HA.Center, VA.Center, 60, 67),
+        msgCF, width * 0.5f, height * 0.3f + 1.0f * msgStep, HA.Center, VA.Center)
+        .enabledBetween(60, 67),
       TextMessage("I had another thing to test for today: one more notch filter.",
-        msgCF, width * 0.5f, height * 0.3f + 2.0f * msgStep,
-        HA.Center, VA.Center, 63, 67),
+        msgCF, width * 0.5f, height * 0.3f + 2.0f * msgStep, HA.Center, VA.Center)
+        .enabledBetween(63, 67),
       Fade(timeOn = 67.1, timeOff = 67.6)
     )
 

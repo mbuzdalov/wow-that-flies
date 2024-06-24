@@ -39,31 +39,31 @@ object V_2024_04_08_p4:
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(10, 10, 50))
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("Flying the same setup again.",
-        msgCF, width * 0.5f, height * 0.23f,
-        HA.Center, VA.Center, 1, 7),
+        msgCF, width * 0.5f, height * 0.23f, HA.Center, VA.Center)
+        .enabledBetween(1, 7),
       TextMessage("Just because a test ending in a crash cannot be called successful :)",
-        msgCF, width * 0.5f, height * 0.23f + msgStep * 1f,
-        HA.Center, VA.Center, 2, 7),
+        msgCF, width * 0.5f, height * 0.23f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(2, 7),
 
       TextMessage("This time, apart from short twitches,",
-        msgCF, width * 0.5f, height * 0.8f,
-        HA.Center, VA.Center, 23, 28),
+        msgCF, width * 0.5f, height * 0.8f, HA.Center, VA.Center)
+        .enabledBetween(23, 28),
       TextMessage("I also perform longer moves with the same attitude.",
-        msgCF, width * 0.5f, height * 0.8f + msgStep * 1f,
-        HA.Center, VA.Center, 23, 28),
+        msgCF, width * 0.5f, height * 0.8f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(23, 28),
       TextMessage("The reason is that CX7 tracks long moves much worse than short ones.",
-        msgCF, width * 0.5f, height * 0.8f + msgStep * 2f,
-        HA.Center, VA.Center, 23, 28),
+        msgCF, width * 0.5f, height * 0.8f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(23, 28),
 
       TextMessage("Well, CX7 is alive and kicking,",
-        msgCF, width * 0.5f, height * 0.33f,
-        HA.Center, VA.Center, 87, 94),
+        msgCF, width * 0.5f, height * 0.33f, HA.Center, VA.Center)
+        .enabledBetween(87, 94),
       TextMessage("and the 400Hz change is most likely beneficial.",
-        msgCF, width * 0.5f, height * 0.33f + msgStep * 1f,
-        HA.Center, VA.Center, 87, 94),
+        msgCF, width * 0.5f, height * 0.33f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(87, 94),
       TextMessage("But more manual tuning is needed before attempting AutoTune again.",
-        msgCF, width * 0.5f, height * 0.33f + msgStep * 2f,
-        HA.Center, VA.Center, 87, 94),
+        msgCF, width * 0.5f, height * 0.33f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(87, 94),
     )
 
     props.runVideo(allGraphics)

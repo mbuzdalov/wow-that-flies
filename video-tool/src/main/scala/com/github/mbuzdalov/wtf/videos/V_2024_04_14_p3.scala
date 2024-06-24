@@ -39,47 +39,47 @@ object V_2024_04_14_p3:
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(10, 10, 50), new Color(255, 255, 255, 50))
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("April 14, 2024, test #3.",
-        msgCF, width * 0.5f, height * 0.25f,
-        HA.Center, VA.Center, 1, 12),
+        msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
+        .enabledBetween(1, 12),
       TextMessage("I felt I can increase some gains now for sharper control:",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f,
-        HA.Center, VA.Center, 2, 12),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(2, 12),
       TextMessage("ATC_RAT_RLL_{P,I}: 0.2 ➞ 0.22",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 2f,
-        HA.Center, VA.Center, 4, 12),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(4, 12),
       TextMessage("ATC_RAT_RLL_D: 0.004 ➞ 0.005",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 3f,
-        HA.Center, VA.Center, 4, 12),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 3f, HA.Center, VA.Center)
+        .enabledBetween(4, 12),
       TextMessage("ATC_RAT_PIT_{P,I}: 0.2 ➞ 0.3",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 4f,
-        HA.Center, VA.Center, 6, 12),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 4f, HA.Center, VA.Center)
+        .enabledBetween(6, 12),
       TextMessage("ATC_RAT_{PIT,RLL}_FLTD: 20 ➞ 40",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 5f,
-        HA.Center, VA.Center, 8, 12),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 5f, HA.Center, VA.Center)
+        .enabledBetween(8, 12),
       TextMessage("Roll is still quite fine,",
-        msgCF, width * 0.5f, height * 0.35f,
-        HA.Center, VA.Center, 50, 56),
+        msgCF, width * 0.5f, height * 0.35f, HA.Center, VA.Center)
+        .enabledBetween(50, 56),
       TextMessage("pitch is still quite miserable in one of the directions...",
-        msgCF, width * 0.5f, height * 0.35f + msgStep * 1.0f,
-        HA.Center, VA.Center, 50, 56),
+        msgCF, width * 0.5f, height * 0.35f + msgStep * 1.0f, HA.Center, VA.Center)
+        .enabledBetween(50, 56),
       TextMessage("Positive pitch is quite nice.",
-        msgCF, width * 0.5f, height * 0.8f,
-        HA.Center, VA.Center, 62, 70),
+        msgCF, width * 0.5f, height * 0.8f, HA.Center, VA.Center)
+        .enabledBetween(62, 70),
       TextMessage("Negative pitch is a shame.",
-        msgCF, width * 0.5f, height * 0.8f + msgStep * 1f,
-        HA.Center, VA.Center, 65, 70),
+        msgCF, width * 0.5f, height * 0.8f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(65, 70),
       TextMessage("Well, it's definitely better than last time.",
-        msgCF, width * 0.5f, height * 0.35f,
-        HA.Center, VA.Center, 124, 132),
+        msgCF, width * 0.5f, height * 0.35f, HA.Center, VA.Center)
+        .enabledBetween(124, 132),
       TextMessage("But based on the pitch/roll difference,",
-        msgCF, width * 0.5f, height * 0.35f + msgStep * 1f,
-        HA.Center, VA.Center, 125.5, 132),
+        msgCF, width * 0.5f, height * 0.35f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(125.5, 132),
       TextMessage("it seems that I am overlooking some design flaw.",
-        msgCF, width * 0.5f, height * 0.35f + msgStep * 2f,
-        HA.Center, VA.Center, 125.5, 132),
+        msgCF, width * 0.5f, height * 0.35f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(125.5, 132),
       TextMessage("Which one? You will see it in the next video...",
-        msgCF, width * 0.5f, height * 0.35f + msgStep * 3f,
-        HA.Center, VA.Center, 127, 132),
+        msgCF, width * 0.5f, height * 0.35f + msgStep * 3f, HA.Center, VA.Center)
+        .enabledBetween(127, 132),
       Fade(timeOn = 0.5, timeOff = 0.0),
       Fade(timeOn = 131.9, timeOff = 132.4),
     )

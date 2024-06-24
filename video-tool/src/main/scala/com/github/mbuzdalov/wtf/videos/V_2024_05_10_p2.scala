@@ -42,28 +42,28 @@ object V_2024_05_10_p2:
 
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot, yawPlot,
       TextMessage("Now, it's time to fly FPV,",
-        msgCF, width * 0.5f, height * 0.15f,
-        HA.Center, VA.Center, 1, 5),
+        msgCF, width * 0.5f, height * 0.15f, HA.Center, VA.Center)
+        .enabledBetween(1, 5),
       TextMessage("for the first time.",
-        msgCF, width * 0.5f, height * 0.15f + msgStep * 1f,
-        HA.Center, VA.Center, 1, 5),
+        msgCF, width * 0.5f, height * 0.15f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(1, 5),
 
       TextMessage("I feel confident enough",
-        msgCF, width * 0.5f, height * 0.15f,
-        HA.Center, VA.Center, 55.5, 60.5),
+        msgCF, width * 0.5f, height * 0.15f, HA.Center, VA.Center)
+        .enabledBetween(55.5, 60.5),
       TextMessage("to explore the trees...",
-        msgCF, width * 0.5f, height * 0.15f + msgStep * 1f,
-        HA.Center, VA.Center, 55.5, 60.5),
+        msgCF, width * 0.5f, height * 0.15f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(55.5, 60.5),
 
       TextMessage("Well, this was good, for the first attempt.",
-        msgCF, width * 0.5f, height * 0.15f,
-        HA.Center, VA.Center, 220, 229),
+        msgCF, width * 0.5f, height * 0.15f, HA.Center, VA.Center)
+        .enabledBetween(220, 229),
       TextMessage("More adjustments are needed though",
-        msgCF, width * 0.5f, height * 0.15f + msgStep * 1f,
-        HA.Center, VA.Center, 224, 229),
+        msgCF, width * 0.5f, height * 0.15f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(224, 229),
       TextMessage("to fly Acro. Stay tuned!",
-        msgCF, width * 0.5f, height * 0.15f + msgStep * 2f,
-        HA.Center, VA.Center, 224, 229),
+        msgCF, width * 0.5f, height * 0.15f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(224, 229),
 
       Fade(timeOn = 0.5, timeOff = 0),
       Fade(timeOn = 229.5, timeOff = 230),

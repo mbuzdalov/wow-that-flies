@@ -46,40 +46,40 @@ object V_2024_06_09_p2:
 
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot, servoPlot, yawPlot,
       TextMessage("PIDs were clearly too low.",
-        msgCF, width * 0.5f, height * 0.25f,
-        HA.Center, VA.Center, 1, 8),
+        msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
+        .enabledBetween(1, 8),
       TextMessage("Pitch and roll rate P&I now increased from 0.1 to 0.2.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f,
-        HA.Center, VA.Center, 1, 8),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(1, 8),
 
       TextMessage("This was clearly better.",
-        msgCF, width * 0.5f, height * 0.25f,
-        HA.Center, VA.Center, 21, 30),
+        msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
+        .enabledBetween(21, 30),
       TextMessage("Not quite 'Basically Flyable (c)', but close to that.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f,
-        HA.Center, VA.Center, 21, 30),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(21, 30),
       TextMessage("Yaw drifted because the compass readings were poor.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 2.5f,
-        HA.Center, VA.Center, 24, 30),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 2.5f, HA.Center, VA.Center)
+        .enabledBetween(24, 30),
       TextMessage("Let's try it one more time,",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 4f,
-        HA.Center, VA.Center, 27, 30),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 4f, HA.Center, VA.Center)
+        .enabledBetween(27, 30),
       TextMessage("to get more data.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 5f,
-        HA.Center, VA.Center, 27, 30),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 5f, HA.Center, VA.Center)
+        .enabledBetween(27, 30),
 
       TextMessage("Definitely needs some tuning",
-        msgCF, width * 0.5f, height * 0.25f,
-        HA.Center, VA.Center, 48, 57),
+        msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
+        .enabledBetween(48, 57),
       TextMessage("before I let it fall",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f,
-        HA.Center, VA.Center, 48, 57),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(48, 57),
       TextMessage("and land autonomously.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 2f,
-        HA.Center, VA.Center, 48, 57),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(48, 57),
       TextMessage("But it is nice that it flies.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 3.5f,
-        HA.Center, VA.Center, 53, 57),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 3.5f, HA.Center, VA.Center)
+        .enabledBetween(53, 57),
 
       Fade(timeOn = 0.5, timeOff = 0),
       Fade(timeOn = 57.8, timeOff = 58.3),

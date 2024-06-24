@@ -37,37 +37,37 @@ object V_2024_06_23_p1:
 
     val allGraphics = GraphicsConsumer.compose(sticks, pitchPlot.enabledBetween(15, Double.PositiveInfinity),
       TextMessage("June 23, 2024.",
-        msgCF, width * 0.22f, height * 0.06f,
-        HA.Center, VA.Center, 1, 15),
+        msgCF, width * 0.22f, height * 0.06f, HA.Center, VA.Center)
+        .enabledBetween(1, 15),
       TextMessage("Test #1: no side wind.",
-        msgCF, width * 0.22f, height * 0.06f + msgStep * 1f,
-        HA.Center, VA.Center, 1, 15),
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(1, 15),
       TextMessage("CX7 is in Acro, which means",
-        msgCF, width * 0.22f, height * 0.06f + msgStep * 2.5f,
-        HA.Center, VA.Center, 3, 15),
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 2.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 15),
       TextMessage("the sticks control the angular rate.",
-        msgCF, width * 0.22f, height * 0.06f + msgStep * 3.5f,
-        HA.Center, VA.Center, 3, 15),
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 3.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 15),
       TextMessage("The roll flap is disabled",
-        msgCF, width * 0.22f, height * 0.06f + msgStep * 5f,
-        HA.Center, VA.Center, 7, 15),
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 5f, HA.Center, VA.Center)
+        .enabledBetween(7, 15),
       TextMessage("to avoid potential interference.",
-        msgCF, width * 0.22f, height * 0.06f + msgStep * 6f,
-        HA.Center, VA.Center, 7, 15),
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 6f, HA.Center, VA.Center)
+        .enabledBetween(7, 15),
       TextMessage("Yaw control is not disabled,",
-        msgCF, width * 0.22f, height * 0.06f + msgStep * 7.5f,
-        HA.Center, VA.Center, 10, 15),
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 7.5f, HA.Center, VA.Center)
+        .enabledBetween(10, 15),
       TextMessage("which is the reason for sound change",
-        msgCF, width * 0.22f, height * 0.06f + msgStep * 8.5f,
-        HA.Center, VA.Center, 10, 15),
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 8.5f, HA.Center, VA.Center)
+        .enabledBetween(10, 15),
       TextMessage("at some orientations, which, hopefully,",
-        msgCF, width * 0.22f, height * 0.06f + msgStep * 9.5f,
-        HA.Center, VA.Center, 10, 15),
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 9.5f, HA.Center, VA.Center)
+        .enabledBetween(10, 15),
       TextMessage("does not affect the test much.",
-        msgCF, width * 0.22f, height * 0.06f + msgStep * 10.5f,
-        HA.Center, VA.Center, 10, 15),
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 10.5f, HA.Center, VA.Center)
+        .enabledBetween(10, 15),
 
-      //Fade(timeOn = 0.5, timeOff = 0),
+      Fade(timeOn = 0.5, timeOff = 0),
       Fade(timeOn = 148.5, timeOff = 149),
     )
 

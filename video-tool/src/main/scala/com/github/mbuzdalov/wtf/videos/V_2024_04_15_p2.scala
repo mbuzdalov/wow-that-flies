@@ -20,35 +20,35 @@ object V_2024_04_15_p2:
     val allGraphics = GraphicsConsumer.compose(
       ScaleRotateCropBack(t => 1.0 + t / 100, t => 0.0),
       TextMessage("So I made",
-        msgCF, width * 1.0f / 6, height * 0.1f,
-        HA.Center, VA.Center, 1, 13),
+        msgCF, width * 1.0f / 6, height * 0.1f, HA.Center, VA.Center)
+        .enabledBetween(1, 13),
       TextMessage("new flaps.",
-        msgCF, width * 1.0f / 6, height * 0.1f + msgStep * 1f,
-        HA.Center, VA.Center, 1, 13),
+        msgCF, width * 1.0f / 6, height * 0.1f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(1, 13),
       TextMessage("They are 1.5x",
-        msgCF, width * 1.0f / 6, height * 0.1f + msgStep * 2.5f,
-        HA.Center, VA.Center, 3, 13),
+        msgCF, width * 1.0f / 6, height * 0.1f + msgStep * 2.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 13),
       TextMessage("bigger by height.",
-        msgCF, width * 1.0f / 6, height * 0.1f + msgStep * 3.5f,
-        HA.Center, VA.Center, 3, 13),
+        msgCF, width * 1.0f / 6, height * 0.1f + msgStep * 3.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 13),
       TextMessage("Their shape",
-        msgCF, width * 5.0f / 6, height * 0.1f,
-        HA.Center, VA.Center, 6, 13),
+        msgCF, width * 5.0f / 6, height * 0.1f, HA.Center, VA.Center)
+        .enabledBetween(6, 13),
       TextMessage("makes the areas",
-        msgCF, width * 5.0f / 6, height * 0.1f + msgStep * 1f,
-        HA.Center, VA.Center, 6, 13),
+        msgCF, width * 5.0f / 6, height * 0.1f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(6, 13),
       TextMessage("more similar",
-        msgCF, width * 5.0f / 6, height * 0.1f + msgStep * 2f,
-        HA.Center, VA.Center, 6, 13),
+        msgCF, width * 5.0f / 6, height * 0.1f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(6, 13),
       TextMessage("in the center,",
-        msgCF, width * 5.0f / 6, height * 0.1f + msgStep * 3f,
-        HA.Center, VA.Center, 6, 13),
+        msgCF, width * 5.0f / 6, height * 0.1f + msgStep * 3f, HA.Center, VA.Center)
+        .enabledBetween(6, 13),
       TextMessage("where the air",
-        msgCF, width * 5.0f / 6, height * 0.1f + msgStep * 4f,
-        HA.Center, VA.Center, 6, 13),
+        msgCF, width * 5.0f / 6, height * 0.1f + msgStep * 4f, HA.Center, VA.Center)
+        .enabledBetween(6, 13),
       TextMessage("speed is bigger.",
-        msgCF, width * 5.0f / 6, height * 0.1f + msgStep * 5f,
-        HA.Center, VA.Center, 6, 13),
+        msgCF, width * 5.0f / 6, height * 0.1f + msgStep * 5f, HA.Center, VA.Center)
+        .enabledBetween(6, 13),
 
       Fade(timeOff = 0.0, timeOn = 0.5),
       Fade(timeOff = 14.0, timeOn = 13.5),

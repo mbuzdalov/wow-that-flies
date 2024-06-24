@@ -37,50 +37,50 @@ object V_2024_06_23_p2:
 
     val allGraphics = GraphicsConsumer.compose(sticks, pitchPlot.enabledBetween(15, Double.PositiveInfinity),
       TextMessage("June 23, 2024.",
-        msgCF, width * 0.21f, height * 0.06f,
-        HA.Center, VA.Center, 1, 15),
+        msgCF, width * 0.21f, height * 0.06f, HA.Center, VA.Center)
+        .enabledBetween(1, 15),
       TextMessage("Test #2: side wind using a hairdryer.",
-        msgCF, width * 0.21f, height * 0.06f + msgStep * 1f,
-        HA.Center, VA.Center, 1, 15),
+        msgCF, width * 0.21f, height * 0.06f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(1, 15),
       TextMessage("This is a poor man's solution,",
-        msgCF, width * 0.21f, height * 0.06f + msgStep * 2.5f,
-        HA.Center, VA.Center, 8, 15),
+        msgCF, width * 0.21f, height * 0.06f + msgStep * 2.5f, HA.Center, VA.Center)
+        .enabledBetween(8, 15),
       TextMessage("because the flow is quite narrow,",
-        msgCF, width * 0.21f, height * 0.06f + msgStep * 3.5f,
-        HA.Center, VA.Center, 8, 15),
+        msgCF, width * 0.21f, height * 0.06f + msgStep * 3.5f, HA.Center, VA.Center)
+        .enabledBetween(8, 15),
       TextMessage("but this is the best I can do.",
-        msgCF, width * 0.21f, height * 0.06f + msgStep * 4.5f,
-        HA.Center, VA.Center, 8, 15),
+        msgCF, width * 0.21f, height * 0.06f + msgStep * 4.5f, HA.Center, VA.Center)
+        .enabledBetween(8, 15),
 
       TextMessage("The hairdryer is currently off,",
-        msgCF, width * 0.22f, height * 0.06f,
-        HA.Center, VA.Center, 17, 25),
+        msgCF, width * 0.22f, height * 0.06f, HA.Center, VA.Center)
+        .enabledBetween(17, 25),
       TextMessage("while I'm setting throttle",
-        msgCF, width * 0.22f, height * 0.06f + msgStep * 1f,
-        HA.Center, VA.Center, 17, 25),
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(17, 25),
       TextMessage("to be suitable for the test.",
-        msgCF, width * 0.22f, height * 0.06f + msgStep * 2f,
-        HA.Center, VA.Center, 17, 25),
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(17, 25),
 
       TextMessage("The hairdryer is turned on...",
-        msgCF, width * 0.22f, height * 0.06f,
-        HA.Center, VA.Center, 39, 43),
+        msgCF, width * 0.22f, height * 0.06f, HA.Center, VA.Center)
+        .enabledBetween(39, 43),
 
       TextMessage("I forgot to add",
-        msgCF, width * 0.22f, height * 0.06f,
-        HA.Center, VA.Center, 84, 90),
+        msgCF, width * 0.22f, height * 0.06f, HA.Center, VA.Center)
+        .enabledBetween(84, 90),
       TextMessage("some weight to the stand...",
-        msgCF, width * 0.22f, height * 0.06f + msgStep * 1f,
-        HA.Center, VA.Center, 84, 90),
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(84, 90),
 
       TextMessage("The hairdryer is still on,",
-        msgCF, width * 0.22f, height * 0.06f,
-        HA.Center, VA.Center, 140, 145),
+        msgCF, width * 0.22f, height * 0.06f, HA.Center, VA.Center)
+        .enabledBetween(140, 145),
       TextMessage("which is enough to rotate the craft.",
-        msgCF, width * 0.22f, height * 0.06f + msgStep * 1f,
-        HA.Center, VA.Center, 140, 145),
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(140, 145),
 
-      //Fade(timeOn = 0.5, timeOff = 0),
+      Fade(timeOn = 0.5, timeOff = 0),
       Fade(timeOn = 160.5, timeOff = 161),
     )
 

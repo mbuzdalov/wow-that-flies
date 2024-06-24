@@ -42,32 +42,32 @@ object V_2024_05_09_p4:
 
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot, yawPlot,
       TextMessage("May 09, 2024, test #3.",
-        msgCF, width * 0.5f, height * 0.15f,
-        HA.Center, VA.Center, 1, 6),
+        msgCF, width * 0.5f, height * 0.15f, HA.Center, VA.Center)
+        .enabledBetween(1, 6),
       TextMessage("CX7 was quite fine, and it is disappointing",
-        msgCF, width * 0.5f, height * 0.15f + msgStep * 1f,
-        HA.Center, VA.Center, 2, 6),
+        msgCF, width * 0.5f, height * 0.15f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(2, 6),
       TextMessage("to end a test session with a crash.",
-        msgCF, width * 0.5f, height * 0.15f + msgStep * 2f,
-        HA.Center, VA.Center, 2, 6),
+        msgCF, width * 0.5f, height * 0.15f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(2, 6),
       TextMessage("So I performed another test.",
-        msgCF, width * 0.5f, height * 0.15f + msgStep * 3f,
-        HA.Center, VA.Center, 4, 6),
+        msgCF, width * 0.5f, height * 0.15f + msgStep * 3f, HA.Center, VA.Center)
+        .enabledBetween(4, 6),
       TextMessage("Nothing new in this test:",
-        msgCF, width * 0.5f, height * 0.15f,
-        HA.Center, VA.Center, 18, 24.5),
+        msgCF, width * 0.5f, height * 0.15f, HA.Center, VA.Center)
+        .enabledBetween(18, 24.5),
       TextMessage("occasional flap saturation in roll",
-        msgCF, width * 0.5f, height * 0.15f + msgStep * 1f,
-        HA.Center, VA.Center, 18, 24.5),
+        msgCF, width * 0.5f, height * 0.15f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(18, 24.5),
       TextMessage("due to the wind.",
-        msgCF, width * 0.5f, height * 0.15f + msgStep * 2f,
-        HA.Center, VA.Center, 18, 24.5),
+        msgCF, width * 0.5f, height * 0.15f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(18, 24.5),
       TextMessage("But maybe in less windy conditions",
-        msgCF, width * 0.5f, height * 0.15f + msgStep * 3.5f,
-        HA.Center, VA.Center, 21, 24.5),
+        msgCF, width * 0.5f, height * 0.15f + msgStep * 3.5f, HA.Center, VA.Center)
+        .enabledBetween(21, 24.5),
       TextMessage("it would fly just OK?...",
-        msgCF, width * 0.5f, height * 0.15f + msgStep * 4.5f,
-        HA.Center, VA.Center, 21, 24.5),
+        msgCF, width * 0.5f, height * 0.15f + msgStep * 4.5f, HA.Center, VA.Center)
+        .enabledBetween(21, 24.5),
 
       Fade(timeOn = 0.5, timeOff = 0),
       Fade(timeOn = 24.5, timeOff = 25),

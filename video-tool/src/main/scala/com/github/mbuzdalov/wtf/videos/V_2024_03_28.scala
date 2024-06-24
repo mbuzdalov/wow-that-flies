@@ -41,34 +41,34 @@ object V_2024_03_28:
 
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("March 28, 2024",
-        msgCF, width * 0.5f, height * 0.25f,
-        HA.Center, VA.Center, 1, 10),
+        msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
+        .enabledBetween(1, 10),
       TextMessage("To aid investigations, detailed logging was enabled:",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f,
-        HA.Center, VA.Center, 3, 10),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(3, 10),
       TextMessage("INS_RAW_LOG_OPT = 9",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 2.2f,
-        HA.Center, VA.Center, 3, 10),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 2.2f, HA.Center, VA.Center)
+        .enabledBetween(3, 10),
       TextMessage("LOG_BITMASK = 180223",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 3f,
-        HA.Center, VA.Center, 3, 10),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 3f, HA.Center, VA.Center)
+        .enabledBetween(3, 10),
       TextMessage("This is a test run.",
-        msgCF, width * 0.5f, height * 0.25f + msgStep * 4.5f,
-        HA.Center, VA.Center, 3, 10),
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 4.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 10),
 
       TextMessage("Well, CX7 did not crash this time,",
-        msgCF, width * 0.5f, height * 0.33f,
-        HA.Center, VA.Center, 101, 110),
+        msgCF, width * 0.5f, height * 0.33f, HA.Center, VA.Center)
+        .enabledBetween(101, 110),
       TextMessage("but the discrepancy between desired and actual roll and pitch,",
-        msgCF, width * 0.5f, height * 0.33f + msgStep * 1f,
-        HA.Center, VA.Center, 101, 110),
+        msgCF, width * 0.5f, height * 0.33f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(101, 110),
       TextMessage("is quite large even in a gentle flight.",
-        msgCF, width * 0.5f, height * 0.33f + msgStep * 2f,
-        HA.Center, VA.Center, 101, 110),
+        msgCF, width * 0.5f, height * 0.33f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(101, 110),
 
       TextMessage("Stay tuned! (Pun intended)",
-        msgCF, width * 0.5f, height * 0.33f + msgStep * 3.5f,
-        HA.Center, VA.Center, 107, 110),
+        msgCF, width * 0.5f, height * 0.33f + msgStep * 3.5f, HA.Center, VA.Center)
+        .enabledBetween(107, 110),
     )
 
     props.runVideo(allGraphics)

@@ -47,92 +47,92 @@ object V_2024_04_20_p1:
 
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot,
       TextMessage("April 20, 2024, test #1",
-        msgCF, width * 0.5f, height * 0.1f,
-        HA.Center, VA.Center, 1, 8),
+        msgCF, width * 0.5f, height * 0.1f, HA.Center, VA.Center)
+        .enabledBetween(1, 8),
       TextMessage("This is the second attempt to perform AutoTune outdoors.",
-        msgCF, width * 0.5f, height * 0.1f + msgStep * 1.5f,
-        HA.Center, VA.Center, 3, 8),
+        msgCF, width * 0.5f, height * 0.1f + msgStep * 1.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 8),
       TextMessage("Before this test, I did few flights, including an endurance test",
-        msgCF, width * 0.5f, height * 0.1f + msgStep * 2.5f,
-        HA.Center, VA.Center, 3, 8),
+        msgCF, width * 0.5f, height * 0.1f + msgStep * 2.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 8),
       TextMessage("which showed that the hover time of CX7 was 11.5 minutes.",
-        msgCF, width * 0.5f, height * 0.1f + msgStep * 3.5f,
-        HA.Center, VA.Center, 3, 8),
+        msgCF, width * 0.5f, height * 0.1f + msgStep * 3.5f, HA.Center, VA.Center)
+        .enabledBetween(3, 8),
       TextMessage("These tests showed that yaw is sloppy, so PIDs were increased:",
-        msgCF, width * 0.5f, height * 0.1f + msgStep * 5f,
-        HA.Center, VA.Center, 5, 8),
+        msgCF, width * 0.5f, height * 0.1f + msgStep * 5f, HA.Center, VA.Center)
+        .enabledBetween(5, 8),
       TextMessage("ATC_RAT_YAW_P: 0.18 ➞ 0.3, ATC_RAT_YAW_I: 0.018 ➞ 0.03.",
-        msgCF, width * 0.5f, height * 0.1f + msgStep * 6f,
-        HA.Center, VA.Center, 5, 8),
+        msgCF, width * 0.5f, height * 0.1f + msgStep * 6f, HA.Center, VA.Center)
+        .enabledBetween(5, 8),
       TextMessage("It may look like there is no wind,",
-        msgCF, width * 0.5f, height * 0.6f,
-        HA.Center, VA.Center, 17, 22),
+        msgCF, width * 0.5f, height * 0.6f, HA.Center, VA.Center)
+        .enabledBetween(17, 22),
       TextMessage("but there is, and it changes a lot over time.",
-        msgCF, width * 0.5f, height * 0.6f + msgStep * 1f,
-        HA.Center, VA.Center, 17, 22),
+        msgCF, width * 0.5f, height * 0.6f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(17, 22),
       TextMessage("AutoTune is started,",
-        msgCF, width * 0.5f, height * 0.6f,
-        HA.Center, VA.Center, 29, 34),
+        msgCF, width * 0.5f, height * 0.6f, HA.Center, VA.Center)
+        .enabledBetween(29, 34),
       TextMessage("with occasional interruptions to get the vehicle back.",
-        msgCF, width * 0.5f, height * 0.6f + msgStep * 1f,
-        HA.Center, VA.Center, 29, 34),
+        msgCF, width * 0.5f, height * 0.6f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(29, 34),
       TextMessage("You can see the last log message below.",
-        msgCF, width * 0.5f, height * 0.6f,
-        HA.Center, VA.Center, 36, 40),
+        msgCF, width * 0.5f, height * 0.6f, HA.Center, VA.Center)
+        .enabledBetween(36, 40),
       TextMessage("When the copter is out of the view,",
-        msgCF, width * 0.5f, height * 0.6f,
-        HA.Center, VA.Center, 134, 139),
+        msgCF, width * 0.5f, height * 0.6f, HA.Center, VA.Center)
+        .enabledBetween(134, 139),
       TextMessage("relax and enjoy the views...",
-        msgCF, width * 0.5f, height * 0.6f + msgStep * 1f,
-        HA.Center, VA.Center, 134, 139),
+        msgCF, width * 0.5f, height * 0.6f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(134, 139),
       TextMessage("CX7 is playing peek-a-boo, there will be",
-        msgCF, width * 0.5f, height * 0.6f,
-        HA.Center, VA.Center, 144, 148),
+        msgCF, width * 0.5f, height * 0.6f, HA.Center, VA.Center)
+        .enabledBetween(144, 148),
       TextMessage("a blinking orange circle to highlight where it comes back.",
-        msgCF, width * 0.5f, height * 0.6f + msgStep * 1f,
-        HA.Center, VA.Center, 144, 148),
+        msgCF, width * 0.5f, height * 0.6f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(144, 148),
       TextMessage("You may hear overshoot events (and see them in the logs)",
-        msgCF, width * 0.5f, height * 0.6f,
-        HA.Center, VA.Center, 150, 156),
+        msgCF, width * 0.5f, height * 0.6f, HA.Center, VA.Center)
+        .enabledBetween(150, 156),
       TextMessage("when CX7 cannot hold the attitude fighting against the wind.",
-        msgCF, width * 0.5f, height * 0.6f + msgStep * 1f,
-        HA.Center, VA.Center, 150, 156),
+        msgCF, width * 0.5f, height * 0.6f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(150, 156),
       TextMessage("That's why AutoTune is recommended to be done in no wind...",
-        msgCF, width * 0.5f, height * 0.6f,
-        HA.Center, VA.Center, 180, 186),
+        msgCF, width * 0.5f, height * 0.6f, HA.Center, VA.Center)
+        .enabledBetween(180, 186),
 
       TextMessage("You can see that the wind is indeed non-zero.",
-        msgCF, width * 0.5f, height * 0.4f,
-        HA.Center, VA.Center, 200, 205),
+        msgCF, width * 0.5f, height * 0.4f, HA.Center, VA.Center)
+        .enabledBetween(200, 205),
       BlinkingCircle(200, 10, 205, 0, height * 0.3, height * 0.25, height * 0.255, blinkColor),
 
       TextMessage("Normally to tune pitch you need to face the wind,",
-        msgCF, width * 0.5f, height * 0.55f,
-        HA.Center, VA.Center, 244, 250),
+        msgCF, width * 0.5f, height * 0.55f, HA.Center, VA.Center)
+        .enabledBetween(244, 250),
       TextMessage("but I'm now 90 degrees clockwise,",
-        msgCF, width * 0.5f, height * 0.55f + msgStep * 1f,
-        HA.Center, VA.Center, 244, 250),
+        msgCF, width * 0.5f, height * 0.55f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(244, 250),
       TextMessage("because roll is tracked a little bit better.",
-        msgCF, width * 0.5f, height * 0.55f + msgStep * 2f,
-        HA.Center, VA.Center, 244, 250),
+        msgCF, width * 0.5f, height * 0.55f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(244, 250),
       TextMessage("It landed in one piece! :)",
-        msgCF, width * 0.5f, height * 0.4f,
-        HA.Center, VA.Center, 390, 404),
+        msgCF, width * 0.5f, height * 0.4f, HA.Center, VA.Center)
+        .enabledBetween(390, 404),
       TextMessage("It could not land upright, but there was no damage.",
-        msgCF, width * 0.5f, height * 0.4f + msgStep * 1f,
-        HA.Center, VA.Center, 390, 404),
+        msgCF, width * 0.5f, height * 0.4f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(390, 404),
       TextMessage("AutoTune was not finished, but based on the logs,",
-        msgCF, width * 0.5f, height * 0.4f + msgStep * 2.5f,
-        HA.Center, VA.Center, 395, 404),
+        msgCF, width * 0.5f, height * 0.4f + msgStep * 2.5f, HA.Center, VA.Center)
+        .enabledBetween(395, 404),
       TextMessage("one can retrieve the tested PID values and restart from these",
-        msgCF, width * 0.5f, height * 0.4f + msgStep * 3.5f,
-        HA.Center, VA.Center, 395, 404),
+        msgCF, width * 0.5f, height * 0.4f + msgStep * 3.5f, HA.Center, VA.Center)
+        .enabledBetween(395, 404),
       TextMessage("if they are not a complete nonsense.",
-        msgCF, width * 0.5f, height * 0.4f + msgStep * 4.5f,
-        HA.Center, VA.Center, 395, 404),
+        msgCF, width * 0.5f, height * 0.4f + msgStep * 4.5f, HA.Center, VA.Center)
+        .enabledBetween(395, 404),
 
-
-      LastLogMessage(reader, logTimeOffset, logCF, width * 0.2f, height * 0.82f, 8, 410),
+      LastLogMessage(reader, logTimeOffset, logCF, width * 0.2f, height * 0.82f)
+        .enabledBetween(8, 410),
       BlinkingCircle(115.05, 0.2, 116.05, width * 0.76, height * 0.418, blinkInnerR, blinkOuterR, blinkColor),
       BlinkingCircle(139.7, 0.2, 140.7, width, height * 0.542, blinkInnerR, blinkOuterR, blinkColor),
       BlinkingCircle(159.7, 0.2, 160.7, width, height * 0.511, blinkInnerR, blinkOuterR, blinkColor),
