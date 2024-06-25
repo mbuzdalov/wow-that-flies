@@ -51,7 +51,7 @@ object V_2024_06_09_p1:
       TextMessage("Remember the April 12th video?",
         msgCF, width * 0.5f, height * 0.25f + msgStep * 1f, HA.Center, VA.Center)
         .enabledBetween(2, 8),
-      TextMessage("SN1 is now alife.",
+      TextMessage("SN1 is now alive.",
         msgCF, width * 0.5f, height * 0.25f + msgStep * 2.5f, HA.Center, VA.Center)
         .enabledBetween(4, 8),
       TextMessage("This is its first test session.",
