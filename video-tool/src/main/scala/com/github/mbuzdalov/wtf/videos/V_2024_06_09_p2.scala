@@ -79,6 +79,9 @@ object V_2024_06_09_p2:
         .enabledBetween(48, 57),
       TextMessage("But it is nice that it flies.",
         msgCF, width * 0.5f, height * 0.25f + msgStep * 3.5f, HA.Center, VA.Center)
+        .enabledBetween(51, 57),
+      TextMessage("More design details in the next SN1 video.",
+        msgCF, width * 0.5f, height * 0.25f + msgStep * 4.5f, HA.Center, VA.Center)
         .enabledBetween(53, 57),
 
       Fade(timeOn = 0.5, timeOff = 0),
@@ -87,4 +90,3 @@ object V_2024_06_09_p2:
 
     props.runVideo(allGraphics)
   end apply
-
