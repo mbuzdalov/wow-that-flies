@@ -42,7 +42,7 @@ object V_2024_06_09_p1:
 
     val msgFontSize = 36f * width / 1280
     val msgStep = msgFontSize * 1.5f
-    val msgCF = TextMessage.ColorFont(msgFontSize, new Color(10, 50, 10), new Color(255, 255, 255, 120))
+    val msgCF = TextMessage.ColorFont(msgFontSize, new Color(40, 10, 40), new Color(255, 255, 255, 120))
 
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot, servoPlot, yawPlot,
       TextMessage("June 09, 2024.",

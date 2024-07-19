@@ -42,7 +42,7 @@ object V_2024_06_09_p2:
 
     val msgFontSize = 36f * width / 1280
     val msgStep = msgFontSize * 1.5f
-    val msgCF = TextMessage.ColorFont(msgFontSize, new Color(10, 50, 10), new Color(255, 255, 255, 120))
+    val msgCF = TextMessage.ColorFont(msgFontSize, new Color(40, 10, 40), new Color(255, 255, 255, 120))
 
     val allGraphics = GraphicsConsumer.compose(sticks, rollPlot, pitchPlot, servoPlot, yawPlot,
       TextMessage("PIDs were clearly too low.",
@@ -71,10 +71,10 @@ object V_2024_06_09_p2:
       TextMessage("Definitely needs some tuning",
         msgCF, width * 0.5f, height * 0.25f, HA.Center, VA.Center)
         .enabledBetween(48, 57),
-      TextMessage("before I let it fall",
+      TextMessage("before I let it fall and land",
         msgCF, width * 0.5f, height * 0.25f + msgStep * 1f, HA.Center, VA.Center)
         .enabledBetween(48, 57),
-      TextMessage("and land autonomously.",
+      TextMessage("autonomously.",
         msgCF, width * 0.5f, height * 0.25f + msgStep * 2f, HA.Center, VA.Center)
         .enabledBetween(48, 57),
       TextMessage("But it is nice that it flies.",
