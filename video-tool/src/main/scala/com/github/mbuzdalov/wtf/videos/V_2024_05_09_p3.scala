@@ -13,7 +13,7 @@ object V_2024_05_09_p3:
   def apply(props: BasicProperties): Unit =
     val width = props.width
     val height = props.height
-    val reader = props.createLogReader
+    val reader = props.createLogReader()
 
     val autoArmedTimes = reader.autoArmedTimes
     require(autoArmedTimes.size == 3)
