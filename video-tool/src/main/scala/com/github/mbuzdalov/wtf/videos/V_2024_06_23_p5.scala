@@ -5,7 +5,7 @@ import java.awt.Color
 import scala.language.implicitConversions
 
 import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment as HA, VerticalAlignment as VA}
-import com.github.mbuzdalov.wtf.widgets.{Fade, Plot, ScaleRotateCropBack, Sticks, TextMessage}
+import com.github.mbuzdalov.wtf.widgets.{Fade, ScaleRotateCropBack, TextMessage}
 import com.github.mbuzdalov.wtf.{BasicProperties, GraphicsConsumer}
 
 object V_2024_06_23_p5:
