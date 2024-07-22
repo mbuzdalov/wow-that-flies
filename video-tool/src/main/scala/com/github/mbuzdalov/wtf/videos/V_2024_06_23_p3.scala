@@ -97,7 +97,7 @@ object V_2024_06_23_p3:
       Histogram(width, height, height / 2, log1, new Color(100, 155, 0, 10), 83, 169).enabledBetween(3, 25),
       Histogram(width, height, height / 2, log2, new Color(0, 100, 255, 10), 80, 178).enabledBetween(7, 25),
 
-      TextMessage("Results:",
+      TextMessage("Servo output vs pitch:",
         msgCF, width * 0.78f, height * 0.06f, HA.Center, VA.Center)
         .enabledBetween(1, 25),
       TextMessage("green: with wind off",
@@ -132,7 +132,7 @@ object V_2024_06_23_p3:
       TextMessage("the Hiller Flying Platform.",
         msgCF, width * 0.78f, height * 0.06f + msgStep * 11f, HA.Center, VA.Center)
         .enabledBetween(15, 25),
-      TextMessage("More investigation needed.",
+      TextMessage("More investigation is needed.",
         msgCF, width * 0.78f, height * 0.06f + msgStep * 12.5f, HA.Center, VA.Center)
         .enabledBetween(20, 25),
 

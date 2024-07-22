@@ -62,9 +62,42 @@ object V_2024_06_23_p2:
         msgCF, width * 0.22f, height * 0.06f + msgStep * 2f, HA.Center, VA.Center)
         .enabledBetween(17, 25),
 
-      TextMessage("The hairdryer is turned on...",
+      TextMessage("The hairdryer is turned on.",
         msgCF, width * 0.22f, height * 0.06f, HA.Center, VA.Center)
-        .enabledBetween(39, 43),
+        .enabledBetween(39, 45),
+      TextMessage("Observe the change in",
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 1.5f, HA.Center, VA.Center)
+        .enabledBetween(40, 45),
+      TextMessage("the flap's behavior.",
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 2.5f, HA.Center, VA.Center)
+        .enabledBetween(40, 45),
+
+      TextMessage("The flap definitely wants",
+        msgCF, width * 0.22f, height * 0.06f, HA.Center, VA.Center)
+        .enabledBetween(48, 57),
+      TextMessage("to compensate some force",
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(48, 57),
+      TextMessage("resulting from the wind",
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(48, 57),
+      TextMessage("which tries to rotate",
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 3f, HA.Center, VA.Center)
+        .enabledBetween(48, 57),
+      TextMessage("the craft clockwise.",
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 4f, HA.Center, VA.Center)
+        .enabledBetween(48, 57),
+
+      TextMessage("When CX7 is upside down,",
+        msgCF, width * 0.22f, height * 0.06f, HA.Center, VA.Center)
+        .enabledBetween(63, 70),
+      TextMessage("this force does not seem",
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 1f, HA.Center, VA.Center)
+        .enabledBetween(63, 70),
+      TextMessage("to have much effect!",
+        msgCF, width * 0.22f, height * 0.06f + msgStep * 2f, HA.Center, VA.Center)
+        .enabledBetween(63, 70),
+
 
       TextMessage("I forgot to add",
         msgCF, width * 0.22f, height * 0.06f, HA.Center, VA.Center)

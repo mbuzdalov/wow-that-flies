@@ -57,7 +57,7 @@ object V_2024_06_23_p1:
       TextMessage("Yaw control is not disabled,",
         msgCF, width * 0.22f, height * 0.06f + msgStep * 7.5f, HA.Center, VA.Center)
         .enabledBetween(10, 15),
-      TextMessage("which is the reason for sound change",
+      TextMessage("which is the reason for sound changes",
         msgCF, width * 0.22f, height * 0.06f + msgStep * 8.5f, HA.Center, VA.Center)
         .enabledBetween(10, 15),
       TextMessage("at some orientations, which, hopefully,",
@@ -66,6 +66,24 @@ object V_2024_06_23_p1:
       TextMessage("does not affect the test much.",
         msgCF, width * 0.22f, height * 0.06f + msgStep * 10.5f, HA.Center, VA.Center)
         .enabledBetween(10, 15),
+      TextMessage("The servo output",
+        msgCF, width * 0.22f, height * 0.06f, HA.Center, VA.Center)
+        .enabledBetween(135, 149),
+      TextMessage("is quite stable for all",
+        msgCF, width * 0.22f, height * 0.06f + msgStep, HA.Center, VA.Center)
+        .enabledBetween(135, 149),
+      TextMessage("pitch values, which means",
+        msgCF, width * 0.22f, height * 0.06f + 2 * msgStep, HA.Center, VA.Center)
+        .enabledBetween(135, 149),
+      TextMessage("poor control at speed and",
+        msgCF, width * 0.22f, height * 0.06f + 3 * msgStep, HA.Center, VA.Center)
+        .enabledBetween(135, 149),
+      TextMessage("in the wind is due to air",
+        msgCF, width * 0.22f, height * 0.06f + 4 * msgStep, HA.Center, VA.Center)
+        .enabledBetween(135, 149),
+      TextMessage("coming from the side.",
+        msgCF, width * 0.22f, height * 0.06f + 5 * msgStep, HA.Center, VA.Center)
+        .enabledBetween(135, 149),
 
       Fade(timeOn = 0.5, timeOff = 0),
       Fade(timeOn = 148.5, timeOff = 149),

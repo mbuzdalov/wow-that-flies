@@ -32,7 +32,7 @@ object V_2024_06_23_p6:
         .enabledBetween(5, 20),
 
       Fade(timeOn = 0.5, timeOff = 0),
-      Fade(timeOn = 28.5, timeOff = 29),
+      Fade(timeOn = 28.4, timeOff = 28.9),
     )
 
     props.runVideo(allGraphics)
