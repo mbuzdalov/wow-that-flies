@@ -63,7 +63,7 @@ object V_2024_07_07_p12:
       TextMessage("The new pitch and roll",
         msgCF, width * 0.02f, height * 0.06f + msgStep * 1.5f, HA.Left, VA.Center)
         .enabledBetween(16, 21),
-      TextMessage("rate P values are",
+      TextMessage("rate P values were",
         msgCF, width * 0.02f, height * 0.06f + msgStep * 2.5f, HA.Left, VA.Center)
         .enabledBetween(16, 21),
       TextMessage("just too small.",
