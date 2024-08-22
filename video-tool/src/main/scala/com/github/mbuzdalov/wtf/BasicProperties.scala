@@ -20,13 +20,15 @@ class BasicProperties(args: Array[String]):
   def createLogReader(propName: String = "log"): LogReader = 
     Using.resource(new FileInputStream(map(s"--$propName")))(is => new LogReader(new ByteStorage(is)))
   
-  def runVideo(consumer: GraphicsConsumer): Unit =
-    val destination = if output == "player" then new Player else new VideoWriter(output)
+  def runVideo(consumer: GraphicsConsumer, 
+               framePredicate: (Double, Long) => Boolean = (_, _) => true): Unit =
+    val destination = if output == "player" then new Player else new VideoWriter(output, framePredicate)
     val target = FrameConsumer.compose(FrameConsumer(consumer), destination)
     IOUtils.feedFileToConsumer(input, width, height, fps, target)
 
-  private def runWithBaseImage(baseImage: BufferedImage, time: Double, consumer: GraphicsConsumer): Unit =
-    val destination = if output == "player" then new Player else new VideoWriter(output)
+  private def runWithBaseImage(baseImage: BufferedImage, time: Double, 
+                               consumer: GraphicsConsumer, framePredicate: (Double, Long) => Boolean): Unit =
+    val destination = if output == "player" then new Player else new VideoWriter(output, framePredicate)
     val target = FrameConsumer.compose(FrameConsumer(consumer), destination)
     val currImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR)
     val maxFrameNo = (time * fps).toInt
@@ -36,8 +38,10 @@ class BasicProperties(args: Array[String]):
       target.consume(currImage, frameNo / fps, frameNo)
     target.close()
 
-  def runImage(time: Double, consumer: GraphicsConsumer): Unit =
-    runWithBaseImage(ImageIO.read(new File(input)), time, consumer)
+  def runImage(time: Double, consumer: GraphicsConsumer, 
+               framePredicate: (Double, Long) => Boolean = (_, _) => true): Unit =
+    runWithBaseImage(ImageIO.read(new File(input)), time, consumer, framePredicate)
 
-  def runEmpty(time: Double, consumer: GraphicsConsumer): Unit =
-    runWithBaseImage(new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR), time, consumer)
+  def runEmpty(time: Double, consumer: GraphicsConsumer, 
+               framePredicate: (Double, Long) => Boolean = (_, _) => true): Unit =
+    runWithBaseImage(new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR), time, consumer, framePredicate)
