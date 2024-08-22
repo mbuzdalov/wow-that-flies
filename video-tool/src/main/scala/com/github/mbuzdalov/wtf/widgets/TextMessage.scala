@@ -7,11 +7,16 @@ import scala.compiletime.uninitialized
 
 import com.github.mbuzdalov.wtf.GraphicsConsumer
 
-class TextMessage(val text: String, colorFont: TextMessage.ColorFont, x: Double, y: Double,
+class TextMessage(val text: String, colorFont: TextMessage.ColorFont,
+                  xFun: Double => Double, yFun: Double => Double,
                   hAlignment: TextMessage.HorizontalAlignment,
                   vAlignment: TextMessage.VerticalAlignment) extends GraphicsConsumer:
+  def this(text: String, colorFont: TextMessage.ColorFont, x: Double, y: Double,
+           hAlignment: TextMessage.HorizontalAlignment, vAlignment: TextMessage.VerticalAlignment) =
+    this(text, colorFont, _ => x, _ => y, hAlignment, vAlignment)
+
   private val font = new Font(Font.SANS_SERIF, Font.PLAIN, (colorFont.fontSize + 0.5).toInt)
-  private var rectOffset: (Int, Int, Int) = uninitialized
+  private var rectOffset: (Double, Double, Double) = uninitialized
   private var textOffset: (Double, Double) = uninitialized
   private var backgroundImg: BufferedImage = uninitialized
 
@@ -22,9 +27,11 @@ class TextMessage(val text: String, colorFont: TextMessage.ColorFont, x: Double,
     if textOffset == null then 
       computeBounds(g)
       fillBackgroundImage()
-    g.drawImage(backgroundImg, rectOffset._1, rectOffset._2, null)
+    val x = xFun(time)
+    val y = yFun(time)
+    g.drawImage(backgroundImg, (x - rectOffset._1).toInt, (y - rectOffset._2).toInt, null)
     g.setColor(new Color(fontColor.getRed, fontColor.getGreen, fontColor.getBlue))
-    g.drawString(text, textOffset._1.toFloat, textOffset._2.toFloat)
+    g.drawString(text, (x - textOffset._1).toFloat, (y - textOffset._2).toFloat)
 
   private def fillBackgroundImage(): Unit =
     val offset = rectOffset._3
@@ -49,17 +56,17 @@ class TextMessage(val text: String, colorFont: TextMessage.ColorFont, x: Double,
     val metrics = font.getLineMetrics(text, g.getFontRenderContext)
 
     val realX = hAlignment match
-      case TextMessage.HorizontalAlignment.Left => x - stringBounds.getMinX
-      case TextMessage.HorizontalAlignment.Center => x - stringBounds.getCenterX
-      case TextMessage.HorizontalAlignment.Right => x - stringBounds.getMaxX
+      case TextMessage.HorizontalAlignment.Left => stringBounds.getMinX
+      case TextMessage.HorizontalAlignment.Center => stringBounds.getCenterX
+      case TextMessage.HorizontalAlignment.Right => stringBounds.getMaxX
     val realY = vAlignment match
-      case TextMessage.VerticalAlignment.Top => y - stringBounds.getMinY
-      case TextMessage.VerticalAlignment.Center => y - stringBounds.getCenterY
-      case TextMessage.VerticalAlignment.Bottom => y - stringBounds.getMaxY
+      case TextMessage.VerticalAlignment.Top => stringBounds.getMinY
+      case TextMessage.VerticalAlignment.Center => stringBounds.getCenterY
+      case TextMessage.VerticalAlignment.Bottom => stringBounds.getMaxY
 
-    val offset = (colorFont.fontSize / 3).toInt
-    rectOffset = ((realX - offset).toInt, (realY - offset - metrics.getAscent).toInt, offset)
-    textOffset = (realX.toFloat, realY.toFloat)
+    val offset = colorFont.fontSize / 3
+    rectOffset = (offset, offset + metrics.getAscent, offset)
+    textOffset = (realX, realY)
     backgroundImg = new BufferedImage((stringBounds.getWidth + 2 * offset).toInt,
       (stringBounds.getHeight + 2 * offset).toInt, BufferedImage.TYPE_INT_ARGB)
 
