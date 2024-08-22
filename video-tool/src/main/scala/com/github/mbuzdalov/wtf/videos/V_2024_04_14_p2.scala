@@ -4,10 +4,10 @@ import java.awt.Color
 
 import scala.language.implicitConversions
 
-import com.github.mbuzdalov.wtf.Alpha.withSpeed
-import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment as HA, VerticalAlignment as VA}
-import com.github.mbuzdalov.wtf.widgets.{Fade, Plot, Sticks, TextMessage}
 import com.github.mbuzdalov.wtf.{BasicProperties, GraphicsConsumer}
+import com.github.mbuzdalov.wtf.util.{PiecewiseLinearFunction => PLW}
+import com.github.mbuzdalov.wtf.widgets.{Fade, Plot, Sticks, TextMessage}
+import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment as HA, VerticalAlignment as VA}
 
 object V_2024_04_14_p2:
   def apply(props: BasicProperties): Unit =
@@ -50,16 +50,16 @@ object V_2024_04_14_p2:
         .enabledBetween(11, 19),
       TextMessage("in 3",
         msgCF, width * 0.5f - msgFontSize * 2.5f, height * 0.7f + msgStep * 1f, HA.Center, VA.Center)
-        .enabledBetween(13.5 withSpeed 100, 19),
+        .withAlpha(PLW(13.5, 0) to (13.51, 1) to (18.5, 1) to (19, 0)),
       TextMessage("2",
         msgCF, width * 0.5f - msgFontSize * 1f, height * 0.7f + msgStep * 1f, HA.Center, VA.Center)
-        .enabledBetween(14.5 withSpeed 100, 19),
+        .withAlpha(PLW(14.5, 0) to (14.51, 1) to (18.5, 1) to (19, 0)),
       TextMessage("1",
         msgCF, width * 0.5f - msgFontSize * 0f, height * 0.7f + msgStep * 1f, HA.Center, VA.Center)
-        .enabledBetween(15.5 withSpeed 100, 19),
+        .withAlpha(PLW(15.5, 0) to (15.51, 1) to (18.5, 1) to (19, 0)),
       TextMessage("NOW!",
         msgCF, width * 0.5f + msgFontSize * 2f, height * 0.7f + msgStep * 1f, HA.Center, VA.Center)
-        .enabledBetween(16.5 withSpeed 100, 19),
+        .withAlpha(PLW(16.5, 0) to (16.51, 1) to (18.5, 1) to (19, 0)),
       TextMessage("But roll is really nice now...",
         msgCF, width * 0.5f, height * 0.7f, HA.Center, VA.Center)
         .enabledBetween(27, 32),

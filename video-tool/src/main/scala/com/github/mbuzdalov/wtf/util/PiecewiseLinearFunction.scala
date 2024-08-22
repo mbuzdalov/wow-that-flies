@@ -18,7 +18,3 @@ class PiecewiseLinearFunction(seq: IndexedSeq[(Double, Double)]) extends (Double
     if seq.nonEmpty then
       require(time > seq.last._1, s"New time $time is not greater than last time ${seq.last._1}")
     PiecewiseLinearFunction(seq :+ (time -> value))
-
-  infix def plus(timeChange: Double, value: Double): PiecewiseLinearFunction =
-    require(seq.nonEmpty)
-    PiecewiseLinearFunction(seq :+ (seq.last._1 + timeChange, value))

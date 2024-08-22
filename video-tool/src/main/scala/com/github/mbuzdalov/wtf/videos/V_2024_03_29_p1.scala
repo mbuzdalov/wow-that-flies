@@ -5,9 +5,9 @@ import java.awt.Color
 import scala.language.implicitConversions
 
 import com.github.mbuzdalov.wtf.{BasicProperties, GraphicsConsumer}
+import com.github.mbuzdalov.wtf.util.{PiecewiseLinearFunction => PLW}
 import com.github.mbuzdalov.wtf.widgets.{Fade, Plot, Sticks, TextMessage}
 import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment as HA, VerticalAlignment as VA}
-import com.github.mbuzdalov.wtf.Alpha.withSpeed
 
 object V_2024_03_29_p1:
   def apply(props: BasicProperties): Unit =
@@ -70,37 +70,37 @@ object V_2024_03_29_p1:
         .enabledBetween(22, 27),
       TextMessage("NOW!",
         msgCF, width * 0.5f, height * 0.5f + msgStep * 1f, HA.Center, VA.Center)
-        .enabledBetween(25.3 withSpeed 100, 27),
+        .withAlpha(PLW(25.3, 0) to (25.31, 1) to (26.5, 1) to (27, 0)),
       TextMessage("A strong one will happen",
         msgCF, width * 0.5f, height * 0.5f, HA.Center, VA.Center)
         .enabledBetween(35, 41),
       TextMessage("in 3",
         msgCF, width * 0.5f - msgFontSize * 2.5f, height * 0.5f + msgStep * 1f, HA.Center, VA.Center)
-        .enabledBetween(36 withSpeed 100, 41),
+        .withAlpha(PLW(36, 0) to (36.01, 1) to (40.5, 1) to (41, 0)),
       TextMessage("2",
         msgCF, width * 0.5f - msgFontSize * 1f, height * 0.5f + msgStep * 1f, HA.Center, VA.Center)
-        .enabledBetween(37 withSpeed 100, 41),
+        .withAlpha(PLW(37, 0) to (37.01, 1) to (40.5, 1) to (41, 0)),
       TextMessage("1",
         msgCF, width * 0.5f - msgFontSize * 0f, height * 0.5f + msgStep * 1f, HA.Center, VA.Center)
-        .enabledBetween(38 withSpeed 100, 41),
+        .withAlpha(PLW(38, 0) to (38.01, 1) to (40.5, 1) to (41, 0)),
       TextMessage("NOW!",
         msgCF, width * 0.5f + msgFontSize * 2f, height * 0.5f + msgStep * 1f, HA.Center, VA.Center)
-        .enabledBetween(39 withSpeed 100, 41),
+        .withAlpha(PLW(39, 0) to (39.01, 1) to (40.5, 1) to (41, 0)),
       TextMessage("Yet another big one",
         msgCF, width * 0.5f, height * 0.2f, HA.Center, VA.Center)
         .enabledBetween(56, 63),
       TextMessage("in 3",
         msgCF, width * 0.5f - msgFontSize * 2.5f, height * 0.2f + msgStep * 1f, HA.Center, VA.Center)
-        .enabledBetween(57 withSpeed 100, 63),
+        .withAlpha(PLW(57, 0) to (57.01, 1) to (62.5, 1) to (63, 0)),
       TextMessage("2",
         msgCF, width * 0.5f - msgFontSize * 1f, height * 0.2f + msgStep * 1f, HA.Center, VA.Center)
-        .enabledBetween(58 withSpeed 100, 63),
+        .withAlpha(PLW(58, 0) to (58.01, 1) to (62.5, 1) to (63, 0)),
       TextMessage("1",
         msgCF, width * 0.5f - msgFontSize * 0f, height * 0.2f + msgStep * 1f, HA.Center, VA.Center)
-        .enabledBetween(59 withSpeed 100, 63),
+        .withAlpha(PLW(59, 0) to (59.01, 1) to (62.5, 1) to (63, 0)),
       TextMessage("NOW!",
         msgCF, width * 0.5f + msgFontSize * 2f, height * 0.2f + msgStep * 1f, HA.Center, VA.Center)
-        .enabledBetween(60 withSpeed 100, 63),
+        .withAlpha(PLW(60, 0) to (60.01, 1) to (62.5, 1) to (63, 0)),
       TextMessage("Increasing D-term cannot make it alone.",
         msgCF, width * 0.5f, height * 0.5f, HA.Center, VA.Center)
         .enabledBetween(67, 74),

@@ -6,9 +6,9 @@ import java.awt.image.BufferedImage
 
 import scala.language.implicitConversions
 
-import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment as HA, VerticalAlignment as VA}
+import com.github.mbuzdalov.wtf.{BasicProperties, GraphicsConsumer}
 import com.github.mbuzdalov.wtf.widgets.{Fade, ScaleRotateCropBack, TextMessage}
-import com.github.mbuzdalov.wtf.{Alpha, BasicProperties, GraphicsConsumer}
+import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment as HA, VerticalAlignment as VA}
 
 object V_2024_05_09_p5:
   private class Arrow(baseX: Double, baseY: Double, length: Double, halfWidth: Double) extends GraphicsConsumer:

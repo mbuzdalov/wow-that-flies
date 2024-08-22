@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage
 
 import scala.compiletime.uninitialized
 
-import com.github.mbuzdalov.wtf.{Alpha, GraphicsConsumer, LogReader}
+import com.github.mbuzdalov.wtf.{GraphicsConsumer, LogReader}
 
 class LastLogMessage(logReader: LogReader, logTimeOffset: Double,
                      colorFont: TextMessage.ColorFont, x: Float, y: Float) extends GraphicsConsumer:
