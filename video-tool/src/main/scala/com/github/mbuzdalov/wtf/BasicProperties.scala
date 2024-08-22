@@ -20,14 +20,14 @@ class BasicProperties(args: Array[String]):
   def createLogReader(propName: String = "log"): LogReader = 
     Using.resource(new FileInputStream(map(s"--$propName")))(is => new LogReader(new ByteStorage(is)))
   
-  def runVideo(consumers: GraphicsConsumer*): Unit =
+  def runVideo(consumer: GraphicsConsumer): Unit =
     val destination = if output == "player" then new Player else new VideoWriter(output)
-    val target = FrameConsumer.compose(FrameConsumer(GraphicsConsumer.compose(consumers*)), destination)
+    val target = FrameConsumer.compose(FrameConsumer(consumer), destination)
     IOUtils.feedFileToConsumer(input, width, height, fps, target)
 
-  private def runWithBaseImage(baseImage: BufferedImage, time: Double, consumers: GraphicsConsumer*): Unit =
+  private def runWithBaseImage(baseImage: BufferedImage, time: Double, consumer: GraphicsConsumer): Unit =
     val destination = if output == "player" then new Player else new VideoWriter(output)
-    val target = FrameConsumer.compose(FrameConsumer(GraphicsConsumer.compose(consumers *)), destination)
+    val target = FrameConsumer.compose(FrameConsumer(consumer), destination)
     val currImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR)
     val maxFrameNo = (time * fps).toInt
     for frameNo <- 0 until maxFrameNo do
@@ -36,8 +36,8 @@ class BasicProperties(args: Array[String]):
       target.consume(currImage, frameNo / fps, frameNo)
     target.close()
 
-  def runImage(time: Double, consumers: GraphicsConsumer*): Unit =
-    runWithBaseImage(ImageIO.read(new File(input)), time, consumers*)
+  def runImage(time: Double, consumer: GraphicsConsumer): Unit =
+    runWithBaseImage(ImageIO.read(new File(input)), time, consumer)
 
-  def runEmpty(time: Double, consumers: GraphicsConsumer*): Unit =
-    runWithBaseImage(new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR), time, consumers*)
+  def runEmpty(time: Double, consumer: GraphicsConsumer): Unit =
+    runWithBaseImage(new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR), time, consumer)
