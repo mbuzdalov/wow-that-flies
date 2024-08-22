@@ -5,14 +5,14 @@ import java.awt.{Color, Font, Graphics2D}
 
 import scala.compiletime.uninitialized
 
-import com.github.mbuzdalov.wtf.{Alpha, GraphicsConsumer}
+import com.github.mbuzdalov.wtf.GraphicsConsumer
 
-class TextMessage(val text: String, colorFont: TextMessage.ColorFont, x: Float, y: Float,
+class TextMessage(val text: String, colorFont: TextMessage.ColorFont, x: Double, y: Double,
                   hAlignment: TextMessage.HorizontalAlignment,
                   vAlignment: TextMessage.VerticalAlignment) extends GraphicsConsumer:
   private val font = new Font(Font.SANS_SERIF, Font.PLAIN, (colorFont.fontSize + 0.5).toInt)
   private var rectOffset: (Int, Int, Int) = uninitialized
-  private var textOffset: (Float, Float) = uninitialized
+  private var textOffset: (Double, Double) = uninitialized
   private var backgroundImg: BufferedImage = uninitialized
 
   override def consume(img: BufferedImage, g: Graphics2D, time: Double, frameNo: Long): Unit =
@@ -24,7 +24,7 @@ class TextMessage(val text: String, colorFont: TextMessage.ColorFont, x: Float, 
       fillBackgroundImage()
     g.drawImage(backgroundImg, rectOffset._1, rectOffset._2, null)
     g.setColor(new Color(fontColor.getRed, fontColor.getGreen, fontColor.getBlue))
-    g.drawString(text, textOffset._1, textOffset._2)
+    g.drawString(text, textOffset._1.toFloat, textOffset._2.toFloat)
 
   private def fillBackgroundImage(): Unit =
     val offset = rectOffset._3
