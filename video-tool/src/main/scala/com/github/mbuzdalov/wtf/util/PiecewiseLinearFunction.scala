@@ -1,6 +1,9 @@
 package com.github.mbuzdalov.wtf.util
 
 class PiecewiseLinearFunction(seq: IndexedSeq[(Double, Double)]) extends (Double => Double):
+  def this(time: Double, value: Double) =
+    this(IndexedSeq((time, value)))
+    
   override def apply(time: Double): Double =
     if time <= seq.head._1 then seq.head._2
     else if time >= seq.last._1 then seq.last._2
@@ -16,6 +19,6 @@ class PiecewiseLinearFunction(seq: IndexedSeq[(Double, Double)]) extends (Double
       require(time > seq.last._1, s"New time $time is not greater than last time ${seq.last._1}")
     PiecewiseLinearFunction(seq :+ (time -> value))
 
-object PiecewiseLinearFunction:
-  given Conversion[(Double, Double), PiecewiseLinearFunction] = p => PiecewiseLinearFunction(IndexedSeq(p))
-  
+  infix def plus(timeChange: Double, value: Double): PiecewiseLinearFunction =
+    require(seq.nonEmpty)
+    PiecewiseLinearFunction(seq :+ (seq.last._1 + timeChange, value))
