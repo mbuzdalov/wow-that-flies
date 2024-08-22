@@ -8,11 +8,10 @@ import javax.imageio.ImageIO
 
 import com.github.mbuzdalov.wtf.GraphicsConsumer
 
-class ProfessionallyFitImage(imageFile: String,
+class ProfessionallyFitImage(image: BufferedImage,
                              minXFun: Double => Double, maxXFun: Double => Double,
                              minYFun: Double => Double, maxYFun: Double => Double)
   extends GraphicsConsumer:
-  private val myImage = ImageIO.read(new File(imageFile))
   private val almostBlack = new Color(0, 0, 0, 200)
 
   override def consume(img: BufferedImage, g: Graphics2D, time: Double, frameNo: Long): Unit =
@@ -25,13 +24,13 @@ class ProfessionallyFitImage(imageFile: String,
 
     if minX < maxX && minY < maxY then
       val tr = new AffineTransform()
-      val xScale = (maxX - minX) / myImage.getWidth
-      val yScale = (maxY - minY) / myImage.getHeight
+      val xScale = (maxX - minX) / image.getWidth
+      val yScale = (maxY - minY) / image.getHeight
 
       // draw the stretched image
       tr.setToTranslation(minX, minY)
       tr.scale(xScale, yScale)
-      g.drawImage(myImage, tr, null)
+      g.drawImage(image, tr, null)
 
       // shade that
       g.setColor(almostBlack)
@@ -39,7 +38,7 @@ class ProfessionallyFitImage(imageFile: String,
 
       // draw the actual image by fitting it in the area preserving proportions
       val scale = math.min(xScale, yScale)
-      tr.setToTranslation(centerX - myImage.getWidth * scale / 2, centerY - myImage.getHeight * scale / 2)
+      tr.setToTranslation(centerX - image.getWidth * scale / 2, centerY - image.getHeight * scale / 2)
       tr.scale(scale, scale)
-      g.drawImage(myImage, tr, null)
+      g.drawImage(image, tr, null)
   end consume
