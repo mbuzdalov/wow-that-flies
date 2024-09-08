@@ -126,8 +126,17 @@ RTop = 48;
 RBot = 49;
 R = (RTop + RBot) / 2;
 
-// Central servo wire height, also a reference to many other wire covers.
+// Central servo wire height, also a reference to many other wire covers
 centralServoWireH = VH / 2 - 35.5;
+
+// Thickness of the flaps.
+flapThick = 1.5;
+
+// The location for flap mounting points at the servo end
+servoMountR = RBot - 10.5;
+
+// The location for flap mounting points opposite to the servo
+antiServoMountR = RBot - 3.8;
 
 //////////////////////////////////
 /// Thrust puck shape definitions
@@ -359,6 +368,89 @@ module landingDamper() {
                 scale=[1, innerLength / (innerLength + innerOutdent)])
             translate([-innerWidth / 2, 0])
             square([innerWidth, innerLength + innerOutdent]);
+    }
+}
+
+//////////////////////////////////
+/// Flaps and their adaptors
+//////////////////////////////////
+
+module negFlap() {
+    translate([0, 0, -flapThick / 2])
+    linear_extrude(flapThick)
+    polygon([
+        [-antiServoMountR, -26],
+        [-antiServoMountR, -1.2],
+        [-antiServoMountR + 4.2, -1.2],
+        [-antiServoMountR + 4.2, +1.2],
+        [-antiServoMountR, +1.2],
+        [-antiServoMountR, +23],
+        [servoMountR, +23],
+        [servoMountR, -26],
+        [+19, -26],
+        [+19, -17],
+        [0, 2],
+        [-19, -17],
+        [-19, -26]
+    ]);
+}
+
+module posFlap() {
+    translate([0, 0, -flapThick / 2])
+    linear_extrude(flapThick)
+    polygon([
+        [-antiServoMountR, -26],
+        [-antiServoMountR, -1.2],
+        [-antiServoMountR + 4.2, -1.2],
+        [-antiServoMountR + 4.2, +1.2],
+        [-antiServoMountR, +1.2],
+        [-antiServoMountR, +23],
+        [-28, +23],
+        [0, -5],
+        [+28, +23],
+        [servoMountR, +23],
+        [servoMountR, -26],
+        [+31, -26],
+        [+23, -26],
+        [+22, -25],
+        [-22, -25],
+        [-23, -26],
+        [-31, -26],
+    ]);
+}
+
+module servoAdapter() {
+    difference() {
+        // body
+        union() {
+            translate([-4, -11, 0])
+                cube([8, 12, 5]);
+            translate([0, -11, 0])
+                cylinder(h = 5, r = 4);
+            translate([0, 1, 0])
+                cylinder(h = 5, r = 4);
+        }
+        // cut for the flap
+        translate([-flapThick / 2 - 0.1, -15 - eps, -eps])
+            cube([flapThick + 0.2, 20 + 2 * eps, 2 + eps]);
+        // cut for the axis
+        translate([0, 0, -eps])
+            cylinder(r = 3.1, h = 5 + 2 * eps);
+        // cut for the hand, rect part
+        translate([-2, -12.5, 4.4])
+            cube([4, 12.5, 0.7]);
+        // cut for the hand, round part
+        translate([0, -12.5, 4.4])
+            cylinder(r = 2, h = 0.7);
+    }
+}
+
+module antiServoAdapter() {
+    difference() {
+        cylinder(h = 3, r = 3);
+        translate([0, 0, -eps]) cylinder(h = 3 + 2 * eps, r = 1.2);
+        translate([-flapThick / 2 - 0.1, -3 - eps, -eps])
+            cube([flapThick + 0.2, 6 + 2 * eps, 2 + eps]);
     }
 }
 
@@ -825,6 +917,33 @@ if (false) {
             forwardLeg();
     }
     
+    // flaps
+    color("yellow") {
+        translate([0, 0, servoHoleH])
+            rotate([90, 0, 0])
+            negFlap();
+
+        translate([0, 0, servoHoleH])
+            rotate([0, 0, -90])
+            rotate([90, 0, 0])
+            posFlap();
+    }
+
+    // flap mount adapters
+    color("blue") {
+        for (a = [0, 90])
+            rotate([0, 0, a])
+            translate([0, -servoMountR + 2, servoHoleH])
+            rotate([90, 0, 0])
+            servoAdapter();
+
+        for (a = [180, 270])
+            rotate([0, 0, a])
+            translate([0, -antiServoMountR + 2, servoHoleH])
+            rotate([90, 0, 0])
+            antiServoAdapter();
+    }
+
     // leg dampers
     for (a = [0:3])
         rotate([0, 0, 90 * a])
