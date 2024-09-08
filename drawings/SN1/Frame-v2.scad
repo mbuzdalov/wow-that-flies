@@ -847,6 +847,14 @@ module weightAirGapLowerCross() {
 //////////////////////////////////
 //////////////////////////////////
 
+// If animation is enabled, these produce a rotating view.
+$vpt = [0, 0, VH / 2 - lowPoint / 2];
+$vpr = [90 + sin($t * 360) * 10, 0, $t * 360];
+$vpd = 800;
+
+// Flaps also move nicely during animation.
+posFlapAngle = 45 * sin($t * 720);
+negFlapAngle = 45 * sin($t * 1080);
 
 if (false) {
     // Everything is to be printed with PETG
@@ -920,26 +928,28 @@ if (false) {
     // flaps
     color("yellow") {
         translate([0, 0, servoHoleH])
-            rotate([90, 0, 0])
+            rotate([90 + negFlapAngle, 0, 0])
             negFlap();
 
         translate([0, 0, servoHoleH])
             rotate([0, 0, -90])
-            rotate([90, 0, 0])
+            rotate([90 + posFlapAngle, 0, 0])
             posFlap();
     }
 
     // flap mount adapters
     color("blue") {
-        for (a = [0, 90])
-            rotate([0, 0, a])
+        for (a = [0, 1])
+            rotate([0, 0, 90 * a])
             translate([0, -servoMountR + 2, servoHoleH])
+            rotate([0, a ? -negFlapAngle : -posFlapAngle, 0])
             rotate([90, 0, 0])
             servoAdapter();
 
-        for (a = [180, 270])
-            rotate([0, 0, a])
+        for (a = [0, 1])
+            rotate([0, 0, 180 + 90 * a])
             translate([0, -antiServoMountR + 2, servoHoleH])
+            rotate([0, a ? negFlapAngle : posFlapAngle, 0])
             rotate([90, 0, 0])
             antiServoAdapter();
     }
