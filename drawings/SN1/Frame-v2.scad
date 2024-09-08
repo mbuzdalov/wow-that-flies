@@ -1,12 +1,27 @@
 //////////////////////////////////
 ///    SN1, frame version 2    ///
 ///   Author: Maxim Buzdalov   ///
-///   For "Wow, That Flies"    ///
+///    For "Wow, That Flies"   ///
 /// License: WTF Public License //
 //////////////////////////////////
 
+// This is a coax copter with an X arrangement of flaps.
+// Apart from the details presented in this file,
+// an important structural part is a piece of a coke bottle
+// which forms what is called the "outer frame".
+// The cylindrical propeller containments are designed to be
+// tightly inserted in this bottle piece,
+// the legs are attached (and glued) to the outside,
+// and many non-structural parts are simply glued to this "outer frame".
+
+// Depending on your needs, you may need to adjust some things.
+// Apart from the general lengths and other sides of the vehicle,
+// one of the frequent adjustment themes are the gaps designed for
+// one detail to be inserted in another. 
+// Many such points, with comments, are marked with the #adjust tag.
+
 //////////////////////////////////
-/// Rendering of circles
+/// Rendering settings
 //////////////////////////////////
 
 // Minimum angle
@@ -28,7 +43,18 @@ DX = [1, 0, -1, 0];
 DY = [0, 1, 0, -1];
 
 //////////////////////////////////
+/// Common bolt sizes
+//////////////////////////////////
+m2Free = 1.05;
+m3Tight = 1.3;
+m3Free = 1.6;
+
+//////////////////////////////////
 /// Global design variables
+///
+/// Many of this can be changed,
+/// and the details will change
+/// appropriately. 
 //////////////////////////////////
 
 // The distance between the top and the bottom cylinder faces
@@ -42,6 +68,15 @@ legThick = 3;
 
 // Width of (the longer part of) each leg
 legW = 5;
+
+// Thickness of the piece of plastic that covers the leg cavity
+legCoverThick = 0.8;
+
+// The height below the lowPoint of the landing damper
+landingDamperHeight = 10;
+
+// The wall thickness of the landing damper
+landingDamperThick = 1.2;
 
 // The Z coordinate of flap rotation axes, where servo holes are
 servoHoleH = -lowPoint + legThick + 20;
@@ -80,20 +115,19 @@ ductMinimumThick = 1.2;
 ductWireCutoutSize = 4;
 
 // Actual cutout angles used
-topWireCutoutAngle = -20;
+topWireCutoutAngle = -22;
 botWireCutoutAngle = +25;
 
 // The defining radii of the overall shape
+// This heavily depends on the shape of the outer frame,
+// which in my case was made from a coke bottle.
+// Definitely #adjust to your conditions.
 RTop = 48;
 RBot = 49;
 R = (RTop + RBot) / 2;
 
-//////////////////////////////////
-/// Common bolt sizes
-//////////////////////////////////
-m2Free = 1.05;
-m3Tight = 1.3;
-m3Free = 1.6;
+// Central servo wire height, also a reference to many other wire covers.
+centralServoWireH = VH / 2 - 35.5;
 
 //////////////////////////////////
 /// Thrust puck shape definitions
@@ -235,7 +269,7 @@ module legLowerStrengthener() {
         translate([dx, -lowPoint, legThick - eps])
         linear_extrude(servoProtectionH, scale = [1, 0.5])
         square([wallThick, lowPoint + strengthOffset]);
-    // the very bottom part, to which the landing dampeners attach
+    // the very bottom part, to which the landing dampers attach
     translate([-legW / 2 - legThick, -lowPoint, legThick - eps])
         cube([legW + 2 * legThick, wallThick, servoProtectionH]);
 }
@@ -280,6 +314,52 @@ module backwardLeg() {
         }
     }
     legLowerStrengthener();
+}
+
+// The piece of plastic that covers the cavity of (the landing part of) the leg.
+module legCover() {
+    theSize = lowPoint + strengthOffset;
+    angle = atan(servoProtectionH / theSize);
+
+    linear_extrude(legW + 2 * legThick) polygon([
+        [0, servoProtectionH],
+        [theSize / 2, servoProtectionH],
+        [theSize, 0],
+        [theSize, legCoverThick / cos(angle)],
+        [theSize / 2 + sin(angle) * legCoverThick, servoProtectionH + legCoverThick],
+        [0, servoProtectionH + legCoverThick]
+    ]);
+}
+
+// The damper to dampen the impact of landing and to increase the height
+// so that the flaps don't touch the ground. One for each leg. Print in TPU.
+module landingDamper() {
+    // 0.1 is the mounting gap size
+    innerLength = legThick + servoProtectionH + legCoverThick + 0.1;
+    innerWidth = legW + 2 * legThick + 0.1;
+    outerLength = innerLength + 2 * landingDamperThick;
+    outerWidth = innerWidth + 2 * landingDamperThick;
+    outerOutdent = 6;
+    innerOutdent = outerOutdent / 2;
+    onLegHeight = 3.8;
+    
+    difference() {
+        union() {
+            linear_extrude(landingDamperHeight, 
+                scale=[1, outerLength / (outerLength + outerOutdent)])
+                translate([-outerWidth / 2, 0])
+                square([outerWidth, outerLength + outerOutdent]);
+            translate([-outerWidth / 2, 0, landingDamperHeight])
+                cube([outerWidth, outerLength, onLegHeight]);
+        }
+        translate([-innerWidth / 2, landingDamperThick, landingDamperHeight])
+            cube([innerWidth, innerLength, onLegHeight + eps]);
+        translate([0, landingDamperThick, -eps])
+            linear_extrude(landingDamperHeight - landingDamperThick,
+                scale=[1, innerLength / (innerLength + innerOutdent)])
+            translate([-innerWidth / 2, 0])
+            square([innerWidth, innerLength + innerOutdent]);
+    }
 }
 
 //////////////////////////////////
@@ -426,6 +506,10 @@ module gpsMount() {
 //////////////////////////////////
 
 
+// A shape for the half-cylinders for covering motor wires on the outer surface.
+//
+// @param len the length of the cylinder
+// @param off the offset to be used in subtraction.
 module motorWireCoverShape(len, off) {
     intersection() {
         translate([0, -4 - off, off / 100]) cube([len - off, 8 + 2 * off, 4 + off]);
@@ -439,6 +523,9 @@ module motorWireCoverShape(len, off) {
     }
 }
 
+// The hollow half-cylinders that cover motor wires on the outer surface.
+//
+// @param len the length of the cover.
 module motorWireCover(len) {
     difference() {
         motorWireCoverShape(len, 0);
@@ -446,8 +533,10 @@ module motorWireCover(len) {
     }
 }
 
+// A very complicated wire cover that keeps wires from the servos covered.
+// It has cutouts for many other wires too.
 module centralServoWireCover() {
-    angle = 45 - asin(3 / R);
+    angle = 45 - asin((legW / 2 + 1) / R);
     angleCut = asin(15 / R);
     
     intersection() {
@@ -467,7 +556,7 @@ module centralServoWireCover() {
                 translate([0, 0, 1.2 - eps])
                     cylinder(h = 5 + eps2, r = R + 0.8);
             }
-            for (a = [+angleCut, -angleCut])
+            for (a = [45 - botWireCutoutAngle, -angleCut])
                 rotate([0, 0, a])
                 translate([R + 0.9, -2, -eps])
                 cube([5, 4, 5 + eps2]);
@@ -481,6 +570,8 @@ module centralServoWireCover() {
     }
 }
 
+// A small piece of plastic that keeps the ELRS antenna
+// fixed to the outer frame.
 module elrsAntennaLock() {
     difference() {
         translate([-0.5, 0, 0]) cube([6.5, 6, 8]);
@@ -490,11 +581,15 @@ module elrsAntennaLock() {
     }
 }
 
+// A cover for the part of the servo wires that go vertically along their legs.
 module midServoWireCover() {
-    cube([44, 1, 4]);
-    cube([44, 5, 1]);
+    length = centralServoWireH - strengthOffset - 1;
+    cube([length, 1, legThick + 1]);
+    cube([length, 5, 1]);
 }
 
+// A 2D shape for the following module to produce the outline of ELRS wire cover.
+// @param off the offset to be used in subtraction.
 module elrsWireCoverOutline(off) {
     polygon([
         [19.6 - off, -off],
@@ -506,6 +601,9 @@ module elrsWireCoverOutline(off) {
     ]);
 }
 
+// An angled wire cover that protects and guides ELRS wires
+// just before connection to the ELRS module itself.
+// The module is glued to the outer frame.
 module elrsWireCover() {
     difference() {
         linear_extrude(6) elrsWireCoverOutline(0.8);
@@ -518,22 +616,10 @@ module elrsWireCover() {
     }
 }
 
-module legCover() {
-    wallThick = 11;
-
-    theSize = lowPoint + strengthOffset;
-    angle = atan(servoProtectionH / theSize);
-
-    linear_extrude(11) polygon([
-        [0, servoProtectionH],
-        [theSize / 2, servoProtectionH],
-        [theSize, 0],
-        [theSize, 0.8 / cos(angle)],
-        [theSize / 2 + sin(angle) * 0.8, servoProtectionH + 0.8],
-        [0, servoProtectionH + 0.8]
-    ]);
-}
-
+// A mount that is glued to the outer surface and keeps a battery
+// from one of the ends with the help of a piece of catgut/rubber.
+// Ideally, some sticky pad should be glued in, so that the battery does not slip.
+// Two per battery, for each of the two batteries.
 module batteryMountA() {
     difference() {
         union() {
@@ -548,6 +634,8 @@ module batteryMountA() {
     }
 }
 
+// A mount that keeps a battery from slipping and falling down to the ground.
+// This will probably be replaced by something better.
 module batteryMountB() {
     difference() {
         linear_extrude(10, scale = [0.1, 1])
@@ -557,7 +645,10 @@ module batteryMountB() {
     }
 }
 
+// A piece that contains an XT30 female connector and keeps it fixed
+// when glued to the outer frame. There are two of them.
 module powerConnectorHolder() {
+    translate([0, 2.5, -5])
     difference() {
         linear_extrude(10, convexity = 2) polygon([
             [0, +3.8],
@@ -584,6 +675,17 @@ module powerConnectorHolder() {
     }
 }
 
+//////////////////////////////////
+/// Auxiliary stuff
+/// that has once been useful.
+/// Surely #adjust to your needs
+//////////////////////////////////
+
+// Modules of a construction
+// that can be put on top of SN1 and stay there,
+// so that some load can be put on top of it
+
+// The vertical part, there are four of them
 module weightAirGapLeg() {
     linear_extrude(5) polygon([
         [-3, 125],
@@ -609,6 +711,7 @@ module weightAirGapLeg() {
     ]);
 }
 
+// The top cross that keeps the legs at their places.
 module weightAirGapCross() {
     linear_extrude(5.1, convexity = 4) difference() {
         union() {
@@ -626,6 +729,7 @@ module weightAirGapCross() {
     }
 }
 
+// The bottom cross that only partially constrains the legs.
 module weightAirGapLowerCross() {
     intersection() {
         weightAirGapCross();
@@ -633,7 +737,29 @@ module weightAirGapLowerCross() {
     }
 }
 
+
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+///  Now actually drawing
+///
+///  The first if-branch is 
+///  about running single modules
+///  to be rendered to STL
+///  and sent to a 3D-printer.
+///
+///  The second if-branch is
+///  the physical layout of all
+///  the modules.
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+
+
 if (false) {
+    // Everything is to be printed with PETG
+    // except landingDamper() which is to be printed with TPU.
+
     // top module
     //duct(RTop, RTop - 0.25, topWireCutoutAngle);
     //translate([100, 0, 0]) puck(RTop, topWireCutoutAngle);
@@ -650,8 +776,8 @@ if (false) {
     //gpsMount();
     //camMount();
 
-    //motorWireCover(60);
-    //motorWireCover(80);
+    //motorWireCover(centralServoWireH - 5);
+    //motorWireCover(VH / 2 - 20);
     //centralServoWireCover();
     //elrsAntennaLock();
     //midServoWireCover();
@@ -663,6 +789,7 @@ if (false) {
     //weightAirGapLeg();
     //weightAirGapCross();
     //weightAirGapLowerCross();
+    //landingDamper();
 } else {
     /////////////////////////////////
     /// The main assembly drawing
@@ -698,6 +825,13 @@ if (false) {
             forwardLeg();
     }
     
+    // leg dampers
+    for (a = [0:3])
+        rotate([0, 0, 90 * a])
+        translate([R - landingDamperThick, 0, -lowPoint - landingDamperHeight])
+        rotate([0, 0, -90])
+        landingDamper();
+    
     // AIO mount
     rotate([0, 0, -45])
         translate([R + 2.1, 0, VH / 2])
@@ -725,6 +859,18 @@ if (false) {
         rotate([0, 0, 180])
         camMount();
     
+    // battery holders
+    color("blue")
+        for (a = [110, -20])
+        rotate([0, 0, a]) {
+            for (dz = [VH - 15, VH - 85])
+                translate([0, R - 1, dz])
+                batteryMountA();
+            translate([0, R - 1, VH - 95])
+                rotate([-90, 0, 0])
+                batteryMountB();
+        }
+    
     // wire covers
     color("red") {
         // top motor wire cover
@@ -732,7 +878,7 @@ if (false) {
             translate([R - 0.7, 0, VH + 0.5])
             rotate([0, 90, 0])
             render(convexity = 2, $fs = 1) {
-                motorWireCover(80);
+                motorWireCover(VH / 2 - 20);
             }
         // bottom
         rotate([0, 0, -botWireCutoutAngle])
@@ -740,41 +886,59 @@ if (false) {
             rotate([180, 0, 0])
             rotate([0, 90, 0])
             render(convexity = 2, $fs = 1) {
-                motorWireCover(60);
+                motorWireCover(centralServoWireH - 5);
             }
         // central servo wire cover
-        translate([0, 0, VH / 2 - 35.5])
+        translate([0, 0, centralServoWireH])
             rotate([0, 0, -45])
             render(convexity = 2, $fs = 1) {
                 centralServoWireCover();
             }
             
         // side servo wire covers
-        translate([R + 4, -5.5, 20])
+        for (a = [+1, -1])
+            rotate([0, 0, -45 * (1 - a)])
+            translate([R + legThick + 1, -a * 5.5, strengthOffset])
             rotate([0, -90, 0])
+            scale([1, a, 1])
             midServoWireCover();
-        rotate([0, 0, -90])
-            translate([R + 4, +5.5, 20])
-            rotate([0, -90, 0])
-            scale([1, -1, 1]) midServoWireCover();
             
         // ELRS antenna lock
         rotate([0, 0, 20])
-            translate([R + 7, 0, 53])
+            translate([R + 7, 0, centralServoWireH - 11.5])
             rotate([0, 0, 180])
             elrsAntennaLock();
             
         // ELRS wire cover
         rotate([0, 0, -53])
-            translate([R + 5, -10, 55.3])
+            translate([R + 5, -10, centralServoWireH - 9.25])
             rotate([0, -90, 0])
             elrsWireCover();
         
         // Leg cavity covers
         for (a = [0:3])
             rotate([0, 0, a * 90])
-            translate([11 / 2, R + 3, -50])
+            translate([(legW + 2 * legThick) / 2, R + legThick, -lowPoint])
             rotate([0, -90, 0])
             legCover();
+        
+        // Holders for power connectors
+        for (a = [-15, -75])
+            rotate([0, 0, a])
+            translate([R, 0, centralServoWireH]) 
+            rotate([90, 0, 0])
+            powerConnectorHolder();
+    }
+    
+    // weight air gap, disabled by default
+    if (true) color("red", 0.2) {
+        for (a = [0:3])
+            rotate([0, 0, 90 * a])
+            translate([0, 40, VH - 4.5])
+            rotate([90, 0, 0]) weightAirGapLeg();
+        translate([0, 0, VH + 115.5])
+            weightAirGapCross();
+        translate([0, 0, VH + 10.5])
+            weightAirGapLowerCross();
     }
 }
