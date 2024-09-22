@@ -29,7 +29,7 @@ class TextMessage(val text: String, colorFont: TextMessage.ColorFont,
       fillBackgroundImage()
     val x = xFun(time)
     val y = yFun(time)
-    g.drawImage(backgroundImg, (x - rectOffset._1).toInt, (y - rectOffset._2).toInt, null)
+    g.drawImage(backgroundImg, (x - textOffset._1 - rectOffset._1).toInt, (y - textOffset._2 - rectOffset._2).toInt, null)
     g.setColor(new Color(fontColor.getRed, fontColor.getGreen, fontColor.getBlue))
     g.drawString(text, (x - textOffset._1).toFloat, (y - textOffset._2).toFloat)
 
