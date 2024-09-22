@@ -34,7 +34,7 @@ object V_2024_07_26_p1:
 
     val allGraphics = GraphicsConsumer.compose(
       ProfessionallyFitImage(
-        image = firstImage,
+        imageProvider = ProfessionallyFitImage.ConstantProvider(firstImage),
         minXFun = PLW(0, 0) to (79, 0) to (80, -img1Width),
         maxXFun = PLW(2.0, width) to (3.0, img1Width) to (79, img1Width) to (80, 0),
         minYFun = _ => 0.0, maxYFun = _ => height)
@@ -162,7 +162,7 @@ object V_2024_07_26_p1:
         .enabledBetween(74, 79),
 
       ProfessionallyFitImage(
-        image = secondImage,
+        imageProvider = ProfessionallyFitImage.ConstantProvider(secondImage),
         minXFun = PLW(79, width) to (80, width - img2Width) to (104, width - img2Width) to (105, width),
         maxXFun = PLW(79, width + img2Width) to (80, width) to (104, width) to (105, width + img2Width),
         minYFun = _ => 0.0, maxYFun = _ => height,
@@ -207,7 +207,7 @@ object V_2024_07_26_p1:
         .enabledBetween(101, 104),
 
       ProfessionallyFitImage(
-        image = thirdImage,
+        imageProvider = ProfessionallyFitImage.ConstantProvider(thirdImage),
         minXFun = PLW(104, -img3Width) to (105, 0),
         maxXFun = PLW(104, 0) to (105, img3Width),
         minYFun = _ => 0.0, maxYFun = _ => height,

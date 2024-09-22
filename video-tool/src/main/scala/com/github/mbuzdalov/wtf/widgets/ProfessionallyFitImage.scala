@@ -3,12 +3,10 @@ package com.github.mbuzdalov.wtf.widgets
 import java.awt.{Color, Graphics2D}
 import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
-import java.io.File
-import javax.imageio.ImageIO
 
 import com.github.mbuzdalov.wtf.GraphicsConsumer
 
-class ProfessionallyFitImage(image: BufferedImage,
+class ProfessionallyFitImage(imageProvider: ProfessionallyFitImage.ImageProvider,
                              minXFun: Double => Double, maxXFun: Double => Double,
                              minYFun: Double => Double, maxYFun: Double => Double)
   extends GraphicsConsumer:
@@ -21,7 +19,8 @@ class ProfessionallyFitImage(image: BufferedImage,
     val maxY = maxYFun(time)
     val centerX = (minX + maxX) / 2
     val centerY = (minY + maxY) / 2
-
+    val image = imageProvider.image(img)
+    
     if minX < maxX && minY < maxY then
       val tr = new AffineTransform()
       val xScale = (maxX - minX) / image.getWidth
@@ -42,3 +41,23 @@ class ProfessionallyFitImage(image: BufferedImage,
       tr.scale(scale, scale)
       g.drawImage(image, tr, null)
   end consume
+
+object ProfessionallyFitImage:
+  trait ImageProvider:
+    def image(videoImage: BufferedImage): BufferedImage
+
+  class ConstantProvider(img: BufferedImage) extends ImageProvider:
+    override def image(videoImage: BufferedImage): BufferedImage = img
+
+  class ClippingProvider(x: Int, y: Int, w: Int, h: Int) extends ImageProvider:
+    private val img = new BufferedImage(w, h, BufferedImage.TYPE_3BYTE_BGR)
+    override def image(videoImage: BufferedImage): BufferedImage =
+      var yy = 0
+      while yy < h do
+        var xx = 0
+        while xx < w do
+          img.setRGB(xx, yy, videoImage.getRGB(xx + x, yy + y))
+          xx += 1
+        yy += 1  
+      img
+      
