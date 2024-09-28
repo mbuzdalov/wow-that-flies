@@ -591,6 +591,35 @@ module gpsMount() {
     }
 }
 
+// The structure glued to the shell
+// to which the Matek 3901-L0X flow sensor + rangefinder chip
+// is mounted. This sensor is definitely not the best choice,
+// so #adjust to your liking.
+module rangefinderMount() {
+    difference() {
+        union() {
+            translate([R - 3, -12, 0]) cube([4, 24, 6]);
+            linear_extrude(1, convexity = 2)
+            offset(r = 2)
+            offset(delta = -2)
+            polygon([
+                [R - 1, -12],
+                [R + 6.5, -12],
+                [R + 6.5, -19],
+                [R + 13, -19],
+                [R + 13, +19],
+                [R + 6.5, +19],
+                [R + 6.5, +12],
+                [R - 1, +12]
+            ]);
+        }
+        translate([0, 0, -eps]) cylinder(h = 6 + 2 * eps, r = R);
+        for (dy = [-1, +1])
+            translate([R + 10, dy * 30.5 / 2, -eps])
+            cylinder(h = 2 + 2 * eps, r = m3Free);
+    }
+}
+
 //////////////////////////////////
 /// Various wire-covers
 /// All of these is very ad-hoc,
@@ -890,6 +919,8 @@ if (false) {
     //weightAirGapCross();
     //weightAirGapLowerCross();
     //landingDamper();
+
+    //rangefinderMount();
 } else {
     /////////////////////////////////
     /// The main assembly drawing
@@ -988,6 +1019,11 @@ if (false) {
         rotate([0, 0, 180])
         camMount();
     
+    // rangefinder mount
+    rotate([0, 0, 135])
+        translate([0.7, 0, 0])
+        rangefinderMount();
+
     // battery holders
     color("blue")
         for (a = [110, -20])
