@@ -37,11 +37,12 @@ class Plot(logReader: LogReader, timeOffset: Double,
 
   override def consume(img: BufferedImage, g: Graphics2D, time: Double, frameNo: Long): Unit =
     if backgroundColor == null then initBackgroundFromBackground(img)
+    val lineColor = Plot.lineColorFromBackgroundColor(backgroundColor)
 
     g.setColor(backgroundColor)
     g.fillRect(x, y, width, height)
     val t = time + timeOffset
-    g.setColor(Color.BLACK)
+    g.setColor(lineColor)
     g.setStroke(borderStroke)
     g.drawRect(x, y, width, height)
     g.setStroke(thinStroke)
@@ -84,6 +85,10 @@ class Plot(logReader: LogReader, timeOffset: Double,
 end Plot
 
 object Plot:
+  private def lineColorFromBackgroundColor(color: Color): Color =
+    if color == null || (color.getRed | color.getGreen | color.getBlue) >= 128 then Color.BLACK
+    else Color.WHITE
+
   class Source[+T](val recordName: String, val fieldName: String, val displayName: String,
                    extractor: T => Double, val minValue: Double, val maxValue: Double, val color: Color):
     private[Plot] def connectTiming(reader: LogReader): LogReader.TimingConnector = reader.timingConnect(recordName)
@@ -99,7 +104,7 @@ object Plot:
     if channel > 0 then
       val flapMin = logReader.getParameter(s"SERVO${channel}_MIN")
       val flapMax = logReader.getParameter(s"SERVO${channel}_MAX")
-      builder += Source[Numbers.UInt16]("RCOU", s"C$channel", s"$name Flap", v => v.toDouble, flapMin, flapMax, Color.BLACK)
+      builder += Source[Numbers.UInt16]("RCOU", s"C$channel", s"$name Flap", v => v.toDouble, flapMin, flapMax, lineColorFromBackgroundColor(background))
     end if
     builder += Source[Float]("ATT", s"Des$name", s"Desired $name", v => v, -maxAngle, +maxAngle, Color.BLUE)
     builder += Source[Float]("ATT", name, s"Actual $name", v => v, -maxAngle, +maxAngle, Color.RED)
@@ -115,7 +120,7 @@ object Plot:
       logReader, timeOffset, x, y,
       width, height, fontSize, background, 2,
       IndexedSeq(
-        Source[Numbers.UInt16]("RCOU", "C5", "Flap ╱", v => v.toDouble, logReader.getParameter("SERVO5_MIN"), logReader.getParameter("SERVO5_MAX"), Color.BLACK),
+        Source[Numbers.UInt16]("RCOU", "C5", "Flap ╱", v => v.toDouble, logReader.getParameter("SERVO5_MIN"), logReader.getParameter("SERVO5_MAX"), lineColorFromBackgroundColor(background)),
         Source[Numbers.UInt16]("RCOU", "C6", "Flap ╲", v => v.toDouble, logReader.getParameter("SERVO6_MIN"), logReader.getParameter("SERVO6_MAX"), Color.MAGENTA.darker()),
       )
     )
@@ -126,7 +131,7 @@ object Plot:
       logReader, timeOffset, x, y,
       width, height, fontSize, background, 2,
       IndexedSeq(
-        Source[Numbers.UInt16]("RCOU", s"C$ccwChannel", s"CCW Motor", v => v.toDouble, 1000, 2000, Color.BLACK),
+        Source[Numbers.UInt16]("RCOU", s"C$ccwChannel", s"CCW Motor", v => v.toDouble, 1000, 2000, lineColorFromBackgroundColor(background)),
         Source[Numbers.UInt16]("RCOU", s"C$cwChannel",  s"CW Motor",  v => v.toDouble, 1000, 2000, Color.MAGENTA.darker()),
         Source[Float]("ATT", s"DesYaw", s"Desired Yaw", v => (v + 180) % 360, 0, 360, Color.BLUE),
         Source[Float]("ATT", "Yaw", s"Actual Yaw", v => (v + 180) % 360, 0, 360, Color.RED),
