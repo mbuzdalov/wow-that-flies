@@ -45,6 +45,7 @@ DY = [0, 1, 0, -1];
 //////////////////////////////////
 /// Common bolt sizes
 //////////////////////////////////
+m2Tight = 0.95;
 m2Free = 1.05;
 m3Tight = 1.3;
 m3Free = 1.6;
@@ -592,31 +593,38 @@ module gpsMount() {
 }
 
 // The structure glued to the shell
-// to which the Matek 3901-L0X flow sensor + rangefinder chip
-// is mounted. This sensor is definitely not the best choice,
-// so #adjust to your liking.
+// to which the MTF-01 flow sensor + rangefinder chip
+// is mounted. Obviously #adjust to your liking.
 module rangefinderMount() {
     difference() {
         union() {
             translate([R - 3, -12, 0]) cube([4, 24, 6]);
+            translate([0, 0, 5])
             linear_extrude(1, convexity = 2)
             offset(r = 2)
             offset(delta = -2)
             polygon([
-                [R - 1, -12],
-                [R + 6.5, -12],
-                [R + 6.5, -19],
-                [R + 13, -19],
-                [R + 13, +19],
-                [R + 6.5, +19],
-                [R + 6.5, +12],
-                [R - 1, +12]
+                [R - 2, -12],
+                [R + 5, -15],
+                [R + 22, -15],
+                [R + 22, -9.5],
+                [R + 4, -9.5],
+                [R + 4, +9.5],
+                [R + 22, +9.5],
+                [R + 22, +15],
+                [R + 5, +15],
+                [R - 2, +12]
             ]);
+            for (dy = [-11, +9.5])
+                translate([R, dy, 0])
+                linear_extrude(5, scale = [20, 1])
+                square([1, 1.5]);
         }
         translate([0, 0, -eps]) cylinder(h = 6 + 2 * eps, r = R);
         for (dy = [-1, +1])
-            translate([R + 10, dy * 30.5 / 2, -eps])
-            cylinder(h = 2 + 2 * eps, r = m3Free);
+            for (dx = [20, 8])
+            translate([R + dx, dy * 24.5 / 2, -eps])
+            cylinder(h = 6 + 2 * eps, r = m2Tight);
     }
 }
 
@@ -1020,7 +1028,7 @@ if (false) {
         camMount();
     
     // rangefinder mount
-    rotate([0, 0, 135])
+    rotate([0, 0, -45])
         translate([0.7, 0, 0])
         rangefinderMount();
 
@@ -1096,7 +1104,7 @@ if (false) {
     }
     
     // weight air gap, disabled by default
-    if (true) color("red", 0.2) {
+    if (false) color("red", 0.2) {
         for (a = [0:3])
             rotate([0, 0, 90 * a])
             translate([0, 40, VH - 4.5])
