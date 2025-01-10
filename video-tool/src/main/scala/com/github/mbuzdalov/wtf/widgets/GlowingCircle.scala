@@ -18,6 +18,6 @@ class GlowingCircle(start: Double, period: Double, finish: Double,
   override def consume(img: BufferedImage, g: Graphics2D, time: Double, frameNo: Long): Unit =
     if time >= start && time <= realFinish then
       val alpha = (1 - math.cos((time - start) / period * math.Pi * 2)) / 2
-      g.setColor(new Color(color.getRed, color.getGreen, color.getBlue, (255 * alpha).toInt))
+      g.setColor(new Color(color.getRed, color.getGreen, color.getBlue, (color.getAlpha * alpha).toInt))
       g.fill(area)
     end if
