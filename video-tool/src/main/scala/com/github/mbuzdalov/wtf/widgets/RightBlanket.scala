@@ -16,7 +16,7 @@ class RightBlanket(maxWidth: Double, backgroundColor: Color,
     else 0.0
     
     if fillWidth != 0 then
-      val w = (fillWidth * img.getWidth).toInt
+      val intWidth = (fillWidth * img.getWidth).toInt
       g.setColor(backgroundColor)
-      g.fillRect(img.getWidth - w, 0, w, img.getHeight)
+      g.fillRect(img.getWidth - intWidth, 0, intWidth, img.getHeight)
   end consume
