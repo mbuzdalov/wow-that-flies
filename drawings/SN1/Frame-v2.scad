@@ -73,11 +73,11 @@ legW = 5;
 // Thickness of the piece of plastic that covers the leg cavity
 legCoverThick = 0.8;
 
-// The height below the lowPoint of the landing damper
-landingDamperHeight = 10;
+// The height of the landing leg end below the lowPoint and the shock absorber
+landingLegEndHeight = 25;
 
-// The wall thickness of the landing damper
-landingDamperThick = 1.2;
+// The wall thickness of the landing leg end
+landingLegEndThick = 1.2;
 
 // The Z coordinate of flap rotation axes, where servo holes are
 servoHoleH = -lowPoint + legThick + 20;
@@ -279,7 +279,19 @@ module legLowerStrengthener() {
         translate([dx, -lowPoint, legThick - eps])
         linear_extrude(servoProtectionH, scale = [1, 0.5])
         square([wallThick, lowPoint + strengthOffset]);
-    // the very bottom part, to which the landing dampers attach
+    // the very bottom part, to which the landing leg ends attach
+    translate([-legW / 2 - legThick, -lowPoint, legThick - eps])
+        cube([legW + 2 * legThick, wallThick, servoProtectionH]);
+}
+
+// The monolithic version of the above for subtracting
+module legLowerStrengthener2() {
+    wallThick = 1.2;
+    // trapezoidal sides
+    translate([-legW / 2 - legThick, -lowPoint + wallThick, legThick - eps])
+        linear_extrude(servoProtectionH, scale = [1, 0.5])
+        square([legW + 2 * legThick, lowPoint + strengthOffset]);
+    // the very bottom part, to which the landing leg ends attach
     translate([-legW / 2 - legThick, -lowPoint, legThick - eps])
         cube([legW + 2 * legThick, wallThick, servoProtectionH]);
 }
@@ -341,34 +353,37 @@ module legCover() {
     ]);
 }
 
-// The damper to dampen the impact of landing and to increase the height
-// so that the flaps don't touch the ground. One for each leg. Print in TPU.
-module landingDamper() {
-    // 0.1 is the mounting gap size
-    innerLength = legThick + servoProtectionH + legCoverThick + 0.1;
-    innerWidth = legW + 2 * legThick + 0.1;
-    outerLength = innerLength + 2 * landingDamperThick;
-    outerWidth = innerWidth + 2 * landingDamperThick;
+// This sits at the landing end of each leg
+// separated from the leg by some shock absorber.
+// In this particular build, this is a 25x10x7 piece of foamed polyethylene.
+// This has a capacity to slide on the leg and absorb some of the shock
+// while not being too floppy.
+module landingLegEnd() {
+    // 0.2 is the mounting gap size
+    innerLength = legThick + servoProtectionH + legCoverThick + 0.2;
+    innerWidth = legW + 2 * legThick + 0.2;
+    outerLength = innerLength + 2 * landingLegEndThick;
+    outerWidth = innerWidth + 2 * landingLegEndThick;
     outerOutdent = 6;
-    innerOutdent = outerOutdent / 2;
-    onLegHeight = 3.8;
+    onLegHeight = 9;
     
     difference() {
         union() {
-            linear_extrude(landingDamperHeight, 
+            // the bottom part which extends a bit
+            linear_extrude(landingLegEndHeight, 
                 scale=[1, outerLength / (outerLength + outerOutdent)])
                 translate([-outerWidth / 2, 0])
                 square([outerWidth, outerLength + outerOutdent]);
-            translate([-outerWidth / 2, 0, landingDamperHeight])
+            // the top part which is roughly on the leg
+            translate([-outerWidth / 2, 0, landingLegEndHeight])
                 cube([outerWidth, outerLength, onLegHeight]);
         }
-        translate([-innerWidth / 2, landingDamperThick, landingDamperHeight])
+        // leg insert cavity
+        translate([-innerWidth / 2, landingLegEndThick, landingLegEndHeight])
             cube([innerWidth, innerLength, onLegHeight + eps]);
-        translate([0, landingDamperThick, -eps])
-            linear_extrude(landingDamperHeight - landingDamperThick,
-                scale=[1, innerLength / (innerLength + innerOutdent)])
-            translate([-innerWidth / 2, 0])
-            square([innerWidth, innerLength + innerOutdent]);
+        // the gap for servo parts
+        translate([-innerWidth / 2 + 1, -eps, landingLegEndHeight])
+            cube([innerWidth - 2, innerLength, onLegHeight + eps]);
     }
 }
 
@@ -745,35 +760,6 @@ module elrsWireCover() {
     }
 }
 
-// A mount that is glued to the outer surface and keeps a battery
-// from one of the ends with the help of a piece of catgut/rubber.
-// Ideally, some sticky pad should be glued in, so that the battery does not slip.
-// Two per battery, for each of the two batteries.
-module batteryMountA() {
-    difference() {
-        union() {
-            translate([-10, 0, 0]) cube([20, 8, 5]);
-            linear_extrude(2, convexity = 2) polygon([
-                [-12, 7], [-12, 5], [-11, 5], [-11, 6],
-                [+11, 6], [+11, 5], [+12, 5], [+12, 7]
-            ]);
-        }
-        translate([0, -R + 1, -eps]) cylinder(h = 5 + eps2, r = R);
-        translate([-8, 2.5, -eps]) cube([16, 8, 5 + eps2]);
-    }
-}
-
-// A mount that keeps a battery from slipping and falling down to the ground.
-// This will probably be replaced by something better.
-module batteryMountB() {
-    difference() {
-        linear_extrude(10, scale = [0.1, 1])
-            translate([-3, 0]) 
-            square([6, 10]);
-        translate([0, -R + 1, -eps]) cylinder(h = 10 + eps2, r = R);
-    }
-}
-
 // A piece that contains an XT30 female connector and keeps it fixed
 // when glued to the outer frame. There are two of them.
 module powerConnectorHolder() {
@@ -866,6 +852,68 @@ module weightAirGapLowerCross() {
     }
 }
 
+// The aero surface that contains and isolates batteries, evens out the lift.
+module batteryChine(awayD, sideD, rRef, angles) {
+    hypot1 = sqrt((RTop + awayD) ^ 2 + sideD ^ 2);
+    outerA = acos(rRef / hypot1);
+    innerA = asin(sideD / hypot1);
+    totalA = innerA + outerA;
+
+    difference() {
+        // For each angle, generate the shape
+        for (angle = angles)
+            rotate([0, 0, angle])
+            translate([0, 0, eps])
+            linear_extrude(VH - eps2) {
+                polygon([
+                    [+rRef * sin(totalA), rRef * cos(totalA)],
+                    [+sideD, RTop + awayD],
+                    [-sideD, RTop + awayD],
+                    [-rRef * sin(totalA), rRef * cos(totalA)]
+                ]);
+                translate([0, RTop + awayD - sideD / tan(totalA)])
+                    circle(sideD / sin(totalA));
+            }
+
+        // We need to subtract the cylinder volume...
+        cylinder(r1 = RBot + 0.56, r2 = RTop + 0.56, h = VH);
+
+        // ...and the forward legs...
+        for (a = [180, 270])
+            rotate([0, 0, a])
+            translate([0, -R, 0])
+            rotate([90, 0, 0]) {
+                // the leg itself
+                forwardLeg();
+                legLowerStrengthener2();
+                // the screw that attaches it to the upper thrust puck
+                translate([0, VH - puckThick / 2, 0])
+                    cylinder(r = 3, h = 10);
+                // the screw that attaches it to the lower thrust puck
+                translate([0, puckThick / 2, 0])
+                    cylinder(r = 3, h = 10);
+            }
+
+        // ...and the leg covers...
+        *for (a = [0:3])
+            rotate([0, 0, a * 90])
+            translate([(legW + 2 * legThick) / 2, R + legThick, -lowPoint])
+            rotate([0, -90, 0])
+            legCover();
+
+        // ...and the batteries themselves
+        for (angle = angles)
+            rotate([0, 0, angle]) {
+                // the battery
+                translate([-17 / 2, RTop + 2, VH - 113])
+                    cube([17, 15, 113]);
+                // the wire hole
+                translate([-sign(angle) * 17 / 2, RTop + 2 + 7.5, VH - 113])
+                    rotate([0, -sign(angle) * 120, 0])
+                    cube([17, 15, 30], center = true);
+            }
+    }
+}
 
 //////////////////////////////////
 //////////////////////////////////
@@ -895,7 +943,6 @@ negFlapAngle = 45 * sin($t * 1080);
 
 if (false) {
     // Everything is to be printed with PETG
-    // except landingDamper() which is to be printed with TPU.
 
     // top module
     //duct(RTop, RTop - 0.25, topWireCutoutAngle);
@@ -920,15 +967,38 @@ if (false) {
     //midServoWireCover();
     //elrsWireCover();
     //legCover();
-    //batteryMountA();
-    //batteryMountB();
     
     //weightAirGapLeg();
     //weightAirGapCross();
     //weightAirGapLowerCross();
-    //landingDamper();
+    landingLegEnd();
 
     //rangefinderMount();
+    
+    // a funny circular chine chopping printout
+    /*
+    intersection() {
+        translate([-100, -100, VH * 2 / 3])
+            cube([200, 200, VH / 3]);
+        batteryChine(23, 7.5, RTop - 10, [115, -25]);
+    }
+
+    rotate([0, 0, 47])
+    translate([0, 0, VH / 3])
+    intersection() {
+        translate([-100, -100, VH / 3])
+            cube([200, 200, VH / 3]);
+        batteryChine(23, 7.5, RTop - 10, [115, -25]);
+    }
+
+    rotate([0, 0, 94])
+    translate([0, 0, 2 * VH / 3])
+    intersection() {
+        translate([-100, -100, 0])
+            cube([200, 200, VH / 3]);
+        batteryChine(23, 7.5, RTop - 10, [115, -25]);
+    }
+    */
 } else {
     /////////////////////////////////
     /// The main assembly drawing
@@ -993,12 +1063,12 @@ if (false) {
             antiServoAdapter();
     }
 
-    // leg dampers
+    // leg ends
     for (a = [0:3])
         rotate([0, 0, 90 * a])
-        translate([R - landingDamperThick, 0, -lowPoint - landingDamperHeight])
+        translate([R - landingLegEndThick, 0, -lowPoint - landingLegEndHeight])
         rotate([0, 0, -90])
-        landingDamper();
+        landingLegEnd();
     
     // AIO mount
     rotate([0, 0, -45])
@@ -1032,17 +1102,9 @@ if (false) {
         translate([0.7, 0, 0])
         rangefinderMount();
 
-    // battery holders
+    // battery holders & chines
     color("blue")
-        for (a = [110, -20])
-        rotate([0, 0, a]) {
-            for (dz = [VH - 15, VH - 85])
-                translate([0, R - 1, dz])
-                batteryMountA();
-            translate([0, R - 1, VH - 95])
-                rotate([-90, 0, 0])
-                batteryMountB();
-        }
+        batteryChine(23, 7.5, RTop - 10, [115, -25]);
     
     // wire covers
     color("red") {
