@@ -26,8 +26,6 @@
 
 // Minimum angle
 $fa = 1;
-// Minimum fragment size
-$fs = 0.1;
 
 //////////////////////////////////
 /// General geometry
@@ -203,6 +201,24 @@ module puck(r, holeRot) {
             // 9 is hardcoded to exceed bolt height, but not much;
             // please #adjust if needed
             cylinder(h = 9, r = m3Tight);
+    }
+}
+
+// The aerodynamic addon to the bottom motor mount.
+//
+// @param r the radius of the outer circle
+// @param holeRot the angle at which to introduce cutout
+//        for motor wires
+module puckAddon(r, holeRot) {
+    difference() {
+        union() {
+            // TODO: this is adapted from puckCrossShape
+            for (a = [0, 90])
+                rotate([0, 0, a])
+                linear_extrude(puckThick, convexity = 2, scale = [1, 0])
+                square([2 * (r - 0.8), 6], center = true);
+            cylinder(h = 20, r1 = 11, r2 = 0);
+        }
     }
 }
 
@@ -895,7 +911,7 @@ module batteryChine(awayD, sideD, rRef, angles) {
             }
 
         // ...and the leg covers...
-        *for (a = [0:3])
+        for (a = [0:3])
             rotate([0, 0, a * 90])
             translate([(legW + 2 * legThick) / 2, R + legThick, -lowPoint])
             rotate([0, -90, 0])
@@ -942,7 +958,42 @@ posFlapAngle = 45 * sin($t * 720);
 negFlapAngle = 45 * sin($t * 1080);
 
 if (false) {
-    // Everything is to be printed with PETG
+    // Minimum fragment size for rendering
+    $fs = 0.1;
+
+    //////////////////////////////////////////////////////////////
+    ///// These should be lightweight & printed with e.g. PLA Aero
+    //////////////////////////////////////////////////////////////
+
+    //puckAddon(RBot, botWireCutoutAngle);
+    // a funny circular chine chopping printout
+    /*
+    intersection() {
+        translate([-100, -100, VH * 2 / 3])
+            cube([200, 200, VH / 3]);
+        batteryChine(23, 7.5, RTop - 10, [115, -25]);
+    }
+
+    rotate([0, 0, 47])
+    translate([0, 0, VH / 3])
+    intersection() {
+        translate([-100, -100, VH / 3])
+            cube([200, 200, VH / 3]);
+        batteryChine(23, 7.5, RTop - 10, [115, -25]);
+    }
+
+    rotate([0, 0, 94])
+    translate([0, 0, 2 * VH / 3])
+    intersection() {
+        translate([-100, -100, 0])
+            cube([200, 200, VH / 3]);
+        batteryChine(23, 7.5, RTop - 10, [115, -25]);
+    }
+    */
+
+    //////////////////////////////////////////////////////////////
+    ///// These are structural and should be printed with PETG
+    //////////////////////////////////////////////////////////////
 
     // top module
     //duct(RTop, RTop - 0.25, topWireCutoutAngle);
@@ -971,38 +1022,17 @@ if (false) {
     //weightAirGapLeg();
     //weightAirGapCross();
     //weightAirGapLowerCross();
-    landingLegEnd();
+    //landingLegEnd();
 
     //rangefinderMount();
     
-    // a funny circular chine chopping printout
-    /*
-    intersection() {
-        translate([-100, -100, VH * 2 / 3])
-            cube([200, 200, VH / 3]);
-        batteryChine(23, 7.5, RTop - 10, [115, -25]);
-    }
-
-    rotate([0, 0, 47])
-    translate([0, 0, VH / 3])
-    intersection() {
-        translate([-100, -100, VH / 3])
-            cube([200, 200, VH / 3]);
-        batteryChine(23, 7.5, RTop - 10, [115, -25]);
-    }
-
-    rotate([0, 0, 94])
-    translate([0, 0, 2 * VH / 3])
-    intersection() {
-        translate([-100, -100, 0])
-            cube([200, 200, VH / 3]);
-        batteryChine(23, 7.5, RTop - 10, [115, -25]);
-    }
-    */
 } else {
     /////////////////////////////////
     /// The main assembly drawing
     /////////////////////////////////
+
+    // Minimum fragment size
+    $fs = 1;
     
     // top module
     translate([0, 0, VH - ductTotalHeight])
@@ -1017,8 +1047,10 @@ if (false) {
         duct(RBot, RBot - 0.25, botWireCutoutAngle);
     color("green")
         translate([0, 0, puckThick])
-        rotate([180, 0, 0])
-        puck(RBot, botWireCutoutAngle);
+        rotate([180, 0, 0]) {
+            puck(RBot, botWireCutoutAngle);
+            translate([0, 0, puckThick]) puckAddon(RBot, botWireCutoutAngle);
+        }
     
     // legs
     color("#80FF00") {
