@@ -56,6 +56,9 @@ m3Free = 1.6;
 /// appropriately. 
 //////////////////////////////////
 
+// Maximum actuation angle of a flap
+maxActuationAngle = 20;
+
 // The distance between the top and the bottom cylinder faces
 VH = 200; 
 
@@ -407,83 +410,108 @@ module landingLegEnd() {
 /// Flaps and their adaptors
 //////////////////////////////////
 
-module negFlap() {
-    translate([0, 0, -flapThick / 2])
-    linear_extrude(flapThick)
+foilMin = -15;
+foilMax = 45;
+
+module foilHalf() {
+    translate([foilMin, 0])
+    scale([foilMax - foilMin, foilMax - foilMin])
     polygon([
-        [-antiServoMountR, -26],
-        [-antiServoMountR, -1.2],
-        [-antiServoMountR + 4.2, -1.2],
-        [-antiServoMountR + 4.2, +1.2],
-        [-antiServoMountR, +1.2],
-        [-antiServoMountR, +23],
-        [servoMountR, +23],
-        [servoMountR, -26],
-        [+19, -26],
-        [+19, -17],
-        [0, 2],
-        [-19, -17],
-        [-19, -26]
+       [1.00000, 0.00000], [0.99640, 0.00022], 
+       [0.98598, 0.00115], [0.96948, 0.00290], 
+       [0.94737, 0.00514], [0.91970, 0.00771],
+       [0.88673, 0.01081], [0.84899, 0.01458], 
+       [0.80708, 0.01904], [0.76168, 0.02416], 
+       [0.71346, 0.02985], [0.66316, 0.03596],
+       [0.61148, 0.04231], [0.55912, 0.04866], 
+       [0.50675, 0.05477], [0.45499, 0.06036], 
+       [0.40442, 0.06516], [0.35555, 0.06889],
+       [0.30884, 0.07127], [0.26456, 0.07202], 
+       [0.22289, 0.07110], [0.18408, 0.06858], 
+       [0.14839, 0.06450], [0.11605, 0.05896],
+       [0.08721, 0.05212], [0.06206, 0.04427], 
+       [0.04085, 0.03567], [0.02379, 0.02657], 
+       [0.01106, 0.01729], [0.00290, 0.00819],
+       [0.00000, 0.00000]
     ]);
 }
 
-module posFlap() {
-    translate([0, 0, -flapThick / 2])
-    linear_extrude(flapThick)
-    polygon([
-        [-antiServoMountR, -26],
-        [-antiServoMountR, -1.2],
-        [-antiServoMountR + 4.2, -1.2],
-        [-antiServoMountR + 4.2, +1.2],
-        [-antiServoMountR, +1.2],
-        [-antiServoMountR, +23],
-        [-28, +23],
-        [0, -5],
-        [+28, +23],
-        [servoMountR, +23],
-        [servoMountR, -26],
-        [+31, -26],
-        [+23, -26],
-        [+22, -25],
-        [-22, -25],
-        [-23, -26],
-        [-31, -26],
-    ]);
-}
-
-module servoAdapter() {
-    difference() {
-        // body
+module flapSideShape(useHalf1, useHalf2, innerCutAngle) {
+    // closer than that, we need to cut the airfoils
+    minAbsZ = foilMax * tan(maxActuationAngle);
+    // this is where we stop cutting them
+    inScale = 0.4;
+    
+    translate([0, 0, -antiServoMountR])
+        linear_extrude(antiServoMountR - minAbsZ)
         union() {
-            translate([-4, -11, 0])
-                cube([8, 12, 5]);
-            translate([0, -11, 0])
-                cylinder(h = 5, r = 4);
-            translate([0, 1, 0])
-                cylinder(h = 5, r = 4);
+            if (useHalf1) foilHalf();
+            if (useHalf2) scale([+1, -1]) foilHalf();
         }
-        // cut for the flap
-        translate([-flapThick / 2 - 0.1, -15 - eps, -eps])
-            cube([flapThick + 0.2, 20 + 2 * eps, 2 + eps]);
-        // cut for the axis
-        translate([0, 0, -eps])
-            cylinder(r = 3.1, h = 5 + 2 * eps);
-        // cut for the hand, rect part
-        translate([-2, -12.5, 4.4])
-            cube([4, 12.5, 0.7]);
-        // cut for the hand, round part
-        translate([0, -12.5, 4.4])
-            cylinder(r = 2, h = 0.7);
+    
+    translate([0, 0, -minAbsZ])
+        linear_extrude(minAbsZ * (1 - inScale), scale = [inScale, 1])
+        union() {
+            if (useHalf1) foilHalf();
+            if (useHalf2) scale([+1, -1]) foilHalf();
+        }
+    
+    translate([0, 0, -minAbsZ * inScale])
+        linear_extrude(minAbsZ * inScale)
+        intersection() {
+            scale([inScale, 1])
+            union() {
+                if (useHalf1) foilHalf();
+                if (useHalf2) scale([+1, -1]) foilHalf();
+            }
+            rotate([0, 0, innerCutAngle])
+            polygon([
+                [0, 0],
+                [foilMax, foilMax * tan(90 - maxActuationAngle)],
+                [foilMax, -foilMax * tan(90 - maxActuationAngle)]
+            ]);
+        }
+        
+}
+
+module flapCommon(useHalf1, useHalf2, innerCutAngle) {
+    difference() {
+        rotate([-90, 0, 0])
+        rotate([0, 90, 0]) {
+            flapSideShape(useHalf1, useHalf2, innerCutAngle);
+            scale([+1, +1, -1]) flapSideShape(useHalf1, useHalf2, innerCutAngle);
+        }
+        translate([servoMountR + 7.5, 0, 0])
+        rotate([0, -90, 0]) {
+            // cut for the axis
+            translate([0, 0, -eps])
+                cylinder(r = 3.1, h = 6);
+            // also part of the hole to avoid sagging filament
+            translate([-3.1, -0.4, -eps])
+                cube([6.2, 0.8, 6]);
+            // cut for the hand, rect part
+            translate([-2.2, -12.5, 3])
+                cube([4.4, 12.5, 1.2]);
+            // cut for the hand, round part
+            translate([0, -12.5, 3])
+                cylinder(r = 2.2, h = 1.2);
+        }
+        // hole from the opposite side
+        translate([-antiServoMountR - eps, 0, 0])
+            rotate([0, 90, 0])
+            cylinder(r = 1.3, h = 4);
+        // also part of the hole to avoid sagging filament
+        translate([-antiServoMountR - eps, -0.4, -1.3])
+            cube([4, 0.8, 2.6]);
     }
 }
 
-module antiServoAdapter() {
-    difference() {
-        cylinder(h = 3, r = 3);
-        translate([0, 0, -eps]) cylinder(h = 3 + 2 * eps, r = 1.2);
-        translate([-flapThick / 2 - 0.1, -3 - eps, -eps])
-            cube([flapThick + 0.2, 6 + 2 * eps, 2 + eps]);
-    }
+module negFlap(useHalf1, useHalf2) {
+    flapCommon(useHalf1, useHalf2, 0);
+}
+
+module posFlap(useHalf1, useHalf2) {
+    flapCommon(useHalf1, useHalf2, 180);
 }
 
 //////////////////////////////////
@@ -954,8 +982,8 @@ $vpr = [90 + sin($t * 360) * 10, 0, $t * 360];
 $vpd = 800;
 
 // Flaps also move nicely during animation.
-posFlapAngle = 45 * sin($t * 720);
-negFlapAngle = 45 * sin($t * 1080);
+posFlapAngle = maxActuationAngle * sin($t * 720);
+negFlapAngle = maxActuationAngle * sin($t * 1080);
 
 if (false) {
     // Minimum fragment size for rendering
@@ -990,7 +1018,7 @@ if (false) {
         batteryChine(23, 7.5, RTop - 10, [115, -25]);
     }
     */
-
+    
     //////////////////////////////////////////////////////////////
     ///// These are structural and should be printed with PETG
     //////////////////////////////////////////////////////////////
@@ -1005,6 +1033,12 @@ if (false) {
 
     //forwardLeg();
     //translate([12, 0, 0]) backwardLeg();
+
+    // I printed these with PETG CF
+    //negFlap(true, false);
+    //negFlap(false, true);
+    //posFlap(true, false);
+    //posFlap(false, true);
 
     //aioMount();
     //hdzMount();
@@ -1070,29 +1104,12 @@ if (false) {
     color("yellow") {
         translate([0, 0, servoHoleH])
             rotate([90 + negFlapAngle, 0, 0])
-            negFlap();
+            negFlap(true, true);
 
         translate([0, 0, servoHoleH])
             rotate([0, 0, -90])
             rotate([90 + posFlapAngle, 0, 0])
-            posFlap();
-    }
-
-    // flap mount adapters
-    color("blue") {
-        for (a = [0, 1])
-            rotate([0, 0, 90 * a])
-            translate([0, -servoMountR + 2, servoHoleH])
-            rotate([0, a ? -negFlapAngle : -posFlapAngle, 0])
-            rotate([90, 0, 0])
-            servoAdapter();
-
-        for (a = [0, 1])
-            rotate([0, 0, 180 + 90 * a])
-            translate([0, -antiServoMountR + 2, servoHoleH])
-            rotate([0, a ? negFlapAngle : posFlapAngle, 0])
-            rotate([90, 0, 0])
-            antiServoAdapter();
+            posFlap(true, true);
     }
 
     // leg ends
