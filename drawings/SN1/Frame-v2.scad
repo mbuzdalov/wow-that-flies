@@ -220,7 +220,7 @@ module puckAddon(r, holeRot) {
                 rotate([0, 0, a])
                 linear_extrude(puckThick, convexity = 2, scale = [1, 0])
                 square([2 * (r - 0.8), 6], center = true);
-            cylinder(h = 20, r1 = 11, r2 = 0);
+            cylinder(h = 18, r1 = 11, r2 = 0);
         }
     }
 }
@@ -407,19 +407,21 @@ module landingLegEnd() {
 }
 
 //////////////////////////////////
-/// Flaps and their adaptors
+/// Flaps
 //////////////////////////////////
 
-foilMin = -15;
-foilMax = 45;
+foilMin = -19;
+foilMax = 47;
 
 module foilHalf() {
+    minThick = 0.2 / (foilMax - foilMin);
     translate([foilMin, 0])
     scale([foilMax - foilMin, foilMax - foilMin])
     polygon([
-       [1.00000, 0.00000], [0.99640, 0.00022], 
-       [0.98598, 0.00115], [0.96948, 0.00290], 
-       [0.94737, 0.00514], [0.91970, 0.00771],
+       [1, 0],
+       [1.00000, max(minThick, 0.00000)], [0.99640, max(minThick, 0.00022)], 
+       [0.98598, max(minThick, 0.00115)], [0.96948, max(minThick, 0.00290)], 
+       [0.94737, max(minThick, 0.00514)], [0.91970, max(minThick, 0.00771)],
        [0.88673, 0.01081], [0.84899, 0.01458], 
        [0.80708, 0.01904], [0.76168, 0.02416], 
        [0.71346, 0.02985], [0.66316, 0.03596],
@@ -436,33 +438,30 @@ module foilHalf() {
     ]);
 }
 
-module flapSideShape(useHalf1, useHalf2, innerCutAngle) {
+module flapSideShape(innerCutAngle, minOffset) {
     // closer than that, we need to cut the airfoils
     minAbsZ = foilMax * tan(maxActuationAngle);
     // this is where we stop cutting them
     inScale = 0.4;
     
-    translate([0, 0, -antiServoMountR])
-        linear_extrude(antiServoMountR - minAbsZ)
-        union() {
-            if (useHalf1) foilHalf();
-            if (useHalf2) scale([+1, -1]) foilHalf();
+    translate([0, 0, -antiServoMountR + minOffset])
+        linear_extrude(antiServoMountR - minOffset - minAbsZ, convexity = 2) {
+            foilHalf();
+            scale([+1, -1]) foilHalf();
         }
     
     translate([0, 0, -minAbsZ])
-        linear_extrude(minAbsZ * (1 - inScale), scale = [inScale, 1])
-        union() {
-            if (useHalf1) foilHalf();
-            if (useHalf2) scale([+1, -1]) foilHalf();
+        linear_extrude(minAbsZ * (1 - inScale), scale = [inScale, 1], convexity = 2) {
+            foilHalf();
+            scale([+1, -1]) foilHalf();
         }
     
     translate([0, 0, -minAbsZ * inScale])
-        linear_extrude(minAbsZ * inScale)
+        linear_extrude(minAbsZ * inScale, convexity = 2)
         intersection() {
-            scale([inScale, 1])
-            union() {
-                if (useHalf1) foilHalf();
-                if (useHalf2) scale([+1, -1]) foilHalf();
+            scale([inScale, 1]) {
+                foilHalf();
+                scale([+1, -1]) foilHalf();
             }
             rotate([0, 0, innerCutAngle])
             polygon([
@@ -474,44 +473,74 @@ module flapSideShape(useHalf1, useHalf2, innerCutAngle) {
         
 }
 
-module flapCommon(useHalf1, useHalf2, innerCutAngle) {
+module flapCommon(innerCutAngle) {
     difference() {
         rotate([-90, 0, 0])
         rotate([0, 90, 0]) {
-            flapSideShape(useHalf1, useHalf2, innerCutAngle);
-            scale([+1, +1, -1]) flapSideShape(useHalf1, useHalf2, innerCutAngle);
+            flapSideShape(innerCutAngle, 0);
+            scale([+1, +1, -1]) flapSideShape(innerCutAngle, 3);
         }
-        translate([servoMountR + 7.5, 0, 0])
+        translate([antiServoMountR - 2.2, 0, 0])
         rotate([0, -90, 0]) {
             // cut for the axis
             translate([0, 0, -eps])
                 cylinder(r = 3.1, h = 6);
-            // also part of the hole to avoid sagging filament
-            translate([-3.1, -0.4, -eps])
-                cube([6.2, 0.8, 6]);
             // cut for the hand, rect part
-            translate([-2.2, -12.5, 3])
-                cube([4.4, 12.5, 1.2]);
+            translate([-2.2, -12.5, -eps])
+                cube([4.4, 12.5, 4.2]);
             // cut for the hand, round part
-            translate([0, -12.5, 3])
-                cylinder(r = 2.2, h = 1.2);
+            translate([0, -12.5, -eps])
+                cylinder(r = 2.2, h = 4.2);
         }
         // hole from the opposite side
         translate([-antiServoMountR - eps, 0, 0])
             rotate([0, 90, 0])
             cylinder(r = 1.3, h = 4);
-        // also part of the hole to avoid sagging filament
-        translate([-antiServoMountR - eps, -0.4, -1.3])
-            cube([4, 0.8, 2.6]);
     }
 }
 
-module negFlap(useHalf1, useHalf2) {
-    flapCommon(useHalf1, useHalf2, 0);
+module negFlap() {
+    flapCommon(0);
 }
 
-module posFlap(useHalf1, useHalf2) {
-    flapCommon(useHalf1, useHalf2, 180);
+module posFlap() {
+    flapCommon(180);
+}
+
+module posFlapServoHalf() {
+    difference() {
+        intersection() {
+            posFlap();
+            translate([0, -100, -100]) cube([100, 200, 200]);
+        }
+        translate([-eps, 1.95, -1.55]) cube([2, 3.1, 3.1]);
+    }
+}
+
+module posFlapAntiHalf() {
+    intersection() {
+        posFlap();
+        translate([-100, -100, -100]) cube([100, 200, 200]);
+    }
+    translate([-eps, 2, -1.5]) cube([2, 3, 3]);
+}
+
+module negFlapServoHalf() {
+    difference() {
+        intersection() {
+            negFlap();
+            translate([0, -100, -100]) cube([100, 200, 200]);
+        }
+        translate([-eps, -6.05, -1.55]) cube([2, 3.1, 3.1]);
+    }
+}
+
+module negFlapAntiHalf() {
+    intersection() {
+        negFlap();
+        translate([-100, -100, -100]) cube([100, 200, 200]);
+    }
+    translate([-eps, -6, -1.5]) cube([2, 3, 3]);
 }
 
 //////////////////////////////////
@@ -994,6 +1023,7 @@ if (false) {
     //////////////////////////////////////////////////////////////
 
     //puckAddon(RBot, botWireCutoutAngle);
+
     // a funny circular chine chopping printout
     /*
     intersection() {
@@ -1018,6 +1048,11 @@ if (false) {
         batteryChine(23, 7.5, RTop - 10, [115, -25]);
     }
     */
+
+    //posFlapServoHalf();
+    //posFlapAntiHalf();
+    //negFlapServoHalf();
+    //negFlapAntiHalf();
     
     //////////////////////////////////////////////////////////////
     ///// These are structural and should be printed with PETG
@@ -1033,12 +1068,6 @@ if (false) {
 
     //forwardLeg();
     //translate([12, 0, 0]) backwardLeg();
-
-    // I printed these with PETG CF
-    //negFlap(true, false);
-    //negFlap(false, true);
-    //posFlap(true, false);
-    //posFlap(false, true);
 
     //aioMount();
     //hdzMount();
@@ -1104,12 +1133,12 @@ if (false) {
     color("yellow") {
         translate([0, 0, servoHoleH])
             rotate([90 + negFlapAngle, 0, 0])
-            negFlap(true, true);
+            negFlap();
 
         translate([0, 0, servoHoleH])
             rotate([0, 0, -90])
             rotate([90 + posFlapAngle, 0, 0])
-            posFlap(true, true);
+            posFlap();
     }
 
     // leg ends
