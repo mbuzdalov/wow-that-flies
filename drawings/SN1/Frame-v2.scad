@@ -75,10 +75,7 @@ legW = 5;
 legCoverThick = 0.8;
 
 // The height of the landing leg end below the lowPoint and the shock absorber
-landingLegEndHeight = 25;
-
-// The wall thickness of the landing leg end
-landingLegEndThick = 1.2;
+landingLegEndHeight = 30;
 
 // The Z coordinate of flap rotation axes, where servo holes are
 servoHoleH = -lowPoint + legThick + 20;
@@ -372,37 +369,21 @@ module legCover() {
     ]);
 }
 
-// This sits at the landing end of each leg
-// separated from the leg by some shock absorber.
-// In this particular build, this is a 25x10x7 piece of foamed polyethylene.
-// This has a capacity to slide on the leg and absorb some of the shock
-// while not being too floppy.
+// This sits at the landing end of each leg,
+// with some shock absorber recommended at the ground-touching surface.
+// (In this particular build, this is a 35x10x7 piece of foamed polyethylene).
 module landingLegEnd() {
-    // 0.2 is the mounting gap size
-    innerLength = legThick + servoProtectionH + legCoverThick + 0.2;
-    innerWidth = legW + 2 * legThick + 0.2;
-    outerLength = innerLength + 2 * landingLegEndThick;
-    outerWidth = innerWidth + 2 * landingLegEndThick;
-    outerOutdent = 6;
-    onLegHeight = 9;
+    baseLength = legThick + servoProtectionH + legCoverThick;
+    innerWidth = legW + 2 * legThick;
+    outerOutdent = 10;
+    heightOffset = landingLegEndHeight + (lowPoint + strengthOffset) / 2;
     
     difference() {
-        union() {
-            // the bottom part which extends a bit
-            linear_extrude(landingLegEndHeight, 
-                scale=[1, outerLength / (outerLength + outerOutdent)])
-                translate([-outerWidth / 2, 0])
-                square([outerWidth, outerLength + outerOutdent]);
-            // the top part which is roughly on the leg
-            translate([-outerWidth / 2, 0, landingLegEndHeight])
-                cube([outerWidth, outerLength, onLegHeight]);
-        }
-        // leg insert cavity
-        translate([-innerWidth / 2, landingLegEndThick, landingLegEndHeight])
-            cube([innerWidth, innerLength, onLegHeight + eps]);
-        // the gap for servo parts
-        translate([-innerWidth / 2 + 1, -eps, landingLegEndHeight])
-            cube([innerWidth - 2, innerLength, onLegHeight + eps]);
+        translate([-innerWidth / 2, 0, 0])
+            linear_extrude(heightOffset, scale = [1, (baseLength + 0.8) / (baseLength + outerOutdent)], convexity = 2)
+            square([innerWidth, baseLength + outerOutdent]);
+        translate([-innerWidth / 2 - eps, -eps, landingLegEndHeight])
+            cube([innerWidth + eps2, baseLength + eps, heightOffset]);
     }
 }
 
@@ -1054,6 +1035,8 @@ if (false) {
     //negFlapServoHalf();
     //negFlapAntiHalf();
     
+    //landingLegEnd();
+
     //////////////////////////////////////////////////////////////
     ///// These are structural and should be printed with PETG
     //////////////////////////////////////////////////////////////
@@ -1085,7 +1068,6 @@ if (false) {
     //weightAirGapLeg();
     //weightAirGapCross();
     //weightAirGapLowerCross();
-    //landingLegEnd();
 
     //rangefinderMount();
     
@@ -1144,7 +1126,7 @@ if (false) {
     // leg ends
     for (a = [0:3])
         rotate([0, 0, 90 * a])
-        translate([R - landingLegEndThick, 0, -lowPoint - landingLegEndHeight])
+        translate([R, 0, -lowPoint - landingLegEndHeight])
         rotate([0, 0, -90])
         landingLegEnd();
     
