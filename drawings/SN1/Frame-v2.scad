@@ -57,7 +57,7 @@ m3Free = 1.6;
 //////////////////////////////////
 
 // Maximum actuation angle of a flap
-maxActuationAngle = 20;
+maxActuationAngle = 25;
 
 // The distance between the top and the bottom cylinder faces
 VH = 200; 
@@ -392,7 +392,7 @@ module landingLegEnd() {
 //////////////////////////////////
 
 foilMin = -19;
-foilMax = 47;
+foilMax = 50;
 
 module foilHalf() {
     minThick = 0.2 / (foilMax - foilMin);
@@ -476,7 +476,7 @@ module flapCommon(innerCutAngle) {
         // hole from the opposite side
         translate([-antiServoMountR - eps, 0, 0])
             rotate([0, 90, 0])
-            cylinder(r = 1.3, h = 4);
+            cylinder(r = 1.2, h = 4);
     }
 }
 
@@ -494,7 +494,7 @@ module posFlapServoHalf() {
             posFlap();
             translate([0, -100, -100]) cube([100, 200, 200]);
         }
-        translate([-eps, 1.95, -1.55]) cube([2, 3.1, 3.1]);
+        translate([-eps, 0, -1.55]) cube([1.6, 5.05, 3.1]);
     }
 }
 
@@ -503,7 +503,7 @@ module posFlapAntiHalf() {
         posFlap();
         translate([-100, -100, -100]) cube([100, 200, 200]);
     }
-    translate([-eps, 2, -1.5]) cube([2, 3, 3]);
+    translate([-eps, 2, -1.5]) cube([1.4, 3, 3]);
 }
 
 module negFlapServoHalf() {
@@ -512,7 +512,7 @@ module negFlapServoHalf() {
             negFlap();
             translate([0, -100, -100]) cube([100, 200, 200]);
         }
-        translate([-eps, -6.05, -1.55]) cube([2, 3.1, 3.1]);
+        translate([-eps, -6.05, -1.55]) cube([1.6, 6.1, 3.1]);
     }
 }
 
@@ -521,7 +521,7 @@ module negFlapAntiHalf() {
         negFlap();
         translate([-100, -100, -100]) cube([100, 200, 200]);
     }
-    translate([-eps, -6, -1.5]) cube([2, 3, 3]);
+    translate([-eps, -6, -1.5]) cube([1.4, 3, 3]);
 }
 
 //////////////////////////////////
