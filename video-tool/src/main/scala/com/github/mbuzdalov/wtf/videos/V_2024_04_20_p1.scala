@@ -104,7 +104,7 @@ object V_2024_04_20_p1:
       TextMessage("You can see that the wind is indeed non-zero.",
         msgCF, width * 0.5f, height * 0.4f, HA.Center, VA.Center)
         .enabledBetween(200, 205),
-      BlinkingCircle(200, 10, 205, 0, height * 0.3, height * 0.25, height * 0.255, blinkColor),
+      BlinkingCircle(200, 10, 205, 0, 0.3, height * 0.25, height * 0.255, blinkColor),
 
       TextMessage("Normally to tune pitch you need to face the wind,",
         msgCF, width * 0.5f, height * 0.55f, HA.Center, VA.Center)
@@ -133,14 +133,14 @@ object V_2024_04_20_p1:
 
       LastLogMessage(reader, logTimeOffset, logCF, width * 0.2f, height * 0.82f)
         .enabledBetween(8, 410),
-      BlinkingCircle(115.05, 0.2, 116.05, width * 0.76, height * 0.418, blinkInnerR, blinkOuterR, blinkColor),
-      BlinkingCircle(139.7, 0.2, 140.7, width, height * 0.542, blinkInnerR, blinkOuterR, blinkColor),
-      BlinkingCircle(159.7, 0.2, 160.7, width, height * 0.511, blinkInnerR, blinkOuterR, blinkColor),
-      BlinkingCircle(170.4, 0.2, 171.4, width, height * 0.349, blinkInnerR, blinkOuterR, blinkColor),
-      BlinkingCircle(215.8, 0.2, 216.8, width, height * 0.233, blinkInnerR, blinkOuterR, blinkColor),
-      BlinkingCircle(258.05, 0.2, 259.05, width * 0.310, height * 0.426, blinkInnerR, blinkOuterR, blinkColor),
-      BlinkingCircle(318.05, 0.2, 319.05, width * 0.368, height * 0.434, blinkInnerR, blinkOuterR, blinkColor),
-      BlinkingCircle(346.05, 0.2, 347.05, width * 0.342, height * 0.418, blinkInnerR, blinkOuterR, blinkColor),
+      BlinkingCircle(115.05, 0.2, 116.05, 0.76, 0.418, blinkInnerR, blinkOuterR, blinkColor),
+      BlinkingCircle(139.7, 0.2, 140.7, 1, 0.542, blinkInnerR, blinkOuterR, blinkColor),
+      BlinkingCircle(159.7, 0.2, 160.7, 1, 0.511, blinkInnerR, blinkOuterR, blinkColor),
+      BlinkingCircle(170.4, 0.2, 171.4, 1, 0.349, blinkInnerR, blinkOuterR, blinkColor),
+      BlinkingCircle(215.8, 0.2, 216.8, 1, 0.233, blinkInnerR, blinkOuterR, blinkColor),
+      BlinkingCircle(258.05, 0.2, 259.05, 0.310, 0.426, blinkInnerR, blinkOuterR, blinkColor),
+      BlinkingCircle(318.05, 0.2, 319.05, 0.368, 0.434, blinkInnerR, blinkOuterR, blinkColor),
+      BlinkingCircle(346.05, 0.2, 347.05, 0.342, 0.418, blinkInnerR, blinkOuterR, blinkColor),
       Fade(timeOn = 409.5, timeOff = 410),
     )
 

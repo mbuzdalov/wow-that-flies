@@ -12,7 +12,6 @@ object V_2025_03_2x_p1a:
   def apply(props: BasicProperties): Unit =
     val width = props.width
     val height = props.height
-    val reader = props.createLogReader()
 
     val msgFontSize = 33f * width / 1280
     val msgStep = msgFontSize * 1.5f

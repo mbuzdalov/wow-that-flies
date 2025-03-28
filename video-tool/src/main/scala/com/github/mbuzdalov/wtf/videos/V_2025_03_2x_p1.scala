@@ -43,6 +43,9 @@ object V_2025_03_2x_p1:
     val msgStep = msgFontSize * 1.5f
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(40, 10, 40))
 
+    val blinkInnerR = width * 0.045
+    val blinkOuterR = width * 0.05
+
     val allGraphics = GraphicsConsumer.compose(
       sticks, //rollPlot, pitchPlot, yawPlot, flapPlot,
 
@@ -68,14 +71,16 @@ object V_2025_03_2x_p1:
 
       BottomBlanket(0.1f, new Color(240, 240, 240, 200), 45.0, 45.4, 49.5, 49.9),
       TextMessage("Third test, look at the left part of the screen...",
-        msgCF, width * 0.5, height * 0.95 + msgStep, HA.Center, VA.Center).enabledBetween(45.5, 49.5),
+        msgCF, width * 0.5, height * 0.95, HA.Center, VA.Center).enabledBetween(45.5, 49.5),
+
+      BlinkingCircle(46, 10, 49, t => 0.05 + (t - 46) * 0.01, t => 0.22 - (t - 46) * 0.052, blinkInnerR, blinkOuterR, new Color(140, 50, 140)),
 
       BottomBlanket(0.1f, new Color(240, 240, 240, 200), 54.0, 54.4, 59.5, 59.9),
       TextMessage("Fourth test, trying to climb higher (~40 meters)...",
         msgCF, width * 0.5, height * 0.95, HA.Center, VA.Center).enabledBetween(54.5, 59.5),
 
       BottomBlanket(0.1f, new Color(240, 240, 240, 200), 73.0, 73.4, 77.5, 77.9),
-      TextMessage("Now I am just flying around the pitch, after all, why not?",
+      TextMessage("Now I am just flying around the field, after all, why not?",
         msgCF, width * 0.5, height * 0.95, HA.Center, VA.Center).enabledBetween(73.5, 77.5),
 
       BottomBlanket(0.17f, new Color(240, 240, 240, 200), 125.0, 125.4, 131.5, 131.9),

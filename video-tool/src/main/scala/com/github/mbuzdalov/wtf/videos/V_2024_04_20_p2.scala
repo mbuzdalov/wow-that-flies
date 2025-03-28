@@ -105,10 +105,10 @@ object V_2024_04_20_p2:
         .enabledBetween(273, 278),
       LastLogMessage(reader, logTimeOffset, logCF, width * 0.2f, height * 0.21f)
         .enabledBetween(8, 276),
-      BlinkingCircle(107.0, 0.2, 108.0, 0, height * 0.349, blinkInnerR, blinkOuterR, blinkColor),
-      BlinkingCircle(143.6, 0.2, 144.6, 0, height * 0.395, blinkInnerR, blinkOuterR, blinkColor),
-      BlinkingCircle(189.9, 0.2, 190.9, 0, height * 0.450, blinkInnerR, blinkOuterR, blinkColor),
-      BlinkingCircle(237.8, 0.2, 238.8, 0, height * 0.434, blinkInnerR, blinkOuterR, blinkColor),
+      BlinkingCircle(107.0, 0.2, 108.0, 0, 0.349, blinkInnerR, blinkOuterR, blinkColor),
+      BlinkingCircle(143.6, 0.2, 144.6, 0, 0.395, blinkInnerR, blinkOuterR, blinkColor),
+      BlinkingCircle(189.9, 0.2, 190.9, 0, 0.450, blinkInnerR, blinkOuterR, blinkColor),
+      BlinkingCircle(237.8, 0.2, 238.8, 0, 0.434, blinkInnerR, blinkOuterR, blinkColor),
       Fade(timeOn = 0.5, timeOff = 0),
       Fade(timeOn = 278.5, timeOff = 279),
     )
