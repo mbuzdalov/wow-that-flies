@@ -97,6 +97,12 @@ object V_2025_03_2x_p2:
       TextMessage("for first few tests, sorry for that.",
         msgCF, width * 0.5, height - 1 * msgStep, HA.Center, VA.Center).enabledBetween(48.5, 55.5),
 
+      BottomBlanket(0.15, new Color(240, 240, 240, 200), 60.0, 60.4, 66.5, 66.9),
+      TextMessage("Only the slow descent speed was engaged this time,",
+        msgCF, width * 0.5, height - 1.5 * msgStep, HA.Center, VA.Center).enabledBetween(60.5, 66.5),
+      TextMessage("in the next test I will try to get higher.",
+        msgCF, width * 0.5, height - 0.5 * msgStep, HA.Center, VA.Center).enabledBetween(60.5, 66.5),
+
       Fade(timeOn = 0.5, timeOff = 0),
       Fade(timeOn = 70.5, timeOff = 71.0),
     )
