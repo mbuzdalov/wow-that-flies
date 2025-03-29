@@ -2,8 +2,6 @@ package com.github.mbuzdalov.wtf
 
 import java.io.ByteArrayInputStream
 
-import scala.language.implicitConversions
-
 import com.github.mbuzdalov.wtf.Numbers.*
 
 import org.scalatest.flatspec.AnyFlatSpec
@@ -19,7 +17,7 @@ class LogReaderTests extends AnyFlatSpec, Matchers:
 
   it should "read zero unsigned byte (B)" in:
     val value: UInt8 = LogReader.readByCharCT(storage0, 'B', 0)
-    (value: Int) shouldBe 0
+    value.asInt shouldBe 0
 
   it should "read zero int16 (h)" in:
     val value: Short = LogReader.readByCharCT(storage0, 'h', 0)
@@ -27,7 +25,7 @@ class LogReaderTests extends AnyFlatSpec, Matchers:
 
   it should "read zero uint16 (H)" in:
     val value: UInt16 = LogReader.readByCharCT(storage0, 'H', 0)
-    (value: Int) shouldBe 0
+    value.asInt shouldBe 0
 
   it should "read zero int32 (i)" in:
     val value: Int = LogReader.readByCharCT(storage0, 'i', 0)
@@ -47,7 +45,7 @@ class LogReaderTests extends AnyFlatSpec, Matchers:
 
   it should "read zero uint32 (I)" in:
     val value: UInt32 = LogReader.readByCharCT(storage0, 'I', 0)
-    (value: Long) shouldBe 0
+    value.asLong shouldBe 0
 
   it should "read zero short array (a)" in:
     val value: Array[Short] = LogReader.readByCharCT(storage0, 'a', 0)

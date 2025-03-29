@@ -5,12 +5,10 @@ import java.awt.image.BufferedImage
 import java.awt.{BasicStroke, Color, Font, Graphics2D}
 
 import scala.compiletime.uninitialized
-import scala.language.implicitConversions
 
 import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment as HA, VerticalAlignment as VA}
 import com.github.mbuzdalov.wtf.widgets.{Fade, TextMessage}
 import com.github.mbuzdalov.wtf.{BasicProperties, GraphicsConsumer}
-
 
 object V_2024_04_15_p1:
   def apply(props: BasicProperties): Unit =

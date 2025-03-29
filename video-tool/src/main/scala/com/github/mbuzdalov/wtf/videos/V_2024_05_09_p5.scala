@@ -4,8 +4,6 @@ import java.awt.geom.Path2D
 import java.awt.{Color, Graphics2D}
 import java.awt.image.BufferedImage
 
-import scala.language.implicitConversions
-
 import com.github.mbuzdalov.wtf.{BasicProperties, GraphicsConsumer}
 import com.github.mbuzdalov.wtf.widgets.{Fade, ScaleRotateCropBack, TextMessage}
 import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment as HA, VerticalAlignment as VA}

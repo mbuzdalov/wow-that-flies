@@ -4,8 +4,6 @@ import java.awt.Color
 import java.io.File
 import javax.imageio.ImageIO
 
-import scala.language.implicitConversions
-
 import com.github.mbuzdalov.wtf.util.PiecewiseLinearFunction
 import com.github.mbuzdalov.wtf.widgets.*
 import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment as HA, VerticalAlignment as VA}

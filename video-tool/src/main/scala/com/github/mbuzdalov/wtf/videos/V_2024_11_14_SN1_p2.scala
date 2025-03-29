@@ -3,8 +3,6 @@ package com.github.mbuzdalov.wtf.videos
 import java.awt.image.BufferedImage
 import java.awt.{BasicStroke, Color, Graphics2D}
 
-import scala.language.implicitConversions
-
 import com.github.mbuzdalov.wtf.util.Viridis
 import com.github.mbuzdalov.wtf.widgets.TextMessage.{ColorFont, HorizontalAlignment as HA, VerticalAlignment as VA}
 import com.github.mbuzdalov.wtf.widgets.*

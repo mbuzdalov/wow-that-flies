@@ -15,35 +15,29 @@ object Numbers:
 
   def uint16(value: Int): UInt16 = value.toShort
 
-  given Conversion[UInt8, Int] with
-    def apply(value: UInt8): Int = value & 0xFF
-
-  given Conversion[UInt16, Int] with
-    def apply(value: UInt16): Int = value & 0xFFFF
-
-  given Conversion[UInt32, Long] with
-    def apply(value: UInt32): Long = value & 0xFFFFFFFFL
-
   extension (value: UInt8)
+    def asInt: Int = value & 0xFF
     def bitVal(index: Int): Int = value & (1 << index)
-    def bitSet(index: Int): Boolean = if bitVal(index) == 0 then false else true
+    def bitSet(index: Int): Boolean = bitVal(index) != 0
     def toString: String = (value & 0xFF).toString
 
   extension (value: UInt16)
+    def asInt: Int = value & 0xFFFF
     def bitVal(index: Int): Int = value & (1 << index)
-    def bitSet(index: Int): Boolean = if bitVal(index) == 0 then false else true
+    def bitSet(index: Int): Boolean = bitVal(index) != 0
     def toString: String = (value & 0xFFFF).toString
 
   extension (value: UInt32)
+    def asLong: Long = value & 0xFFFFFFFFL
     def bitVal(index: Int): Int = value & (1 << index)
-    def bitSet(index: Int): Boolean = if bitVal(index) == 0 then false else true
+    def bitSet(index: Int): Boolean = bitVal(index) != 0
     def toString: String = java.lang.Integer.toUnsignedString(value)
 
   extension (value: UInt64)
+    def asDouble: Double = if value >= 0 then value.toDouble else value + math.pow(2, 63)
     def bitVal(index: Int): Long = value & (1L << index)
-    def bitSet(index: Int): Boolean = if bitVal(index) == 0 then false else true
+    def bitSet(index: Int): Boolean = bitVal(index) != 0
     def toString: String = java.lang.Long.toUnsignedString(value)
-    def toDouble: Double = if value >= 0 then value.toDouble else value + math.pow(2, 63)
 
     @targetName("less")
     def <(that: Long): Boolean =

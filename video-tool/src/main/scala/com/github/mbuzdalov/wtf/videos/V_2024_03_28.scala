@@ -2,8 +2,6 @@ package com.github.mbuzdalov.wtf.videos
 
 import java.awt.Color
 
-import scala.language.implicitConversions
-
 import com.github.mbuzdalov.wtf.{BasicProperties, GraphicsConsumer}
 import com.github.mbuzdalov.wtf.widgets.{Plot, Sticks, TextMessage}
 import com.github.mbuzdalov.wtf.widgets.TextMessage.{HorizontalAlignment as HA, VerticalAlignment as VA}

@@ -4,8 +4,6 @@ import java.awt.Color
 import java.io.File
 import javax.imageio.ImageIO
 
-import scala.language.implicitConversions
-
 import com.github.mbuzdalov.wtf.{BasicProperties, GraphicsConsumer}
 import com.github.mbuzdalov.wtf.util.PiecewiseLinearFunction as PLW
 import com.github.mbuzdalov.wtf.widgets.{Fade, GlowingCircle, ProfessionallyFitImage, TextMessage}

@@ -2,8 +2,6 @@ package com.github.mbuzdalov.wtf
 
 import java.io.InputStream
 
-import scala.language.implicitConversions
-
 class ByteStorage(stream: InputStream):
   private val bufSize = 1 << 16
   private val array = locally:
@@ -23,11 +21,11 @@ class ByteStorage(stream: InputStream):
 
   def int8(index: Long): Byte = array((index >>> 16).toInt)((index & 0xFFFF).toInt)
   def uint8(index: Long): Numbers.UInt8 = Numbers.uint8(int8(index))
-  def uint16(index: Long): Numbers.UInt16 = Numbers.uint16(uint8(index) | (uint8(index + 1) << 8))
-  def int16(index: Long): Short = (uint8(index) | (uint8(index + 1) << 8)).toShort
-  def int32(index: Long): Int = uint16(index).toInt | (uint16(index + 2).toInt << 16)
+  def uint16(index: Long): Numbers.UInt16 = Numbers.uint16(uint8(index).asInt | (uint8(index + 1).asInt << 8))
+  def int16(index: Long): Short = (uint8(index).asInt | (uint8(index + 1).asInt << 8)).toShort
+  def int32(index: Long): Int = uint16(index).asInt | (uint16(index + 2).asInt << 16)
   def uint32(index: Long): Numbers.UInt32 = Numbers.uint32(int32(index))
-  def int64(index: Long): Long = uint32(index).toLong | (uint32(index + 4).toLong << 32)
+  def int64(index: Long): Long = uint32(index).asLong | (uint32(index + 4).asLong << 32)
   def uint64(index: Long): Numbers.UInt64 = Numbers.uint64(int64(index))
   
   def float32(index: Long): Float = java.lang.Float.intBitsToFloat(int32(index))

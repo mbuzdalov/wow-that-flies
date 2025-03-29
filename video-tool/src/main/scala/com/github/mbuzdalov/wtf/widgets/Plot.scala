@@ -3,8 +3,6 @@ package com.github.mbuzdalov.wtf.widgets
 import java.awt.image.BufferedImage
 import java.awt.{BasicStroke, Color, Graphics2D}
 
-import scala.language.implicitConversions
-
 import com.github.mbuzdalov.wtf.widgets.TextMessage.ColorFont
 import com.github.mbuzdalov.wtf.{GraphicsConsumer, LogReader, Numbers}
 
@@ -117,7 +115,7 @@ object Plot:
     if channel > 0 then
       val flapMin = logReader.getParameter(s"SERVO${channel}_MIN")
       val flapMax = logReader.getParameter(s"SERVO${channel}_MAX")
-      builder += Source[Numbers.UInt16]("RCOU", s"C$channel", s"$name Flap", v => v.toDouble, flapMin, flapMax, lineColorFromBackgroundColor(background))
+      builder += Source[Numbers.UInt16]("RCOU", s"C$channel", s"$name Flap", v => v.asInt, flapMin, flapMax, lineColorFromBackgroundColor(background))
     end if
     builder += Source[Float]("ATT", s"Des$name", s"Desired $name", v => v, -maxAngle, +maxAngle,
       if backgroundIsLight(background) then Color.BLUE else Color.CYAN)
@@ -136,9 +134,9 @@ object Plot:
       logReader, timeOffset, x, y,
       width, height, fontSize, background, 2, moreHorizontalLines,
       IndexedSeq(
-        Source[Numbers.UInt16]("RCOU", "C5", "Flap ╱", v => v.toDouble, logReader.getParameter("SERVO5_MIN"), logReader.getParameter("SERVO5_MAX"),
+        Source[Numbers.UInt16]("RCOU", "C5", "Flap ╱", v => v.asInt, logReader.getParameter("SERVO5_MIN"), logReader.getParameter("SERVO5_MAX"),
           lineColorFromBackgroundColor(background)),
-        Source[Numbers.UInt16]("RCOU", "C6", "Flap ╲", v => v.toDouble, logReader.getParameter("SERVO6_MIN"), logReader.getParameter("SERVO6_MAX"),
+        Source[Numbers.UInt16]("RCOU", "C6", "Flap ╲", v => v.asInt, logReader.getParameter("SERVO6_MIN"), logReader.getParameter("SERVO6_MAX"),
           if backgroundIsLight(background) then Color.MAGENTA.darker() else Color.MAGENTA.brighter()),
       )
     )
@@ -150,9 +148,9 @@ object Plot:
       logReader, timeOffset, x, y,
       width, height, fontSize, background, 2, moreHorizontalLines,
       IndexedSeq(
-        Source[Numbers.UInt16]("RCOU", s"C$ccwChannel", s"CCW Motor", v => v.toDouble, 1000, 2000,
+        Source[Numbers.UInt16]("RCOU", s"C$ccwChannel", s"CCW Motor", v => v.asInt, 1000, 2000,
           lineColorFromBackgroundColor(background)),
-        Source[Numbers.UInt16]("RCOU", s"C$cwChannel",  s"CW Motor",  v => v.toDouble, 1000, 2000,
+        Source[Numbers.UInt16]("RCOU", s"C$cwChannel",  s"CW Motor",  v => v.asInt, 1000, 2000,
           if backgroundIsLight(background) then Color.MAGENTA.darker() else Color.MAGENTA.brighter()),
         Source[Float]("ATT", s"DesYaw", s"Desired Yaw", v => (v + 180) % 360, 0, 360,
           if backgroundIsLight(background) then Color.BLUE else Color.CYAN),

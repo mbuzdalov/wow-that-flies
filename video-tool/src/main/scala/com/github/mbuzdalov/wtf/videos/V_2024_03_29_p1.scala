@@ -2,8 +2,6 @@ package com.github.mbuzdalov.wtf.videos
 
 import java.awt.Color
 
-import scala.language.implicitConversions
-
 import com.github.mbuzdalov.wtf.{BasicProperties, GraphicsConsumer}
 import com.github.mbuzdalov.wtf.util.{PiecewiseLinearFunction => PLW}
 import com.github.mbuzdalov.wtf.widgets.{Fade, Plot, Sticks, TextMessage}

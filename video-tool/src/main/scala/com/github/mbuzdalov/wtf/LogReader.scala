@@ -1,10 +1,6 @@
 package com.github.mbuzdalov.wtf
 
-import scala.language.implicitConversions
-
 import scala.collection.mutable.ArrayBuffer
-
-import com.github.mbuzdalov.wtf.Numbers.given
 
 class LogReader(storage: ByteStorage):
   import LogReader.*
@@ -24,8 +20,8 @@ class LogReader(storage: ByteStorage):
       throw new IllegalStateException(s"Redefinition of format (id = ${format.id}, old name ${formats(format.id).name})")
 
   private def processFormatRecord(offset: Long): Unit =
-    val id = storage.uint8(offset + 1).toInt
-    val length = storage.uint8(offset + 2).toInt
+    val id = storage.uint8(offset + 1).asInt
+    val length = storage.uint8(offset + 2).asInt
     val name = storage.string(offset + 3, 4)
     val format = storage.string(offset + 7, 16)
     val labels = storage.string(offset + 23, 64)
@@ -37,12 +33,12 @@ class LogReader(storage: ByteStorage):
   private def scanStorage(): Unit =
     var offset = 0L
     while offset + 2 < storage.size do
-      if storage.uint8(offset).toInt != 0xA3 || storage.uint8(offset + 1).toInt != 0x95 then
-        System.err.println(s"Skipping byte ${storage.uint8(offset).toInt} at offset $offset as it is not a header")
+      if storage.uint8(offset).asInt != 0xA3 || storage.uint8(offset + 1).asInt != 0x95 then
+        System.err.println(s"Skipping byte ${storage.uint8(offset).asInt} at offset $offset as it is not a header")
         offset += 1
       else
         offset += 2
-        val id = storage.uint8(offset).toInt
+        val id = storage.uint8(offset).asInt
         if formats(id) == null then
           throw new IllegalArgumentException(s"Missing format description for format $id at offset $offset, skipping")
         else
@@ -63,7 +59,7 @@ class LogReader(storage: ByteStorage):
     assert(charT == 'Q')
     new TimingConnector:
       override def size: Int = myRecords.size
-      override def get(index: Int): Double = readByCharCT(storage, 'Q', myRecords(index) + offsetT).toDouble * 1e-6
+      override def get(index: Int): Double = readByCharCT(storage, 'Q', myRecords(index) + offsetT).asDouble * 1e-6
       override def indexForTime(time: Double): Int =
         if myRecords.isEmpty || get(0) > time then -1 else
           var left = 0
@@ -95,7 +91,7 @@ class LogReader(storage: ByteStorage):
   lazy val autoArmedTimes: IndexedSeq[Double] =
     val eventValues = connect[Numbers.UInt8]("EV", "Id")
     val eventTimes = connect[Numbers.UInt64]("EV", "TimeUS")
-    (0 until eventValues.size).filter(i => eventValues.get(i).toInt == 15).map(i => eventTimes.get(i).toDouble * 1e-6)
+    (0 until eventValues.size).filter(i => eventValues.get(i).asInt == 15).map(i => eventTimes.get(i).asDouble * 1e-6)
 
 end LogReader
 
@@ -141,9 +137,9 @@ object LogReader:
     case 'N' => storage.string(offset, 16)
     case 'Z' => storage.string(offset, 64)
     case 'c' => storage.int16(offset) * 0.01f
-    case 'C' => storage.uint16(offset) * 0.01f
+    case 'C' => storage.uint16(offset).asInt * 0.01f
     case 'e' => storage.int32(offset) * 0.01
-    case 'E' => storage.uint32(offset).toLong * 0.01
+    case 'E' => storage.uint32(offset).asLong * 0.01
     case 'L' => storage.int32(offset) // convert to lat/lon
     case 'M' => storage.uint8(offset) // convert to flight mode somehow
 
@@ -163,9 +159,9 @@ object LogReader:
     case 'N' => storage.string(offset, 16)
     case 'Z' => storage.string(offset, 64)
     case 'c' => storage.int16(offset) * 0.01f
-    case 'C' => storage.uint16(offset) * 0.01f
+    case 'C' => storage.uint16(offset).asInt * 0.01f
     case 'e' => storage.int32(offset) * 0.01
-    case 'E' => storage.uint32(offset).toLong * 0.01
+    case 'E' => storage.uint32(offset).asLong * 0.01
     case 'L' => storage.int32(offset) // convert to lat/lon
     case 'M' => storage.uint8(offset) // convert to flight mode somehow
 end LogReader

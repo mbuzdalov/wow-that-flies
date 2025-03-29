@@ -3,8 +3,6 @@ package com.github.mbuzdalov.wtf.widgets
 import java.awt.image.BufferedImage
 import java.awt.{BasicStroke, Color, Graphics2D}
 
-import scala.language.implicitConversions
-
 import com.github.mbuzdalov.wtf.{GraphicsConsumer, LogReader, Numbers}
 
 class Sticks(logReader: LogReader, timeOffset: Double,
@@ -33,7 +31,7 @@ class Sticks(logReader: LogReader, timeOffset: Double,
 
     val index = timing.indexForTime(time + timeOffset)
     if index >= 0 then
-      val Seq(roll, pitch, throttle, yaw) = rcIn.map(_.get(index))
+      val Seq(roll, pitch, throttle, yaw) = rcIn.map(_.get(index).asInt)
       val x1 = xLeft + size * (yaw - 1000) / 1000
       val y1 = y + size * (2000 - throttle) / 1000
       val x2 = xRight + size * (roll - 1000) / 1000
