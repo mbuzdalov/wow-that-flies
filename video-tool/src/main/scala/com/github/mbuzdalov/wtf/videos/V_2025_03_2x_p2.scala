@@ -22,21 +22,6 @@ object V_2025_03_2x_p2:
     val sticks = new Sticks(reader, logTimeOffset, stickSize,
       stickW - stickSize - stickGap, stickW + stickGap, stickGap)
 
-    val rpGap = 11 * width / 1280
-    val rpWidth = width / 6
-    val rpHeight = height / 7
-    val fontSize = 16f * width / 1280
-    val rpBackground = new Color(255, 255, 255, 120)
-
-    val rollPlot = Plot.createRollPitchPlot(reader, logTimeOffset, "Roll", -1, 20,
-      rpGap, rpGap, rpWidth, rpHeight, fontSize, rpBackground, 2, 3)
-    val pitchPlot = Plot.createRollPitchPlot(reader, logTimeOffset, "Pitch", -1, 30,
-      rpGap * 2 + rpWidth, rpGap, rpWidth, rpHeight, fontSize, rpBackground, 2, 5)
-    val yawPlot = Plot.createYawPlot(reader, logTimeOffset, 3, 4,
-      width - 2 * rpGap - 2 * rpWidth, rpGap, rpWidth, rpHeight, fontSize, rpBackground, 2, 3)
-    val flapPlot = Plot.createXFlapPlot(reader, logTimeOffset,
-      width - rpGap - rpWidth, rpGap, rpWidth, rpHeight, fontSize, rpBackground, 2, 3)
-
     val msgFontSize = 33f * width / 1280
     val msgStep = msgFontSize * 1.5f
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(40, 10, 40))
@@ -45,7 +30,7 @@ object V_2025_03_2x_p2:
     val blinkOuterR = width * 0.05
 
     val allGraphics = GraphicsConsumer.compose(
-      sticks.enabledBetween(42, 71), //rollPlot, pitchPlot, yawPlot, flapPlot,
+      sticks.enabledBetween(42, 71),
       FlightMode(reader, logTimeOffset, msgCF,
         stickW + stickSize + 2 * stickGap, stickGap + stickSize / 2, HA.Left, VA.Bottom).enabledBetween(42, 71),
 
