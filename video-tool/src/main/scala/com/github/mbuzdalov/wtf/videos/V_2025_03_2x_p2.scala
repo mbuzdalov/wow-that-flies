@@ -16,11 +16,11 @@ object V_2025_03_2x_p2:
     require(autoArmedTimes.size == 7) // 6 real ones, 1 did not actually arm
     val logTimeOffset = autoArmedTimes(0) - props.armTime
 
-    val stickW = width / 2
-    val stickSize = 201 * stickW / 1920
-    val stickGap = 21 * stickW / 1920
+    val stickMiddle = (width * 0.42).toInt
+    val stickSize = 201 * width / 1920 / 2
+    val stickGap = 21 * width / 1920 / 2
     val sticks = new Sticks(reader, logTimeOffset, stickSize,
-      stickW - stickSize - stickGap, stickW + stickGap, stickGap)
+      stickMiddle - stickSize - stickGap, stickMiddle + stickGap, stickGap)
 
     val msgFontSize = 33f * width / 1280
     val msgStep = msgFontSize * 1.5f
@@ -32,7 +32,9 @@ object V_2025_03_2x_p2:
     val allGraphics = GraphicsConsumer.compose(
       sticks.enabledBetween(42, 71),
       FlightMode(reader, logTimeOffset, msgCF,
-        stickW + stickSize + 2 * stickGap, stickGap + stickSize / 2, HA.Left, VA.Bottom).enabledBetween(42, 71),
+        stickMiddle + stickSize + 2 * stickGap, stickGap + stickSize / 2, HA.Left, VA.Bottom).enabledBetween(42, 71),
+      VerticalSpeed(reader, logTimeOffset, msgCF,
+        stickMiddle + stickSize + 2 * stickGap, stickGap + stickSize / 2, HA.Left, VA.Top).enabledBetween(42, 68),
 
       TopBlanket(0.5, new Color(240, 240, 240, 200), 1.0, 1.4, 17.5, 17.9),
       TextMessage("Evening, March 24, 2025.",
@@ -82,11 +84,11 @@ object V_2025_03_2x_p2:
       TextMessage("for first few tests, sorry for that.",
         msgCF, width * 0.5, height - 1 * msgStep, HA.Center, VA.Center).enabledBetween(48.5, 55.5),
 
-      BottomBlanket(0.15, new Color(240, 240, 240, 200), 60.0, 60.4, 66.5, 66.9),
+      BottomBlanket(0.16, new Color(240, 240, 240, 200), 60.0, 60.4, 66.5, 66.9),
       TextMessage("Only the slow descent speed was engaged this time,",
-        msgCF, width * 0.5, height - 1.5 * msgStep, HA.Center, VA.Center).enabledBetween(60.5, 66.5),
+        msgCF, width * 0.5, height - 1.6 * msgStep, HA.Center, VA.Center).enabledBetween(60.5, 66.5),
       TextMessage("in the next test I will try to get higher.",
-        msgCF, width * 0.5, height - 0.5 * msgStep, HA.Center, VA.Center).enabledBetween(60.5, 66.5),
+        msgCF, width * 0.5, height - 0.6 * msgStep, HA.Center, VA.Center).enabledBetween(60.5, 66.5),
 
       Fade(timeOn = 0.5, timeOff = 0),
       Fade(timeOn = 70.5, timeOff = 71.0),
