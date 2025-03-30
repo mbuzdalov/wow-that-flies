@@ -33,8 +33,11 @@ object V_2025_03_2x_p5:
       VerticalSpeed(reader, logTimeOffset, msgCF,
         stickMiddle + stickSize + 2 * stickGap, stickGap + stickSize / 2, HA.Left, VA.Top).enabledBetween(7, 33),
       NEDWidget(reader, logTimeOffset,
-        6.5, 6.5 + 20.0 * 10 / 14, -2, -2 + 20.0 * 10 / 14, -2, 18,
-        0.15, 0.85, 0.15, 0.95).enabledBetween(11, 26),
+        minN = 6.5, maxN = 6.5 + 20.0 * 10 / 14,
+        minE = -2, maxE = -2 + 20.0 * 10 / 14,
+        minAlt = -2, maxAlt = 18,
+        visMinX = 0.15, visMaxX = 0.85, visMinY = 0.15, visMaxY = 0.95,
+        yawOverride = Some(_ => 160.0)).enabledBetween(11, 26),
 
       TopBlanket(0.16, new Color(240, 240, 240, 200), 1.0, 1.4, 6.5, 6.9),
       TextMessage("Fourth test.",

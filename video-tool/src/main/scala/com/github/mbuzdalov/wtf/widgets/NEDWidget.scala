@@ -8,12 +8,16 @@ import com.github.mbuzdalov.wtf.{GraphicsConsumer, LogReader}
 
 class NEDWidget(logReader: LogReader, timeOffset: Double,
                 minN: Double, maxN: Double, minE: Double, maxE: Double, minAlt: Double, maxAlt: Double,
-                visMinX: Double, visMaxX: Double, visMinY: Double, visMaxY: Double) extends GraphicsConsumer:
+                visMinX: Double, visMaxX: Double, visMinY: Double, visMaxY: Double,
+                yawOverride: Option[Double => Double]) extends GraphicsConsumer:
   private val xkfTiming = logReader.timingConnect("XKF1")
   private val posN = logReader.connect[Float]("XKF1", "PN")
   private val posE = logReader.connect[Float]("XKF1", "PE")
   private val posD = logReader.connect[Float]("XKF1", "PD")
   private val velD = logReader.connect[Float]("XKF1", "VD")
+  private val xkfPitch = logReader.connect[Float]("XKF1", "Pitch")
+  private val xkfRoll = logReader.connect[Float]("XKF1", "Roll")
+  private val xkfYaw = logReader.connect[Float]("XKF1", "Yaw")
 
   // TODO: factor out
   private def smoothGet(conn: LogReader.Connector[Float], time: Double, index: Int): Double =
@@ -88,23 +92,38 @@ class NEDWidget(logReader: LogReader, timeOffset: Double,
       val eastPoint = eastMinX * (1 - eScreen) + screenMaxX * eScreen
       val altPoint = altScreen * screenMinY + (1 - altScreen) * screenMaxY
 
+      val yaw = yawOverride match
+        case Some(fun) => math.toRadians(fun(time)) // or time + offset? No idea
+        case None => math.toRadians(smoothGet(xkfYaw, time + timeOffset, xkfIndex))
+      val pitch = math.toRadians(smoothGet(xkfPitch, time + timeOffset, xkfIndex))
+      val roll = math.toRadians(smoothGet(xkfRoll, time + timeOffset, xkfIndex))
+
+      // positive pitch goes to (-cos yaw, -sin yaw, 0)
+      // positive roll goes to  (-sin yaw, +cos yaw, 0)
+      // yaw is clockwise in this perspective
+      val z = math.cos(roll) * math.cos(pitch)
+      val x0 = -math.sin(pitch)
+      val y0 = math.sin(roll) * math.cos(pitch)
+      val x = x0 * math.cos(yaw) + y0 * math.sin(yaw)
+      val y = y0 * math.cos(yaw) - x0 * math.sin(yaw)
+
       val vHalfPointSizeInPx = 0.28 / (maxAlt - minAlt) * (screenMaxY - screenMinY)
       val hHalfPointSizeInPx = 0.14 / (maxN - minN) * (northMaxX - screenMinX) // assuming N and E are scaled similarly
       val pointSize = 0.01 * img.getHeight
       g.setColor(new Color(140, 30, 140))
       val northShape = new Path2D.Double()
-      northShape.moveTo(northPoint - hHalfPointSizeInPx, altPoint - vHalfPointSizeInPx)
-      northShape.lineTo(northPoint - hHalfPointSizeInPx, altPoint + vHalfPointSizeInPx)
-      northShape.lineTo(northPoint + hHalfPointSizeInPx, altPoint + vHalfPointSizeInPx)
-      northShape.lineTo(northPoint + hHalfPointSizeInPx, altPoint - vHalfPointSizeInPx)
+      northShape.moveTo(northPoint - hHalfPointSizeInPx * z + vHalfPointSizeInPx * x, altPoint - vHalfPointSizeInPx * z - hHalfPointSizeInPx * x)
+      northShape.lineTo(northPoint - hHalfPointSizeInPx * z - vHalfPointSizeInPx * x, altPoint + vHalfPointSizeInPx * z - hHalfPointSizeInPx * x)
+      northShape.lineTo(northPoint + hHalfPointSizeInPx * z - vHalfPointSizeInPx * x, altPoint + vHalfPointSizeInPx * z + hHalfPointSizeInPx * x)
+      northShape.lineTo(northPoint + hHalfPointSizeInPx * z + vHalfPointSizeInPx * x, altPoint - vHalfPointSizeInPx * z + hHalfPointSizeInPx * x)
       northShape.closePath()
       g.fill(northShape)
 
       val eastShape = new Path2D.Double()
-      eastShape.moveTo(eastPoint - hHalfPointSizeInPx, altPoint - vHalfPointSizeInPx)
-      eastShape.lineTo(eastPoint - hHalfPointSizeInPx, altPoint + vHalfPointSizeInPx)
-      eastShape.lineTo(eastPoint + hHalfPointSizeInPx, altPoint + vHalfPointSizeInPx)
-      eastShape.lineTo(eastPoint + hHalfPointSizeInPx, altPoint - vHalfPointSizeInPx)
+      eastShape.moveTo(eastPoint - hHalfPointSizeInPx * z + vHalfPointSizeInPx * y, altPoint - vHalfPointSizeInPx * z - hHalfPointSizeInPx * y)
+      eastShape.lineTo(eastPoint - hHalfPointSizeInPx * z - vHalfPointSizeInPx * y, altPoint + vHalfPointSizeInPx * z - hHalfPointSizeInPx * y)
+      eastShape.lineTo(eastPoint + hHalfPointSizeInPx * z - vHalfPointSizeInPx * y, altPoint + vHalfPointSizeInPx * z + hHalfPointSizeInPx * y)
+      eastShape.lineTo(eastPoint + hHalfPointSizeInPx * z + vHalfPointSizeInPx * y, altPoint - vHalfPointSizeInPx * z + hHalfPointSizeInPx * y)
       eastShape.closePath()
       g.fill(eastShape)
     end if
