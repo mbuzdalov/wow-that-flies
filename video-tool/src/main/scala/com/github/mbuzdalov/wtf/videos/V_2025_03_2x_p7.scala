@@ -33,10 +33,10 @@ object V_2025_03_2x_p7:
       VerticalSpeed(reader, logTimeOffset, msgCF,
         stickMiddle + stickSize + 2 * stickGap, stickGap + stickSize / 2, HA.Left, VA.Top).enabledBetween(18, 37),
       NEDWidget(reader, logTimeOffset,
-        minN = 6.5, maxN = 6.5 + 20.0 * 10 / 14,
-        minE = -2, maxE = -2 + 20.0 * 10 / 14,
+        minN = 6.5, maxN = 6.5 + 20.0 * 20 / 21,
+        minE = 3, maxE = 3 + 20.0 * 20 / 21,
         minAlt = -2, maxAlt = 18,
-        visMinX = 0.2, visMaxX = 0.8, visMinY = 0.3, visMaxY = 0.9,
+        visMinX = 0.1, visMaxX = 0.9, visMinY = 0.3, visMaxY = 0.9,
         yawOverride = Some(_ => 170.0)).enabledBetween(23, 37.5),
 
       TopBlanket(0.35, new Color(240, 240, 240, 200), 1.0, 1.4, 11.5, 11.9),
@@ -52,7 +52,7 @@ object V_2025_03_2x_p7:
       TopBlanket(0.16, new Color(240, 240, 240, 200), 13.0, 13.4, 17.5, 17.9),
       TextMessage("Sixth test.",
         msgCF, width * 0.5, 0.6 * msgStep, HA.Center, VA.Center).enabledBetween(13.5, 17.5),
-      TextMessage("Was this just a fluke, or is this reproducible?",
+      TextMessage("Was this just a fluke, or can this be reproduced?",
         msgCF, width * 0.5, 1.6 * msgStep, HA.Center, VA.Center).enabledBetween(13.5, 17.5),
 
       BottomBlanket(0.16, new Color(240, 240, 240, 200), 38.0, 38.4, 41.5, 41.9),
