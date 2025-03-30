@@ -102,6 +102,7 @@ object LogReader:
     assert(labelList.size == format.length)
     def getFieldInfo(name: String): (Int, Char) =
       val index = labelList.indexOf(name)
+      if index < 0 then throw new IllegalArgumentException(s"Field $name in parameter ${this.name} not found")
       (offsets(index), format(index))
 
   trait Connector[+T]:
