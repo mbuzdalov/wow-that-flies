@@ -137,6 +137,18 @@ servoMountR = RBot - 10.5;
 // The location for flap mounting points opposite to the servo
 antiServoMountR = RBot - 3.8;
 
+// GPS base square size
+gpsSquareSize = 22;
+
+// GPS surrounding protecting wall height
+gpsProtectorHeight = 11;
+
+// The size of the connector hole
+gpsConnectorHoleWidth = 10;
+
+// GPS mount height
+gpsMountHeight = 110;
+
 //////////////////////////////////
 /// Thrust puck shape definitions
 //////////////////////////////////
@@ -147,10 +159,12 @@ antiServoMountR = RBot - 3.8;
 //
 // @param r the radius of the outer circle
 // @param off the offset to control gaps
-module puckCrossShape(r, off) {
+// @param addGPSMount whether to add a GPS mount
+module puckCrossShape(r, off, addGPSMount) {
+    gpsSquareHalfDiag = gpsSquareSize / sqrt(2);
     for (a = [0, 90])
-        linear_extrude(puckThick + off, convexity = 2)
-        rotate([0, 0, a]) {
+        rotate([0, 0, a])
+        linear_extrude(puckThick + off, convexity = 2) {
             // 5, 6 and 0.8 are hardcoded here
             // as they are not used elsewhere;
             // 0.8 should be less than ductMinimumThick though
@@ -158,7 +172,73 @@ module puckCrossShape(r, off) {
                    center = true);
             square([2 * (r - 0.8 + off), 6 + 2 * off],
                    center = true);
+        };
+    
+    if (addGPSMount) {
+        for (a = [0, 90, 180, 270])
+            rotate([0, 0, a])
+            rotate([90, 0, 0])
+            translate([0, 0, -3 - off])
+            linear_extrude(6 + 2 * off, convexity = 2)
+            polygon([
+                [-r + 0.8 - off, 3 + off],
+                [-r + 0.8 - off + 3, 3 + off],
+                [-gpsSquareHalfDiag + 3, gpsMountHeight + 3 + off],
+                [-gpsSquareHalfDiag, gpsMountHeight + 3 + off],
+            ]);
+        translate([0, 0, gpsMountHeight + 2.995])
+            linear_extrude(2.01)
+            polygon([
+                [-3 - off, -gpsSquareHalfDiag],
+                [+3 + off, -gpsSquareHalfDiag],
+                [+gpsSquareHalfDiag, -3 - off],
+                [+gpsSquareHalfDiag, +3 + off],
+                [+3 + off, +gpsSquareHalfDiag],
+                [-3 - off, +gpsSquareHalfDiag],
+                [-gpsSquareHalfDiag, 3 + off],
+                [-gpsSquareHalfDiag, -3 - off],
+            ]);
+        
+        outerSide = 0.7 * gpsSquareHalfDiag + 0.3 * (r - 0.8);
+        innerSide = outerSide - 3;
+        translate([0, 0, gpsMountHeight * 0.7 + 3])
+            linear_extrude(2)
+            difference() {
+                polygon([
+                    [-3 - off, -outerSide],
+                    [+3 + off, -outerSide],
+                    [+outerSide, -3 - off],
+                    [+outerSide, +3 + off],
+                    [+3 + off, +outerSide],
+                    [-3 - off, +outerSide],
+                    [-outerSide, 3 + off],
+                    [-outerSide, -3 - off],
+                ]);
+                polygon([
+                    [-3 - off, -innerSide],
+                    [+3 + off, -innerSide],
+                    [+innerSide, -3 - off],
+                    [+innerSide, +3 + off],
+                    [+3 + off, +innerSide],
+                    [-3 - off, +innerSide],
+                    [-innerSide, 3 + off],
+                    [-innerSide, -3 - off],
+                ]);
+            }
+        translate([0, 0, gpsMountHeight + 5])
+            rotate([0, 0, -45]) {
+            difference() {
+                translate([-gpsSquareSize / 2 - 1.2, -gpsSquareSize / 2 - 1.2, 0])
+                    cube([gpsSquareSize + 2.4, gpsSquareSize + 2.4, gpsProtectorHeight]);
+                translate([-gpsSquareSize / 2, -gpsSquareSize / 2, 1])
+                    cube([gpsSquareSize, gpsSquareSize, gpsProtectorHeight]);
+                translate([-gpsSquareSize / 2 - 2, -gpsConnectorHoleWidth / 2, -1])
+                    cube([gpsSquareSize / 2 - 2, gpsConnectorHoleWidth, 7]);
+                translate([4, -gpsConnectorHoleWidth / 2, -1])
+                    cube([gpsSquareSize / 2 - 2, gpsConnectorHoleWidth, 7]);
+            }
         }
+    }
 }
 
 // The motor mounting structure, or "thrust puck".
@@ -166,11 +246,11 @@ module puckCrossShape(r, off) {
 // @param r the radius of the outer circle
 // @param holeRot the angle at which to introduce cutout
 //        for motor wires
-module puck(r, holeRot) {
+module puck(r, holeRot, addGPSMount) {
     difference() {
         union() {
             // cross
-            puckCrossShape(r, 0);
+            puckCrossShape(r, 0, addGPSMount);
             // cylinder where the motor resides
             cylinder(h = puckThick, r = 11);
         }
@@ -208,7 +288,7 @@ module puck(r, holeRot) {
 //
 // @param r the radius of the outer circle
 // @param holeRot the angle at which to introduce cutout
-//        for motor wires
+//        for motor wires (TODO: currently unused)
 module puckAddon(r, holeRot) {
     difference() {
         union() {
@@ -261,7 +341,7 @@ module duct(extOuterR, intOuterR, holeRot) {
         // but it still worked;
         // please #adjust if needed
         translate([0, 0, ductTotalHeight - puckThick])
-            puckCrossShape(extOuterR, 0.01);
+            puckCrossShape(extOuterR, 0.01, false);
     }
 }
 
@@ -466,12 +546,27 @@ module flapCommon(innerCutAngle) {
             // cut for the axis
             translate([0, 0, -eps])
                 cylinder(r = 3.1, h = 6);
-            // cut for the hand, rect part
-            translate([-2.2, -12.5, -eps])
-                cube([4.4, 12.5, 4.2]);
-            // cut for the hand, round part
-            translate([0, -12.5, -eps])
-                cylinder(r = 2.2, h = 4.2);
+            if (false) {
+                // single-headed servo arm
+                // cut for the hand, rect part
+                translate([-2.2, -12.5, -eps])
+                    cube([4.4, 12.5, 4.2]);
+                // cut for the hand, round part
+                translate([0, -12.5, -eps])
+                    cylinder(r = 2.2, h = 4.2);
+            } else {
+                // double-headed servo arm
+                // cut for the main body
+                translate([0, 0, -eps]) linear_extrude(4.2) polygon([
+                    [+3.1, 0], [+1.8, +12], [-1.8, +12],
+                    [-3.1, 0], [-1.8, -12], [+1.8, -12],
+                ]);
+                // cut for the round endpoints
+                for (sgn = [-1, +1])
+                    translate([0, sgn * 12, -eps])
+                    cylinder(r = 1.8, h = 4.2);
+                
+            }
         }
         // hole from the opposite side
         translate([-antiServoMountR - eps, 0, 0])
@@ -630,34 +725,6 @@ module camMount() {
         // large enough for the connector to go through.
         translate([-7.2, -10, 14 - eps])
             cube([14.4, 10, 3]);
-    }
-}
-
-// The structure glued to the shell
-// to which the Beitian BN-880 GPS+Compass module is glued.
-// If your module is not like this, please #adjust.
-module gpsMount() {
-    difference() {
-        // the big cube to cut parts from
-        translate([-10.25, -14, 0])
-            cube([20.5, 28, 25]);
-        // the cubic space to insert the bottom of the GPS module
-        translate([-9.25, -12.75, -eps])
-            cube([18.5, 25.5, 3]);
-        // the back cutout to glue on the shell
-        rotate([0, 45, 0])
-            translate([-30, 0, R + 9])
-            rotate([0, 90, 0])
-            cylinder(h = 40, r = R);
-        // the side holes to allow the USB wire to reach
-        // the flight controller's USB connector;
-        // only one is needed, another is for aesthetics
-        translate([0, -20, 5])
-            rotate([0, -58, -35])
-            cylinder(h = 40, r = 6);
-        translate([0, +20, 5])
-            rotate([0, -58, +35])
-            cylinder(h = 40, r = 6);
     }
 }
 
@@ -987,9 +1054,9 @@ module batteryChine(awayD, sideD, rRef, angles) {
 //////////////////////////////////
 
 // If animation is enabled, these produce a rotating view.
-$vpt = [0, 0, VH / 2 - lowPoint / 2];
+$vpt = [0, 0, (VH + gpsMountHeight - lowPoint - 30) / 2];
 $vpr = [90 + sin($t * 360) * 10, 0, $t * 360];
-$vpd = 800;
+$vpd = 1100;
 
 // Flaps also move nicely during animation.
 posFlapAngle = maxActuationAngle * sin($t * 720);
@@ -1043,18 +1110,20 @@ if (false) {
 
     // top module
     //duct(RTop, RTop - 0.25, topWireCutoutAngle);
-    //translate([100, 0, 0]) puck(RTop, topWireCutoutAngle);
+    //translate([100, 0, 0]) puck(RTop, topWireCutoutAngle, true);
 
+    // hook for the top module
+    //puckHook();
+    
     // bottom module
     //duct(RBot, RBot - 0.25, botWireCutoutAngle);
-    //translate([100, 0, 0]) puck(RBot, botWireCutoutAngle);
+    //translate([100, 0, 0]) puck(RBot, botWireCutoutAngle, false);
 
     //forwardLeg();
     //translate([12, 0, 0]) backwardLeg();
 
     //aioMount();
     //hdzMount();
-    //gpsMount();
     //camMount();
 
     //motorWireCover(centralServoWireH - 5);
@@ -1084,7 +1153,7 @@ if (false) {
         duct(RTop, RTop - 0.25, topWireCutoutAngle);
     color("green")
         translate([0, 0, VH - puckThick])
-        puck(RTop, topWireCutoutAngle);
+        puck(RTop, topWireCutoutAngle, true);
     
     // bottom module
     translate([0, 0, ductTotalHeight])
@@ -1093,7 +1162,7 @@ if (false) {
     color("green")
         translate([0, 0, puckThick])
         rotate([180, 0, 0]) {
-            puck(RBot, botWireCutoutAngle);
+            puck(RBot, botWireCutoutAngle, false);
             translate([0, 0, puckThick]) puckAddon(RBot, botWireCutoutAngle);
         }
     
@@ -1142,13 +1211,6 @@ if (false) {
         rotate([45, 0, 0])
         rotate([0, -90, 0])
         hdzMount();
-    
-    // GPS mount
-    rotate([0, 0, 135])
-        translate([-R - 9, 0, VH / 2 + 45])
-        rotate([180, 0, 0])
-        rotate([0, 45, 0])
-        gpsMount();
     
     // camera mount
     rotate([0, 0, 45])
