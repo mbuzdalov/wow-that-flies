@@ -127,6 +127,21 @@ object Plot:
       builder.result()
     )
 
+  def createNEPlot(logReader: LogReader, timeOffset: Double, direction: 'N' | 'E', quantity: 'P' | 'V',
+                   minValue: Double, maxValue: Double,
+                   x: Int, y: Int, width: Int, height: Int, fontSize: Float,
+                   background: Color, timeWidth: Double, moreHorizontalLines: Int = 0): Plot =
+    new Plot(
+      logReader, timeOffset, x, y,
+      width, height, fontSize, background, 2, moreHorizontalLines,
+      IndexedSeq(
+        Source[Float](s"PSC$direction", s"T$quantity$direction", s"$quantity$direction trg", v => v, minValue, maxValue,
+          if backgroundIsLight(background) then Color.BLUE else Color.CYAN),
+        Source[Float](s"PSC$direction", s"$quantity$direction", s"$quantity$direction act", v => v, minValue, maxValue,
+          if backgroundIsLight(background) then Color.RED.darker() else Color.RED.brighter().brighter()),
+      )
+    )
+
   def createXFlapPlot(logReader: LogReader, timeOffset: Double,
                       x: Int, y: Int, width: Int, height: Int, fontSize: Float, background: Color, timeWidth: Double,
                       moreHorizontalLines: Int = 0): Plot =
