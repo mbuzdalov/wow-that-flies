@@ -16,7 +16,7 @@ object V_2024_04_15_p2:
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(10, 10, 50), new Color(255, 255, 255, 50))
 
     val allGraphics = GraphicsConsumer.compose(
-      ScaleRotateCropBack(t => 1.0 + t / 100, t => 0.0),
+      ScaleRotateCropBack(None, t => 1.0 + t / 100, t => 0.0),
       TextMessage("So I made",
         msgCF, width * 1.0f / 6, height * 0.1f, HA.Center, VA.Center)
         .enabledBetween(1, 13),

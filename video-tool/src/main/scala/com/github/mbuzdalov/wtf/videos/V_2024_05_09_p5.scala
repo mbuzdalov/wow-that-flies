@@ -33,7 +33,7 @@ object V_2024_05_09_p5:
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(10, 10, 50), new Color(255, 255, 255, 50))
 
     val allGraphics = GraphicsConsumer.compose(
-      ScaleRotateCropBack(t => 1.0 + t / 100, t => t / 5 / 360 * math.Pi),
+      ScaleRotateCropBack(None, t => 1.0 + t / 100, t => t / 5 / 360 * math.Pi),
       TextMessage("Why did yaw",
         msgCF, width * 0.035f, height * 0.1f, HA.Left, VA.Center)
         .enabledBetween(1, 14.5),

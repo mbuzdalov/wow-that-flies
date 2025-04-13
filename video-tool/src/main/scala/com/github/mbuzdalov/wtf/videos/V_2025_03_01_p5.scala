@@ -16,7 +16,7 @@ object V_2025_03_01_p5:
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(40, 10, 40))
 
     val allGraphics = GraphicsConsumer.compose(
-      ScaleRotateCropBack(scale = t => 1.0 + t / 400, rotate = t => 0.0, scaleCenterY = (y, t) => y),
+      ScaleRotateCropBack(what = None, scale = t => 1.0 + t / 400, rotate = t => 0.0, scaleCenterY = (y, t) => y),
       BottomBlanket(0.2, new Color(255, 255, 255, 200), 1.6, 2, 6.1, 6.5),
       TextMessage("The landing cage has been significantly upgraded too!",
         msgCF, width * 0.5, height * 0.9, HA.Center, VA.Center)

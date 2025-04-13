@@ -16,7 +16,7 @@ object V_2024_10_09_p1:
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(240, 240, 0), new Color(0, 0, 0, 120))
 
     val allGraphics = GraphicsConsumer.compose(
-      ScaleRotateCropBack(t => 1.0 + t / 100, t => t / 5 / 360 * math.Pi),
+      ScaleRotateCropBack(None, t => 1.0 + t / 100, t => t / 5 / 360 * math.Pi),
       TextMessage("Our breakthrough product,",
         msgCF, width * 0.2, height * 0.2, HA.Center, VA.Center)
         .enabledBetween(1, 10.5),

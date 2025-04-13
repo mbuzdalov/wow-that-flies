@@ -16,7 +16,7 @@ object V_2025_03_01_p3:
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(40, 10, 40))
 
     val allGraphics = GraphicsConsumer.compose(
-      ScaleRotateCropBack(t => 1.0 + t / 200, t => 0.0),
+      ScaleRotateCropBack(None, t => 1.0 + t / 200, t => 0.0),
       RightBlanket(0.5, new Color(255, 255, 255, 200), 1.6, 2, 7.1, 7.5),
       TextMessage("SN1 received longer",
         msgCF, width * 0.55, height * 0.2, HA.Left, VA.Center)

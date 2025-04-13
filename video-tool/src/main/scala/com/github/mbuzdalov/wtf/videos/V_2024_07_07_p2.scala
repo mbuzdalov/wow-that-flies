@@ -16,7 +16,7 @@ object V_2024_07_07_p2:
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(10, 10, 50))
 
     val allGraphics = GraphicsConsumer.compose(
-      ScaleRotateCropBack(t => 1.0 + t / 100, t => t / 5 / 360 * math.Pi, (w, t) => w * (0.5 - t / 100)),
+      ScaleRotateCropBack(None, t => 1.0 + t / 100, t => t / 5 / 360 * math.Pi, (w, t) => w * (0.5 - t / 100)),
       LeftBlanket(0.22f, new Color(240, 240, 240, 200), 1.5, 1.9, 15.1, 15.5),
       TextMessage("ArduCopter",
         msgCF, width * 0.02f, height * 0.06f, HA.Left, VA.Center)

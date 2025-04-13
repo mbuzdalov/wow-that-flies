@@ -16,7 +16,7 @@ object V_2024_07_07_p7:
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(10, 10, 50))
 
     val allGraphics = GraphicsConsumer.compose(
-      ScaleRotateCropBack(t => 1.0 + t / 100, t => t / 5 / 360 * math.Pi),
+      ScaleRotateCropBack(None, t => 1.0 + t / 100, t => t / 5 / 360 * math.Pi),
       TopBlanket(0.13f, new Color(240, 240, 240, 200), 1.5, 1.9, 9.1, 9.5),
       TextMessage("So, it was time for a radical action. Flaps were enlarged by 2.5 times.",
         msgCF, width * 0.5f, height * 0.06f, HA.Center, VA.Center)

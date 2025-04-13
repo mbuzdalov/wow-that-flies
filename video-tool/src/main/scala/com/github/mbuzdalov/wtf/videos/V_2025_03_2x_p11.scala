@@ -20,7 +20,7 @@ object V_2025_03_2x_p11:
     val finalMsgCF = TextMessage.ColorFont(finalMsgFontSize, new Color(240, 200, 240))
 
     val allGraphics = GraphicsConsumer.compose(
-      ScaleRotateCropBack(scale = t => 1.0 + t / 200, rotate = t => 0.0),
+      ScaleRotateCropBack(what = None, scale = t => 1.0 + t / 200, rotate = t => 0.0),
       TopBlanket(0.4, new Color(255, 255, 255, 200), 1.6, 2, 12.1, 12.5),
       TextMessage("What is more, the servo arm got broken:",
         msgCF, width * 0.5, 0.5 * msgStep, HA.Center, VA.Center)

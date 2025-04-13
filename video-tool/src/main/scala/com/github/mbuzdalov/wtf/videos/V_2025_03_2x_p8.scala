@@ -16,7 +16,7 @@ object V_2025_03_2x_p8:
     val msgCF = TextMessage.ColorFont(msgFontSize, new Color(40, 10, 40))
 
     val allGraphics = GraphicsConsumer.compose(
-      ScaleRotateCropBack(scale = t => 1.0 + t / 100, rotate = t => 0.0),
+      ScaleRotateCropBack(what = None, scale = t => 1.0 + t / 100, rotate = t => 0.0),
       RightBlanket(0.4, new Color(255, 255, 255, 200), 1.6, 2, 8.1, 8.5),
       TextMessage("Some of the damage",
         msgCF, width * 0.65, height * 0.3, HA.Left, VA.Center)

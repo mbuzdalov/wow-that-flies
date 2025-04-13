@@ -17,7 +17,7 @@ object V_2024_04_08_p2:
     val msgCF = TextMessage.ColorFont(msgFontSize, msgColor)
 
     val allGraphics = GraphicsConsumer.compose(
-      new ScaleRotateCropBack(t => 1.0 + t / 100.0, t => math.toRadians(t / 4)),
+      ScaleRotateCropBack(None, t => 1.0 + t / 100.0, t => math.toRadians(t / 4)),
       TextMessage("This was the result...",
         msgCF, width * 0.25f, height * 0.65f, HA.Center, VA.Center)
         .enabledBetween(1, 5),

@@ -18,7 +18,7 @@ object V_2024_11_14_CX7_p3:
     val textMiddle = width * 0.22
     val textTop = height * 0.07
     val allGraphics = GraphicsConsumer.compose(
-      ScaleRotateCropBack(t => 1.0 + t / 100, t => t / 5 / 360 * math.Pi),
+      ScaleRotateCropBack(None, t => 1.0 + t / 100, t => t / 5 / 360 * math.Pi),
       TextMessage("All the electronics were fine.",
         msgCF, textMiddle, textTop, HA.Center, VA.Center)
         .enabledBetween(1, 19.5),
