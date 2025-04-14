@@ -68,7 +68,7 @@ object V_2025_04_12_p0:
         msgCF, centerR, height * 0.25 + msgStep, centerH, centerV).enabledBetween(22, 30),
       TextMessage("the rubber bands!",
         msgCF, centerR, height * 0.25 + 2 * msgStep, centerH, centerV).enabledBetween(22, 30),
-      TextMessage("The assembly feature an assortment",
+      TextMessage("The assembly features an assortment",
         msgCF, centerR, height * 0.25 + 3.5 * msgStep, centerH, centerV).enabledBetween(25, 30),
       TextMessage("of mount points, so that it can accommodate",
         msgCF, centerR, height * 0.25 + 4.5 * msgStep, centerH, centerV).enabledBetween(25, 30),
