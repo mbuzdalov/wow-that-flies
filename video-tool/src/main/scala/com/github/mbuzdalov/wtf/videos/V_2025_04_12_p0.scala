@@ -52,7 +52,7 @@ object V_2025_04_12_p0:
         msgCF, centerL, height * 0.3 + msgStep, centerH, centerV).enabledBetween(12, 20),
       TextMessage("the landing wall, which makes it easier",
         msgCF, centerL, height * 0.3 + 2 * msgStep, centerH, centerV).enabledBetween(15, 20),
-      TextMessage("to fit SN1 into the cage,",
+      TextMessage("to land SN1 into the cage,",
         msgCF, centerL, height * 0.3 + 3 * msgStep, centerH, centerV).enabledBetween(15, 20),
       TextMessage("especially flying FPV.",
         msgCF, centerL, height * 0.3 + 4 * msgStep, centerH, centerV).enabledBetween(15, 20),
