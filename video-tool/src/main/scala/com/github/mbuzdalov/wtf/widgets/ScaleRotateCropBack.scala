@@ -19,7 +19,7 @@ class ScaleRotateCropBack(what: Option[BufferedImage],
     g.rotate(angle, img.getWidth / 2.0, img.getHeight / 2.0)
     g.scale(scl, scl)
     g.translate(-(scl - 1) * scaleCenterX(img.getWidth, time), -(scl - 1) * scaleCenterY(img.getHeight, time))
-    g.drawImage(tempImage, 0, 0, null)
+    g.drawImage(tempImage, 0, 0, img.getWidth, img.getHeight, null)
     g.setTransform(origTransform)
 
 end ScaleRotateCropBack
