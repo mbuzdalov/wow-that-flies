@@ -19,7 +19,7 @@ class ProfessionallyFitImage(imageProvider: ProfessionallyFitImage.ImageProvider
     val maxY = maxYFun(time)
     val centerX = (minX + maxX) / 2
     val centerY = (minY + maxY) / 2
-    val image = imageProvider.image(img)
+    val image = imageProvider.image(img, time)
     
     if minX < maxX && minY < maxY then
       val tr = new AffineTransform()
@@ -44,14 +44,25 @@ class ProfessionallyFitImage(imageProvider: ProfessionallyFitImage.ImageProvider
 
 object ProfessionallyFitImage:
   trait ImageProvider:
-    def image(videoImage: BufferedImage): BufferedImage
+    def image(videoImage: BufferedImage, time: Double): BufferedImage
 
   class ConstantProvider(img: BufferedImage) extends ImageProvider:
-    override def image(videoImage: BufferedImage): BufferedImage = img
+    override def image(videoImage: BufferedImage, time: Double): BufferedImage = img
+
+  class ScalingProvider(img: BufferedImage, scale: Double => Double) extends ImageProvider:
+    override def image(videoImage: BufferedImage, time: Double): BufferedImage =
+      val rv = new BufferedImage(img.getWidth, img.getHeight, img.getType)
+      val scl = scale(time)
+      val g = rv.createGraphics()
+      val origTransform = g.getTransform
+      g.scale(scl, scl)
+      g.translate(-(scl - 1) * rv.getWidth / 2, -(scl - 1) * img.getHeight / 2)
+      g.drawImage(img, 0, 0, rv.getWidth, rv.getHeight, null)
+      rv
 
   class ClippingProvider(x: Int, y: Int, w: Int, h: Int) extends ImageProvider:
     private val img = new BufferedImage(w, h, BufferedImage.TYPE_3BYTE_BGR)
-    override def image(videoImage: BufferedImage): BufferedImage =
+    override def image(videoImage: BufferedImage, time: Double): BufferedImage =
       var yy = 0
       while yy < h do
         var xx = 0
