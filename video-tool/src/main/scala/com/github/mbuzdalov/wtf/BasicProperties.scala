@@ -22,13 +22,19 @@ class BasicProperties(args: Array[String]):
   
   def runVideo(consumer: GraphicsConsumer, 
                framePredicate: (Double, Long) => Boolean = (_, _) => true): Unit =
-    val destination = if output == "player" then new Player else new VideoWriter(output, framePredicate)
+    val destination = if output == "player" then new Player else new VideoWriter(output, width, height, framePredicate)
+    val target = FrameConsumer.compose(FrameConsumer(consumer), destination)
+    IOUtils.feedFileToConsumer(input, width, height, fps, target)
+
+  def runVideoWithCropping(consumer: GraphicsConsumer, outputWidth: Int, outputHeight: Int,
+                           framePredicate: (Double, Long) => Boolean = (_, _) => true): Unit =
+    val destination = if output == "player" then new Player else new VideoWriter(output, outputWidth, outputHeight, framePredicate)
     val target = FrameConsumer.compose(FrameConsumer(consumer), destination)
     IOUtils.feedFileToConsumer(input, width, height, fps, target)
 
   private def runWithBaseImage(baseImage: BufferedImage, time: Double, 
                                consumer: GraphicsConsumer, framePredicate: (Double, Long) => Boolean): Unit =
-    val destination = if output == "player" then new Player else new VideoWriter(output, framePredicate)
+    val destination = if output == "player" then new Player else new VideoWriter(output, width, height, framePredicate)
     val target = FrameConsumer.compose(FrameConsumer(consumer), destination)
     val currImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR)
     val maxFrameNo = (time * fps).toInt
