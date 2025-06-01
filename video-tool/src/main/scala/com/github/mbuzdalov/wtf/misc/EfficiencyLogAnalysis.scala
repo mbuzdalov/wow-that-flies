@@ -174,7 +174,7 @@ object EfficiencyLogAnalysis:
 
   def main(args: Array[String]): Unit =
     val tests = "single" +: (for
-      tp <- Seq("open", "duct", "dcnd")
+      tp <- Seq("open", "duct", "dcnd", "dcn2")
       size <- Seq(20, 30, 40, 50, 60, 61)
     yield s"$tp-${size}mm")
 
