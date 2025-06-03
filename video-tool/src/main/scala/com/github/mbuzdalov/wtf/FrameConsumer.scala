@@ -13,6 +13,7 @@ object FrameConsumer:
       g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
       g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY)
       c.consume(img, g, time, frameNo)
+      g.dispose()  
     override def close(): Unit = ()
 
   def compose(consumers: FrameConsumer*): FrameConsumer = new FrameConsumer:
