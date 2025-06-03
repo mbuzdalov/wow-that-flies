@@ -9,6 +9,8 @@ import scala.util.Using
 import com.github.mbuzdalov.wtf.{ByteStorage, LogReader, Numbers}
 
 object EfficiencyLogAnalysis:
+  case class AlignedRecord(time: Double, pwm: Int, electricPower: Double, thrust: Double, rpmImbalance: Double)
+
   private case class ForceRecord(time: Double, f1: Double, f2: Double, force: Double)
 
   private def parseForceRecord(line: String): ForceRecord =
@@ -28,7 +30,7 @@ object EfficiencyLogAnalysis:
     val scale = math.min(math.abs(v1), math.abs(v2))
     !(diff < 0.0012 || diff < 0.1 * scale)
 
-  private def excludeJerks(seq: IndexedSeq[ForceRecord]): IndexedSeq[ForceRecord] =
+  private def excludeJerks(seq: IndexedSeq[ForceRecord], verbose: Boolean): IndexedSeq[ForceRecord] =
     val builder = IndexedSeq.newBuilder[ForceRecord]
     builder += seq(0)
     var isBad1, isBad2 = false
@@ -36,7 +38,7 @@ object EfficiencyLogAnalysis:
     for i <- 1 until seq.size do
       val jerk1 = isLikelyJerk(seq(i - 1).f1, seq(i).f1)
       val jerk2 = isLikelyJerk(seq(i - 1).f2, seq(i).f2)
-      if jerk1 || jerk2 then
+      if verbose && (jerk1 || jerk2) then
         println(s"    jerks at index $i: f1=$jerk1, f2=$jerk2")
       isBad1 ^= jerk1
       isBad2 ^= jerk2
@@ -56,18 +58,17 @@ object EfficiencyLogAnalysis:
       val f2 = (elem.f2 - force2Start) + (force2End - force2Start) * (elem.time - tStart) / (tEnd - tStart)
       ForceRecord(elem.time, f1, f2, f1 + f2)
 
-  private def parseCleanForceCSV(filename: String): IndexedSeq[ForceRecord] =
+  private def parseCleanForceCSV(filename: String, verbose: Boolean): IndexedSeq[ForceRecord] =
     val raw = parseForceCSV(filename)
     val firstZero = raw.indexWhere(_.force == 0)
     if firstZero < 0 then throw new IllegalArgumentException("All known valid force files have a zero region")
     val firstNonZero = raw.indexWhere(_.force != 0, firstZero)
     if firstNonZero < 0 then throw new IllegalArgumentException("All known valid force files have a nonzero region following a zero region")
-    equateForceDrifts(excludeJerks(raw.drop(firstNonZero).filter(r => r.f1 >= -0.1 && r.f2 >= -0.1)))
+    equateForceDrifts(excludeJerks(raw.drop(firstNonZero).filter(r => r.f1 >= -0.1 && r.f2 >= -0.1), verbose))
 
-  private def process(args: Array[String]): Unit =
-    val log = Using.resource(new FileInputStream(args(0)))(in => new LogReader(new ByteStorage(in)))
-    val csv = parseCleanForceCSV(args(1))
-    val out = new PrintWriter(args(2))
+  def process(binaryLogFilename: String, forceLogFilename: String, verbose: Boolean): IndexedSeq[AlignedRecord] =
+    val log = Using.resource(new FileInputStream(binaryLogFilename))(in => new LogReader(new ByteStorage(in)))
+    val csv = parseCleanForceCSV(forceLogFilename, verbose)
 
     val rcOutT = log.timingConnect("RCOU")
     val rcOutC1 = log.connect[Numbers.UInt16]("RCOU", "C1")
@@ -87,8 +88,9 @@ object EfficiencyLogAnalysis:
 
     val thrustStartT = rcOutT.get(thrustStart)
     val thrustEndT = rcOutT.get(thrustEnd)
-    println(s"  CSV starts ${csv.head.time} ends ${csv.last.time}")
-    println(s"  Log starts $thrustStartT ends $thrustEndT")
+    if verbose then
+      println(s"  CSV starts ${csv.head.time} ends ${csv.last.time}")
+      println(s"  Log starts $thrustStartT ends $thrustEndT")
 
     def forOffsetDo(offset: Int)(fun: (Double, Double) => Unit): Boolean =
       val beginT = csv(offset).time
@@ -138,27 +140,6 @@ object EfficiencyLogAnalysis:
       then escRPM.get(idx)
       else lookupEscInstance(idx - 1, inst)
 
-    def offsetDemo(offset: Int): Unit =
-      forOffsetDo(offset): (time, force) =>
-        val rcou = rcOutC1.get(rcOutT.indexForTime(time)).asInt
-        val batIdx = batT.indexForTime(time)
-        val volt = batVolt.get(batIdx)
-        val curr = batCurr.get(batIdx)
-        val escIdx = escT.indexForTime(time)
-        val esc1 = lookupEscInstance(escIdx, 0)
-        val esc2 = lookupEscInstance(escIdx, 1)
-        // the props are 5030, 0.0762 m/rev
-        // this is measured in parrots, really, we don't have any actual device for that
-        val airSpeed = if esc1 > 0 && esc2 > 0 then
-          0.5 * (esc1 + esc2) / 60 * 0.0762
-        else
-          (esc1 + esc2) / 60 * 0.0762 // single-prop testing
-        val outputEffectivePower = airSpeed * force * 9.8
-        val electricPower = volt * curr - avgIdlePower
-        val motorImbalance = (esc1 - esc2) / (esc1 + esc2)
-        //println(s"RCOU: $rcou, Force (kg): $force, Volt: $volt, Curr: $curr, Electric Power: $electricPower, RPM1: $esc1, RPM2: $esc2, airspeed: $airSpeed, output power: ${airSpeed * force * 9.8}")
-        out.println(s"$rcou,$force,$electricPower,$outputEffectivePower,${outputEffectivePower / electricPower},$motorImbalance")
-
     // Find the best offset in a very straightforward way
     val offsetQualities = Array.tabulate(csv.size)(offsetQuality)
     val bestQuality = offsetQualities.minBy(math.abs)
@@ -166,10 +147,22 @@ object EfficiencyLogAnalysis:
       throw new AssertionError("Jerks jerked")
     val bestOffset = offsetQualities.indexOf(bestQuality)
 
-    println(s"  Best quality: $bestQuality at offset $bestOffset (CSV time ${csv(bestOffset).time}...${csv(bestOffset).time + thrustEndT - thrustStartT})")
+    if verbose then
+      println(s"  Best quality: $bestQuality at offset $bestOffset (CSV time ${csv(bestOffset).time}...${csv(bestOffset).time + thrustEndT - thrustStartT})")
 
-    out.println("RCOU,Thrust,Electric power,Output power,Efficiency,Imbalance")
-    offsetDemo(bestOffset)
+    val builder = IndexedSeq.newBuilder[AlignedRecord]
+    forOffsetDo(bestOffset): (time, force) =>
+      val rcou = rcOutC1.get(rcOutT.indexForTime(time)).asInt
+      val batIdx = batT.indexForTime(time)
+      val volt = batVolt.get(batIdx)
+      val curr = batCurr.get(batIdx)
+      val escIdx = escT.indexForTime(time)
+      val esc1 = lookupEscInstance(escIdx, 0)
+      val esc2 = lookupEscInstance(escIdx, 1)
+      val electricPower = volt * curr - avgIdlePower
+      val motorImbalance = (esc1 - esc2) / (esc1 + esc2)
+      builder += AlignedRecord(time - thrustStartT, rcou, electricPower, force, motorImbalance)
+    builder.result()
   end process
 
   def main(args: Array[String]): Unit =
@@ -182,9 +175,13 @@ object EfficiencyLogAnalysis:
       println(s"Test $test:")
       val binLog = s"${args(0)}/log-$test.bin"
       val csvLog = s"${args(0)}/log-$test.csv"
-      if Files.exists(Paths.get(binLog)) && Files.exists(Paths.get(csvLog)) then
-        process(Array(binLog, csvLog, s"${args(0)}/efficiency-$test.csv"))
-      else
+      if Files.exists(Paths.get(binLog)) && Files.exists(Paths.get(csvLog)) then {
+        val output = process(binLog, csvLog, verbose = true)
+        Using.resource(new PrintWriter(s"${args(0)}/efficiency-$test.csv")): out =>
+          out.println("RCOU,Thrust,Electric power,Imbalance")
+          for rec <- output do
+            out.println(s"${rec.pwm},${rec.thrust},${rec.electricPower},${rec.rpmImbalance}")
+      } else
         println(s"  Warning: One of '$binLog', '$csvLog' are missing")
   end main
 end EfficiencyLogAnalysis
