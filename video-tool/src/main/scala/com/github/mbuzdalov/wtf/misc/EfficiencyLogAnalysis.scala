@@ -166,22 +166,17 @@ object EfficiencyLogAnalysis:
   end process
 
   def main(args: Array[String]): Unit =
-    val tests = "single" +: (for
-      tp <- Seq("open", "duct", "dcnd", "dcn2")
-      size <- Seq(20, 30, 40, 50, 60, 61)
-    yield s"$tp-${size}mm")
-
-    for test <- tests do
-      println(s"Test $test:")
-      val binLog = s"${args(0)}/log-$test.bin"
-      val csvLog = s"${args(0)}/log-$test.csv"
-      if Files.exists(Paths.get(binLog)) && Files.exists(Paths.get(csvLog)) then {
-        val output = process(binLog, csvLog, verbose = true)
-        Using.resource(new PrintWriter(s"${args(0)}/efficiency-$test.csv")): out =>
+    val root = Paths.get(args(0))
+    Files.list(root).filter(_.getFileName.toString.endsWith(".bin")).forEach: binLog =>
+      val csvLog = binLog.resolveSibling(binLog.getFileName.toString.replace(".bin", ".csv"))
+      val outFile = csvLog.resolveSibling("eff-" + csvLog.getFileName.toString)
+      if Files.exists(csvLog) then 
+        val output = process(binLog.toString, csvLog.toString, verbose = true)
+        Using.resource(new PrintWriter(outFile.toFile)): out =>
           out.println("RCOU,Thrust,Electric power,Imbalance")
           for rec <- output do
             out.println(s"${rec.pwm},${rec.thrust},${rec.electricPower},${rec.rpmImbalance}")
-      } else
+      else
         println(s"  Warning: One of '$binLog', '$csvLog' are missing")
   end main
 end EfficiencyLogAnalysis
