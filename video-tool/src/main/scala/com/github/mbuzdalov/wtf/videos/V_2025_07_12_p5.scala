@@ -20,7 +20,7 @@ object V_2025_07_12_p5:
 
     val allGraphics = GraphicsConsumer.compose(
       LeftBlanket(0.36, blanketBackground, 0.5, 0.8, 25.2, 25.5),
-      TextMessage("Test 5.",
+      TextMessage("Test 4.",
         msgCF, 0.02 * width, 0.05 * height, leftH, centerV)
         .enabledBetween(1, 25),
       TextMessage("To reduce imperfections,",

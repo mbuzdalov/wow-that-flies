@@ -23,7 +23,7 @@ object V_2025_07_12_p4:
       TextMessage("Test 3.",
         msgCF, 0.02 * width, 0.05 * height, leftH, centerV)
         .enabledBetween(1, 23),
-      TextMessage("After inspection of logs,",
+      TextMessage("After some more log analysis,",
         msgCF, 0.02 * width, 0.05 * height + 1.5 * msgStep, leftH, centerV)
         .enabledBetween(2, 23),
       TextMessage("PIDs were set as follows",
